@@ -72,7 +72,6 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
   const {
     custom_fields: {
       usdt_payment_wallets,
-      usdt_payment_wallets_testnet,
       ids_distribution_wallet,
     },
   } = useAppMetadata();
@@ -110,10 +109,6 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
     getWalletInfo();
   }, [wallet]);
 
-  useEffect(() => {
-    console.log("loading", loading);
-  }, [loading]);
-
   const disconnect = () => setWallet(null);
 
   // Lỗi thêm 2 ví cùng lúc ( khôgn có ví, co người giới thiệu)
@@ -142,50 +137,8 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
         .then((data) => data.result[0])
         .catch(() => null);
       if (exist) {
-        const [vipReponse, stakeHistory, f1, commission, stake] =
-          await Promise.all([
-            await getVipStatus(exist.id),
-            await getStakeHistory(exist.id),
-            await fetch("/api/user/f1", {
-              method: "POST",
-              body: JSON.stringify({
-                id: exist.id,
-              }),
-            }).then((data) => data.json()),
-            await fetch("/api/user/commission", {
-              method: "POST",
-              body: JSON.stringify({
-                id: exist.id,
-              }),
-            }).then((data) => data.json()),
-            await fetch("/api/user/stake", {
-              method: "POST",
-              body: JSON.stringify({
-                id: exist.id,
-              }),
-            }).then((data) => data.json()),
-          ]);
-
         setAccount({
           ...exist,
-          f1: f1?.result || 0,
-          isVip: vipReponse ? true : false,
-          commission: commission?.result || {
-            all: 0,
-            day: 0,
-            month: 0,
-            withdraw: 0,
-          },
-          stake_history: stakeHistory,
-          stake: stake?.result || {
-            stake_dont_claw: 0,
-            stake_dont_claw_24h: 0,
-            stake_dont_claw_week: 0,
-            stake_dont_claw_month: 0,
-            stake_in: 0,
-            stake_out: 0,
-            stake_reward: 0,
-          },
         });
         return;
       }
@@ -232,24 +185,6 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
       }).then((data) => data.json());
       setAccount({
         ...newusser.result,
-        f1: 0,
-        isVip: false,
-        commission: {
-          all: 0,
-          day: 0,
-          month: 0,
-          withdraw: 0,
-        },
-        stake_history: [],
-        stake: {
-          stake_dont_claw: 0,
-          stake_dont_claw_24h: 0,
-          stake_dont_claw_week: 0,
-          stake_dont_claw_month: 0,
-          stake_in: 0,
-          stake_out: 0,
-          stake_reward: 0,
-        },
       });
     } finally {
       isCreatingMemberRef.current = false;
@@ -309,9 +244,6 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
         return null;
       });
 
-      console.log(response);
-      
-
     return response;
   };
 
@@ -336,7 +268,6 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
         chainId: parseInt(chainId, 16),
       });
       setWallet({ address: accounts[0], chainId: parseInt(chainId, 16) });
-      sessionStorage.setItem("idscoin_connected", "true");
     } catch (err) {
       console.error("Kết nối ví thất bại", err);
       setWallet(null);
@@ -381,8 +312,8 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
               params: [
                 {
                   chainId:
-                    usdt_payment_wallets_testnet[
-                      chainId as keyof typeof usdt_payment_wallets_testnet
+                    usdt_payment_wallets[
+                      chainId as keyof typeof usdt_payment_wallets
                     ]?.chainId || "0x" + chainId.toString(16),
                 },
               ],
@@ -390,16 +321,16 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
           } catch (switchError: any) {
             if (
               switchError.code === 4902 &&
-              usdt_payment_wallets_testnet[
-                chainId as keyof typeof usdt_payment_wallets_testnet
+              usdt_payment_wallets[
+              chainId as keyof typeof usdt_payment_wallets
               ]
             ) {
               // Nếu chưa có mạng, thêm mạng vào MetaMask
               await provider.request({
                 method: "wallet_addEthereumChain",
                 params: [
-                  usdt_payment_wallets_testnet[
-                    chainId as keyof typeof usdt_payment_wallets_testnet
+                  usdt_payment_wallets[
+                  chainId as keyof typeof usdt_payment_wallets
                   ],
                 ],
               });
@@ -409,8 +340,8 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
                 params: [
                   {
                     chainId:
-                      usdt_payment_wallets_testnet[
-                        chainId as keyof typeof usdt_payment_wallets_testnet
+                      usdt_payment_wallets[
+                        chainId as keyof typeof usdt_payment_wallets
                       ]?.chainId,
                   },
                 ],
@@ -503,8 +434,8 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
             params: [
               {
                 chainId:
-                  usdt_payment_wallets_testnet[
-                    chainId as keyof typeof usdt_payment_wallets_testnet
+                  usdt_payment_wallets[
+                    chainId as keyof typeof usdt_payment_wallets
                   ]?.chainId || "0x" + chainId.toString(16),
               },
             ],
@@ -580,7 +511,7 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
       if (error?.code == "4902") {
         // notify({
         //   title: t("noti.web3Error"),
-        //   message: t("noti.web3ChainNotFound", {chain: usdt_payment_wallets_testnet[chainId as keyof typeof usdt_payment_wallets_testnet]?.name}),
+        //   message: t("noti.web3ChainNotFound", {chain: usdt_payment_wallets[chainId as keyof typeof usdt_payment_wallets]?.name}),
         //   type: false,
         // });
       } else {

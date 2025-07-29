@@ -58,14 +58,21 @@ export function roundToFirstSignificantDecimal(value: number | string) {
  * @param value Số hoặc chuỗi số cần định dạng
  * @param options Tuỳ chọn: giữ lại phần thập phân hay không (default: true)
  */
-export function formatNumber(value: number | string, options?: { decimal?: boolean }): string {
+export function formatNumber(
+  value: number | string,
+  options?: { decimal?: boolean }
+): string {
   if (value === null || value === undefined || value === "") return "0";
   const num = Number(value);
   if (isNaN(num)) return String(value);
   if (options?.decimal === false) {
-    return roundDownDecimal(num).toLocaleString("en-US", { maximumFractionDigits: 0 });
+    return roundDownDecimal(num).toLocaleString("en-US", {
+      maximumFractionDigits: 0,
+    });
   }
-  return roundDownDecimal(num).toLocaleString("en-US", { maximumFractionDigits: 2 });
+  return roundDownDecimal(num).toLocaleString("en-US", {
+    maximumFractionDigits: 2,
+  });
 }
 
 export function roundDownDecimal(number: number, decimalPlaces: number = 2) {
