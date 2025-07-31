@@ -118,6 +118,11 @@ export default function DeployTokenPage() {
         return showSensitiveInfo ? data : "•".repeat(data.length)
     }
 
+    if (!account) {
+        return <div className="flex flex-1 w-full font-bold p-4 gap-4 justify-center items-center text-center">
+            Kết nối ví để sử dụng
+        </div>
+    }
     return <div className="flex flex-col w-full p-4 gap-4">
         <div className="w-full flex items-center gap-1">
             <Button onClick={() => router.back()} variant={"ghost"} size={"icon"} className="cursor-pointer outline-none border-none">
