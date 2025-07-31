@@ -91,7 +91,7 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
   } | null>(null);
   const isConnected = !!wallet;
   const path = usePathname();
-  const { notify } = useNotification();
+  const { notify, register } = useNotification();
   const isCreatingMemberRef = useRef(false);
 
   useEffect(() => {
@@ -109,6 +109,11 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
   }, [wallet]);
 
 
+  useEffect(() => {
+    if (!account) return;
+    if (account.email) return;
+    register(account?.id || "");
+  }, [account])
 
   const disconnect = () => {
     localStorage.removeItem("is_connect");

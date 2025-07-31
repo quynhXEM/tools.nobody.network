@@ -1,8 +1,9 @@
 "use client"
-import React, { createContext, useContext, useState, ReactNode, useCallback } from "react";
+import React, { createContext, useContext, useState, ReactNode, useCallback, useEffect } from "react";
 
 import { useTranslations } from "next-intl";
 import { NotificationModal } from "@/views/home/NotificationModal";
+import { RegisterAccount } from "@/views/RegisterAccount";
 
 interface NotificationData {
   title: string;
@@ -13,17 +14,24 @@ interface NotificationData {
 
 interface NotificationContextType {
   notify: (data: NotificationData) => void;
+  register: (id: string) => void;
 }
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
 export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const [show, setShow] = useState(false);
+  const [showRE, setShowRE] = useState(false);
+  const [id, setID] = useState("");
   const [data, setData] = useState<NotificationData>({ title: "", message: "", type: true });
-
   const notify = useCallback((data: NotificationData) => {
     setData(data);
     setShow(true);
+  }, []);
+
+  const register = useCallback((id: string) => {
+    setID(id)
+    setShowRE(true);
   }, []);
 
   const handleClose = () => setShow(false);
@@ -31,7 +39,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const t = useTranslations("noti");
 
   return (
-    <NotificationContext.Provider value={{ notify }}>
+    <NotificationContext.Provider value={{ notify, register }}>
       {children}
       <NotificationModal
         t={t}
@@ -42,6 +50,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
         children={data?.children}
         type={data.type}
       />
+      <RegisterAccount isOpen={showRE} id={id} onClose={() => setShowRE(false)} t={t} />
     </NotificationContext.Provider>
   );
 };

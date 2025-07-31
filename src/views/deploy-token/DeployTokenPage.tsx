@@ -39,9 +39,9 @@ const FormSchema = z.object({
 
 export default function DeployTokenPage() {
     const router = useRouter();
-    const { notify } = useNotification()
+    const { notify, register } = useNotification()
     const [loading, setLoading] = useState<boolean>(false);
-    const { sendTransaction } = useUserWallet();
+    const { sendTransaction, account } = useUserWallet();
     const [showSensitiveInfo, setShowSensitiveInfo] = useState(false)
     const [data, setData] = useState<any>();
     const { custom_fields: { usdt_payment_wallets, ids_distribution_wallet } } = useAppMetadata()
@@ -57,6 +57,11 @@ export default function DeployTokenPage() {
     });
 
     const onSubmit = async (data: any) => {
+        if (!account?.email) {
+            register(account?.id || "");
+            return;
+        }
+
         setLoading(true)
         const sendtxn = await sendTransaction({
             amount: "1.23",
@@ -70,7 +75,7 @@ export default function DeployTokenPage() {
 
         if (!sendtxn.ok) {
             notify({
-                title: "Lỗi",
+                title: "Thất bại",
                 type: false,
                 message: "Giao dịch không thành công"
             })
@@ -96,7 +101,7 @@ export default function DeployTokenPage() {
             setData(response.result.data)
         } else {
             notify({
-                title: "Lỗi",
+                title: "Thất bại",
                 type: false,
                 message: "Có lỗi xảy ra trong quá trình tạo token"
             })
@@ -192,7 +197,7 @@ export default function DeployTokenPage() {
                             </div>
                         )}
                     />
-                    <Button type="submit" disabled={loading} className="w-full md:w-auto">Triển khai</Button>
+                    <Button type="submit" disabled={loading} className="w-full md:w-auto">{loading ? "Đang triển khai" : "Triển khai"}</Button>
                 </form>
             </div>
             <div className="flex flex-2 flex-col bg-white rounded shadow p-4">

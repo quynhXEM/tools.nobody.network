@@ -6,9 +6,6 @@ import { fetchAppMetadata } from "@/libs/utils";
 import { AppMetadataProvider } from "../commons/AppMetadataContext";
 import { NotificationProvider } from "../commons/NotificationContext";
 import { UserWalletProvider } from "../commons/UserWalletContext";
-import LocaleDropdown from "../commons/LocaleDropdown";
-import WalletConnect from "../commons/WalletConnect";
-
 export default async function Layout({
   children,
 }: Readonly<{
