@@ -69,7 +69,7 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
       ids_distribution_wallet,
     },
   } = useAppMetadata();
-  const t = useTranslations("home");
+  const t = useTranslations("");
   const [balance, setBalanceState] = useState<{ ids: string; usdt: string }>({
     ids: "0",
     usdt: "0",

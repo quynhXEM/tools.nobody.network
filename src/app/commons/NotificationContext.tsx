@@ -28,7 +28,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
 
   const handleClose = () => setShow(false);
 
-  const t = useTranslations("home");
+  const t = useTranslations("noti");
 
   return (
     <NotificationContext.Provider value={{ notify }}>

@@ -1,5 +1,6 @@
 "use client"
 
+import { useIsMobile } from "@/hooks/use-mobile"
 import { usePathname, useRouter } from "@/i18n/navigation"
 import { cn } from "@/libs/utils"
 import { ChevronsLeft, ChevronsRight, icons } from "lucide-react"
@@ -16,9 +17,10 @@ export const SideBar = () => {
     const patthname = usePathname();
     const router = useRouter();
     const [open, setOpen] = useState(true)
+    const isMobile = useIsMobile()
     return <>
         {
-            !patthname.includes("/home") && <div className="px-1  flex flex-col items-start justify-start">
+            !patthname.includes("/home") && !isMobile && <div className="px-1  flex flex-col items-start justify-start">
                 <div onClick={() => setOpen(!open)} className={cn("flex items-center justify-start gap-1 p-1.5 rounded-md cursor-pointer")}>
                     {open ? <ChevronsLeft className="w-6 h-6" /> : <ChevronsRight className="w-6 h-6" />}
                     {open && <p className="text-sm font-semibold pr-10">Thu gọn</p>}
