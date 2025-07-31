@@ -73,12 +73,14 @@ export async function waitForTransactionSuccess(txPromise: Promise<any>, provide
   }
 }
 
-export const getBalance = async (
+export const getBalance = async ({
+  address, chainId, tokenAddress, rpc
+} : {
   address: string,
   chainId?: number,
   tokenAddress?: string,
   rpc?: string
-): Promise<string> => {
+}): Promise<string> => {
   try {
     // Ưu tiên lấy rpc từ tham số, nếu không có thì lấy từ metadata
     const rpcUrl = rpc;
@@ -109,3 +111,17 @@ export const getBalance = async (
     return "0";
   }
 };
+
+export const getDecimals = async ({ tokenAddress, rpc, chainId }: { tokenAddress: string, rpc: string, chainId?: number }) => {
+  try {
+    const provider = new ethers.JsonRpcProvider(rpc, chainId);
+    const erc20Abi = [
+      "function decimals() view returns (uint8)"
+    ];
+    const token = new ethers.Contract(tokenAddress, erc20Abi, provider);
+    const decimals = await token.decimals();
+    return Number(decimals);
+  } catch (e) {
+    return 18;
+  }
+}

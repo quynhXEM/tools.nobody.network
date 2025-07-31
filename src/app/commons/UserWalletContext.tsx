@@ -35,11 +35,6 @@ export type WalletContextType = {
   disconnect: () => void;
   connectWallet: () => void;
   sendTransaction: (params: SendTxParams) => Promise<any>;
-  getBalance: (
-    address: string,
-    chainId?: number,
-    tokenAddress?: string
-  ) => Promise<string>;
   balance: { ids: string; usdt: string };
   account: {
     id: string;
@@ -54,7 +49,6 @@ export type WalletContextType = {
     referrer_id: string | null;
     avatar: string | null;
   } | null;
-  getVipStatus: (user_id: string) => Promise<any>;
   checkChainExists: (chainId: string) => Promise<boolean>;
   loading: boolean;
   setAccount: (account: any) => void;
@@ -76,7 +70,7 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
     },
   } = useAppMetadata();
   const t = useTranslations("home");
-  const [balance, setBalance] = useState<{ ids: string; usdt: string }>({
+  const [balance, setBalanceState] = useState<{ ids: string; usdt: string }>({
     ids: "0",
     usdt: "0",
   });
@@ -101,15 +95,25 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
   const isCreatingMemberRef = useRef(false);
 
   useEffect(() => {
-    if (!wallet) return;
+    if (!wallet) {
+      const is_connect = localStorage.getItem("is_connect") || false;
+      if (is_connect) {
+        connectWallet();
+      }
+      return;
+    }
     const getWalletInfo = async () => {
       // Lấy số dư coin => (fix) xóa địa chỉ token
-      await getBalance(wallet.address, ids_distribution_wallet.chain_id);
     };
     getWalletInfo();
   }, [wallet]);
 
-  const disconnect = () => setWallet(null);
+
+
+  const disconnect = () => {
+    localStorage.removeItem("is_connect");
+    setWallet(null);
+  };
 
   // Lỗi thêm 2 ví cùng lúc ( khôgn có ví, co người giới thiệu)
   const addNewMember = async (wallet: WalletInfo) => {
@@ -192,60 +196,6 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const getVipStatus = async (user_id: string) => {
-    const response = await fetch("/api/directus/request", {
-      method: "POST",
-      body: JSON.stringify({
-        type: "readItems",
-        collection: "txn",
-        params: {
-          filter: {
-            member_id: user_id,
-            app_id: process.env.NEXT_PUBLIC_APP_ID,
-            type: "vip_upgrade",
-            status: "completed",
-          },
-          limit: 1,
-          fields: ["id", "date_created"],
-        },
-      }),
-    })
-      .then((data) => data.json())
-      .then((data) => (data.ok ? data.result[0] : null))
-      .catch((err) => {
-        return null;
-      });
-
-    return response;
-  };
-
-  const getStakeHistory = async (user_id: string) => {
-    const response = await fetch("/api/directus/request", {
-      method: "POST",
-      body: JSON.stringify({
-        type: "readItems",
-        collection: "txn",
-        params: {
-          filter: {
-            member_id: user_id,
-            app_id: process.env.NEXT_PUBLIC_APP_ID,
-            type: "stake_in",
-            status: "completed",
-          },
-          sort: "date_created",
-          limit: 1000,
-          fields: ["id", "date_created", "amount", "type", "member_id", "stake_apy", "stake_lock_days", "description", "children.id"],
-        },
-      }),
-    })
-      .then((data) => data.json())
-      .then((data) => (data.ok ? data.result : null))
-      .catch((err) => {
-        return null;
-      });
-
-    return response;
-  };
 
   const connectWallet = async () => {
     if (typeof window === "undefined" || !(window as any).ethereum) {
@@ -268,6 +218,7 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
         chainId: parseInt(chainId, 16),
       });
       setWallet({ address: accounts[0], chainId: parseInt(chainId, 16) });
+      localStorage.setItem("is_connect", "true");
     } catch (err) {
       console.error("Kết nối ví thất bại", err);
       setWallet(null);
@@ -413,117 +364,6 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
       throw err;
     }
   };
-  // Hàm lấy số dư coin hoặc token
-  const getBalance = async (
-    address: string,
-    chainId?: number,
-    tokenAddress?: string
-  ): Promise<string> => {
-    if (typeof window === "undefined" || !(window as any).ethereum) {
-      throw new Error("Không tìm thấy provider");
-    }
-    try {
-      const provider = (window as any).ethereum;
-
-      // Chuyển chain nếu cần
-      if (chainId) {
-        const currentChain = await provider.request({ method: "eth_chainId" });
-        if (parseInt(currentChain, 16) !== chainId) {
-          await provider.request({
-            method: "wallet_switchEthereumChain",
-            params: [
-              {
-                chainId:
-                  usdt_payment_wallets[
-                    chainId as keyof typeof usdt_payment_wallets
-                  ]?.chainId || "0x" + chainId.toString(16),
-              },
-            ],
-          });
-        }
-      }
-
-      if (!tokenAddress) {
-        // Lấy số dư coin
-        const balanceHex = await provider.request({
-          method: "eth_getBalance",
-          params: [address, "latest"],
-        });
-        if (!balanceHex || balanceHex === "0x") {
-          setBalance((prev) => ({
-            ...prev,
-            ids: "0.00",
-          }));
-          return "0.00";
-        }
-        setBalance((prev) => ({
-          ...prev,
-          ids: roundDownDecimal(Number(BigInt(balanceHex)) / 1e18).toString(),
-        }));
-        return roundDownDecimal(Number(BigInt(balanceHex)) / 1e18).toString();
-      } else {
-        // Lấy số dư token ERC20
-        const methodId = "0x70a08231"; // balanceOf(address)
-        const addressPadded = address.replace("0x", "").padStart(64, "0");
-        const data = methodId + addressPadded;
-
-        const balanceHex = await provider.request({
-          method: "eth_call",
-          params: [
-            {
-              to: tokenAddress,
-              data,
-            },
-            "latest",
-          ],
-        });
-        if (!balanceHex || balanceHex === "0x") {
-          // (fix) xóa điều kiện này giữ lại để lấy số dư coin
-          setBalance((prev) => ({
-            ...prev,
-            usdt: "0.00",
-          }));
-          return "0.00";
-        }
-        // Lấy số thập phân của token
-        const decimalsData = "0x313ce567"; // decimals()
-        const decimalsHex = await provider.request({
-          method: "eth_call",
-          params: [
-            {
-              to: tokenAddress,
-              data: decimalsData,
-            },
-            "latest",
-          ],
-        });
-        const decimals = parseInt(decimalsHex, 16);
-        // (fix) xóa điều kiện này giữ lại để lấy số dư coin
-        setBalance((prev) => ({
-          ...prev,
-          usdt: roundDownDecimal(Number(BigInt(balanceHex)) / 10 ** decimals)
-            .toString(),
-        }));
-        return roundDownDecimal(Number(BigInt(balanceHex)) / 10 ** decimals)
-          .toString();
-      }
-    } catch (error) {
-      if (error?.code == "4902") {
-        // notify({
-        //   title: t("noti.web3Error"),
-        //   message: t("noti.web3ChainNotFound", {chain: usdt_payment_wallets[chainId as keyof typeof usdt_payment_wallets]?.name}),
-        //   type: false,
-        // });
-      } else {
-        notify({
-          title: t("noti.web3Error"),
-          message: t("noti.web3BalanceError"),
-          type: false,
-        });
-      }
-      return "0";
-    }
-  };
 
   const checkChainExists = async (chainId: string): Promise<boolean> => {
     if (typeof window === "undefined" || !(window as any).ethereum)
@@ -552,11 +392,9 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
         disconnect,
         connectWallet,
         sendTransaction,
-        getBalance,
         balance,
         account,
         checkChainExists,
-        getVipStatus,
         loading,
         setAccount,
         addNewMember,
