@@ -1,7 +1,250 @@
 {
   "title": "IDS Coin",
-  "page_not_found": "Page Not Found",
+  "page_not_found": "Page not found",
   "noti": {
-    
+    "web3Error": "Web3 Error",
+    "web3ErrorSub": "Browser environment does not support web3. Use Web3 browsers to continue"
+  },
+  "crypto": {
+    "tools": "Crypto Tools"
+  },
+  "tool": {
+    "notavailable": "Coming soon!",
+    "notavailabledescription": "This tool is under development"
+  },
+  "professional": {
+    "blockchain": "Professional blockchain utilities for token management"
+  },
+  "connect": {
+    "wallet": "Connect Wallet",
+    "first": "Please connect your wallet first"
+  },
+  "disconnect": {
+    "wallet": "Disconnect Wallet",
+    "confirm": "Do you want to disconnect your wallet?"
+  },
+  "cancel": "Cancel",
+  "switch": {
+    "tool": "Switch Tool"
+  },
+  "token": {
+    "deploy": "Deploy Token",
+    "deploydec": "Deploy your own token on EVM blockchains: Ethereum, BSC, Polygon...",
+    "network": "Network",
+    "desc": "Deploy an ERC-20 token with custom parameters on the blockchain",
+    "configuration": "Token Configuration",
+    "name": "Token Name",
+    "nameplaceholder": "Token Name",
+    "symbol": "Token Symbol",
+    "symbolplaceholder": "Token Symbol",
+    "totalsupply": "Total Supply",
+    "totalsupplyplaceholder": "Total Supply",
+    "decimals": "Decimals",
+    "decimalsplaceholder": "Decimals",
+    "description": "Description",
+    "placeholder": "Description of your token...",
+    "deploying": "Deploying...",
+    "actual": {
+      "value": "Actual Value"
+    },
+    "standard": "Standard",
+    "optional": "Optional",
+    "personal": {
+      "note": "This description is for personal notes only and will not be deployed on the blockchain. Token information (name, symbol, decimals) will be stored in the smart contract."
+    },
+    "note": {
+      "not": {
+        "blockchain": "💡 This note is for personal use only and will not be deployed on the blockchain"
+      }
+    },
+    "deployed": {
+      "success": "Token deployed successfully!",
+      "blockchain": "Your token has been deployed to the blockchain"
+    },
+    "info": "Token Information"
+  },
+  "tx": {
+    "decoder": "Transaction Decoder",
+    "desc": "Decode transaction hex data into a readable JSON format",
+    "config": "Transaction Decoder Configuration"
+  },
+  "multi": {
+    "send": "Multi Send",
+    "desc": "Send tokens to multiple addresses in one transaction to increase holders",
+    "config": "Multi Send Configuration",
+    "tokens": "Send Tokens",
+    "successful": "Multi send successful!"
+  },
+  "liquidity": {
+    "manager": "Liquidity Manager",
+    "desc": "Add/remove liquidity from DEX pools and manage LP positions"
+  },
+  "airdrop": {
+    "manager": "Airdrop Manager",
+    "desc": "Distribute tokens via Merkle tree airdrop with claim function"
+  },
+  "price": {
+    "tracker": "Price Tracker",
+    "desc": "Track token prices and set price change alerts"
+  },
+  "contract": {
+    "verifier": "Contract Verifier",
+    "desc": "Automatically verify smart contracts on block explorer",
+    "address": "Contract Address"
+  },
+  "gas": {
+    "optimizer": "Gas Optimizer",
+    "desc": "Optimize transaction gas fees and batch operations",
+    "used": "Gas Used"
+  },
+  "holder": {
+    "analyzer": "Holder Analyzer",
+    "desc": "Analyze holder distribution and wallet behavior"
+  },
+  "deployment": {
+    "results": "Deployment Results",
+    "configure": {
+      "deploy": "Configure your token and click deploy to view results"
+    },
+    "deploying": {
+      "token": "Deploying your token..."
+    },
+    "may": {
+      "take": {
+        "minutes": "This process may take a few minutes"
+      }
+    },
+    "successful": "Deployment successful!"
+  },
+  "transaction": {
+    "hash": "Transaction Hash",
+    "results": "Transaction Results"
+  },
+  "cost": "Cost",
+  "view": {
+    "explorer": "View on Explorer"
+  },
+  "name": "Name",
+  "symbol": "Symbol",
+  "recipients": "Recipients",
+  "add": "Add",
+  "address": "Address",
+  "amount": "Amount",
+  "total": {
+    "recipients": "Total Recipients",
+    "amount": "Total Amount"
+  },
+  "sending": "Sending...",
+  "configure": {
+    "recipients": "Configure recipients and click send to view results"
+  },
+  "processing": {
+    "multisend": "Processing multi send transaction..."
+  },
+  "distributing": {
+    "tokens": "Distributing tokens to all recipients"
+  },
+  "dev": {
+    "panel": "Dev Panel"
+  },
+  "wallet": {
+    "connected": "Wallet Connected",
+    "notconnected": "Wallet Not Connected",
+    "connection": {
+      "title": "Wallet Connection",
+      "description": "Connect your wallet to deploy tokens"
+    }
+  },
+  "multisend": {
+    "completed": "Multi send completed!"
+  },
+  "tokens": {
+    "sent": {
+      "to": "Tokens sent to"
+    }
+  },
+  "copyright": "Copyright © 2025 belongs to",
+  "nobody": {
+    "network": "Nobody Network"
+  },
+  "hex": {
+    "data": "Hex Data",
+    "placeholder": "Paste your transaction hex data here..."
+  },
+  "decode": {
+    "transaction": "Decode Transaction"
+  },
+  "clear": {
+    "data": "Clear"
+  },
+  "load": {
+    "example": "Load Example"
+  },
+  "decoding": "Decoding...",
+  "decoded": {
+    "results": "Decoding Results",
+    "successful": "Decoding successful!",
+    "json": "Decoded JSON"
+  },
+  "raw": {
+    "hex": "Raw Hex"
+  },
+  "copy": {
+    "json": "Copy JSON"
+  },
+  "deploy_token": {
+    "wallet_connection": {
+      "title": "Wallet Connection",
+      "description": "Connect your wallet to deploy tokens"
+    },
+    "labels": {
+      "select_chain": "Select chain",
+      "name_placeholder": "Your token name",
+      "symbol_placeholder": "e.g. MAT",
+      "total_supply_placeholder": "1,000,000",
+      "select_decimals": "Select decimals",
+      "decimals_option_standard": "18 (Standard)"
+    },
+    "validation": {
+      "required_chain": "Chain selection is required",
+      "required_name": "Token name is required",
+      "required_symbol": "Symbol is required",
+      "symbol_alnum": "Only letters and numbers are allowed, no special characters",
+      "required_total_supply": "Total supply is required",
+      "total_supply_integer_positive": "Total supply must be a positive integer",
+      "required_decimals": "Decimals selection is required",
+      "decimals_integer_range": "Decimals must be an integer from 1 to 18"
+    },
+    "description_tooltip": "This description is for personal notes only and is not stored on the blockchain. Token metadata (name, symbol, decimals) is stored in the smart contract.",
+    "description_note": "💡 This description is for notes only and is not deployed to the blockchain",
+    "notify": {
+      "failure_title": "Failed",
+      "tx_failed": "Transaction failed",
+      "success_title": "Success",
+      "deploy_success": "Your token has been created. Check the on-page info and your email.",
+      "deploy_error_prefix": "An error occurred while creating the token: "
+    }
+  },
+  "register_modal": {
+    "title": "Register account",
+    "description": "Register an account to use the service",
+    "labels": {
+      "email": "Email",
+      "username": "Username"
+    },
+    "placeholders": {
+      "email": "Your email",
+      "username": "Username"
+    },
+    "buttons": {
+      "register": "Register",
+      "registering": "Registering"
+    },
+    "validation": {
+      "required_email": "Email is required",
+      "invalid_email": "Invalid email",
+      "required_username": "Username is required",
+      "username_alnum": "Only letters and numbers are allowed, no special characters"
+    }
   }
 }

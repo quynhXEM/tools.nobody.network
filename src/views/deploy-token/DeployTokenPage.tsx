@@ -133,6 +133,27 @@ export default function DeployTokenPage() {
         <div className="flex flex-col gap-5 lg:flex-row">
             <div className="flex flex-1 bg-white rounded shadow p-4">
                 <form onSubmit={handleSubmit(onSubmit)} className=" flex flex-1 flex-col gap-4">
+                <Controller
+                        name="chainId"
+                        control={control}
+                        rules={{ required: "Bắt buộc chọn chain" }}
+                        render={({ field }) => (
+                            <div className="flex flex-col gap-1 w-full">
+                                <Label htmlFor="chainId" className="text-sm font-medium">Chain</Label>
+                                <Select value={String(field.value)} onValueChange={field.onChange}>
+                                    <SelectTrigger disabled={loading} id="chainId" className="w-full">
+                                        <SelectValue placeholder="Chọn chain" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {usdt_payment_wallets.map((opt: any) => (
+                                            <SelectItem key={opt.chain_id} value={String(opt.chain_id)}>{opt.name}</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                {errors.chainId && <span className="text-red-500 text-xs">{errors.chainId.message as string}</span>}
+                            </div>
+                        )}
+                    />
                     <Controller
                         name="name"
                         control={control}
@@ -182,26 +203,17 @@ export default function DeployTokenPage() {
                         )}
                     />
                     <Controller
-                        name="chainId"
+                        name="description"
                         control={control}
-                        rules={{ required: "Bắt buộc chọn chain" }}
                         render={({ field }) => (
-                            <div className="flex flex-col gap-1 w-full">
-                                <Label htmlFor="chainId" className="text-sm font-medium">Chain</Label>
-                                <Select value={String(field.value)} onValueChange={field.onChange}>
-                                    <SelectTrigger disabled={loading} id="chainId" className="w-full">
-                                        <SelectValue placeholder="Chọn chain" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {usdt_payment_wallets.map((opt: any) => (
-                                            <SelectItem key={opt.chain_id} value={String(opt.chain_id)}>{opt.name}</SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                                {errors.chainId && <span className="text-red-500 text-xs">{errors.chainId.message as string}</span>}
+                            <div className="flex flex-col gap-1">
+                                <Label htmlFor="name" className="text-sm font-medium">Tên Token</Label>
+                                <Input disabled={loading} id="name" className="text-sm" type="text" {...field} placeholder="Wrapped Viplus Coin" />
+                                {errors.name && <span className="text-red-500 text-xs">{errors.name.message as string}</span>}
                             </div>
                         )}
                     />
+                    
                     <Button type="submit" disabled={loading} className="w-full md:w-auto">{loading ? "Đang triển khai" : "Triển khai"}</Button>
                 </form>
             </div>

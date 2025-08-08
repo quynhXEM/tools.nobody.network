@@ -1,8 +1,251 @@
 {
-
   "title": "IDS Coin",
   "page_not_found": "Không tìm thấy trang",
   "noti": {
-    
+    "web3Error": "Lỗi Web3",
+    "web3ErrorSub":"Môi trường trình duyệt không hỗ trợ web3. Sử dụng các trình duyệt Web3 để tiếp tục"
+
+  },
+  "tool" : {
+    "notavailable": "Sắp ra mắt!",
+    "notavailabledescription": "Công cụ này đang được phát triển"
+  },
+  "crypto": {
+    "tools": "Công cụ Crypto"
+  },
+  "professional": {
+    "blockchain": "Tiện ích blockchain chuyên nghiệp cho quản lý token"
+  },
+  "connect": {
+    "wallet": "Kết nối ví",
+    "first": "Vui lòng kết nối ví trước"
+  },
+  "disconnect": {
+    "wallet": "Ngắt kết nối ví",
+    "confirm": "Bạn có muốn ngắt kết nối ví không?"
+  },
+  "cancel": "Hủy",
+  "switch": {
+    "tool": "Chuyển công cụ"
+  },
+  "token": {
+    "network": "Mạng",
+    "deploy": "Triển khai Token",
+    "deploydec": "Phát hành đồng tiền riêng trên các blockchain EVM: Ethereum, BSC, Polygon...",
+    "desc": "Triển khai token ERC-20 với các tham số tùy chỉnh trên blockchain",
+    "configuration": "Cấu hình Token",
+    "name": "Tên Token",
+    "nameplaceholder": "Tên Token",
+    "symbolplaceholder": "Ký hiệu Token",
+    "symbol": "Ký hiệu Token",
+    "totalsupply": "Tổng cung",
+    "totalsupplyplaceholder": "Tổng cung",
+    "decimals": "Số thập phân",
+    "decimalsplaceholder": "Số thập phân",
+    "description": "Mô tả",
+    "placeholder": "Mô tả về token của bạn...",
+    "deploying": "Đang triển khai...",
+    "actual": {
+      "value": "Giá trị thực tế"
+    },
+    "standard": "Tiêu chuẩn",
+    "optional": "Tùy chọn",
+    "personal": {
+      "note": "Mô tả này chỉ dành cho ghi chú cá nhân và sẽ không được triển khai lên blockchain. Thông tin token (tên, ký hiệu, số thập phân) sẽ được lưu trữ trong smart contract."
+    },
+    "note": {
+      "not": {
+        "blockchain": "💡 Ghi chú này chỉ dùng cá nhân, không triển khai lên blockchain"
+      }
+    },
+    "deployed": {
+      "success": "Triển khai token thành công!",
+      "blockchain": "Token của bạn đã được triển khai lên blockchain"
+    },
+    "info": "Thông tin Token"
+  },
+  "tx": {
+    "decoder": "Bộ giải mã giao dịch",
+    "desc": "Giải mã dữ liệu giao dịch hex sang định dạng JSON dễ đọc",
+    "config": "Cấu hình bộ giải mã giao dịch"
+  },
+  "multi": {
+    "send": "Gửi hàng loạt",
+    "desc": "Gửi token đến nhiều địa chỉ trong một giao dịch để tăng số lượng holder",
+    "config": "Cấu hình gửi hàng loạt",
+    "tokens": "Gửi Token",
+    "successful": "Gửi hàng loạt thành công!"
+  },
+  "liquidity": {
+    "manager": "Quản lý Thanh khoản",
+    "desc": "Thêm/xóa thanh khoản từ các pool DEX và quản lý vị thế LP"
+  },
+  "airdrop": {
+    "manager": "Quản lý Airdrop",
+    "desc": "Phân phối token qua airdrop cây Merkle với chức năng nhận"
+  },
+  "price": {
+    "tracker": "Theo dõi giá",
+    "desc": "Theo dõi giá token và đặt cảnh báo biến động giá"
+  },
+  "contract": {
+    "verifier": "Xác minh Hợp đồng",
+    "desc": "Tự động xác minh smart contract trên block explorer",
+    "address": "Địa chỉ Hợp đồng"
+  },
+  "gas": {
+    "optimizer": "Tối ưu Gas",
+    "desc": "Tối ưu phí gas giao dịch và gộp thao tác",
+    "used": "Gas đã dùng"
+  },
+  "holder": {
+    "analyzer": "Phân tích Holder",
+    "desc": "Phân tích phân bổ holder và hành vi ví"
+  },
+  "deployment": {
+    "results": "Kết quả Triển khai",
+    "configure": {
+      "deploy": "Cấu hình token của bạn và bấm triển khai để xem kết quả"
+    },
+    "deploying": {
+      "token": "Đang triển khai token của bạn..."
+    },
+    "may": {
+      "take": {
+        "minutes": "Quá trình này có thể mất vài phút"
+      }
+    },
+    "successful": "Triển khai thành công!"
+  },
+  "transaction": {
+    "hash": "Mã băm Giao dịch",
+    "results": "Kết quả Giao dịch"
+  },
+  "cost": "Chi phí",
+  "view": {
+    "explorer": "Xem trên Explorer"
+  },
+  "name": "Tên",
+  "symbol": "Ký hiệu",
+  "recipients": "Người nhận",
+  "add": "Thêm",
+  "address": "Địa chỉ",
+  "amount": "Số lượng",
+  "total": {
+    "recipients": "Tổng số người nhận",
+    "amount": "Tổng số lượng"
+  },
+  "sending": "Đang gửi...",
+  "configure": {
+    "recipients": "Cấu hình người nhận và bấm gửi để xem kết quả"
+  },
+  "processing": {
+    "multisend": "Đang xử lý giao dịch gửi hàng loạt..."
+  },
+  "distributing": {
+    "tokens": "Đang phân phối token đến tất cả người nhận"
+  },
+  "dev": {
+    "panel": "Bảng Dev"
+  },
+  "wallet": {
+    "connected": "Đã kết nối ví",
+    "notconnected": "Chưa kết nối ví",
+    "connection": {
+      "title": "Kết nối Ví",
+      "description": "Kết nối ví của bạn để triển khai token"
+    }
+  },
+  "multisend": {
+    "completed": "Gửi hàng loạt hoàn tất!"
+  },
+  "tokens": {
+    "sent": {
+      "to": "Token đã gửi đến"
+    }
+  },
+  "copyright": "Bản quyền © 2025 thuộc về",
+  "nobody": {
+    "network": "Mạng Nobody"
+  },
+  "hex": {
+    "data": "Dữ liệu Hex",
+    "placeholder": "Dán dữ liệu giao dịch hex của bạn tại đây..."
+  },
+  "decode": {
+    "transaction": "Giải mã Giao dịch"
+  },
+  "clear": {
+    "data": "Xóa"
+  },
+  "load": {
+    "example": "Tải ví dụ"
+  },
+  "decoding": "Đang giải mã...",
+  "decoded": {
+    "results": "Kết quả Giải mã",
+    "successful": "Giải mã thành công!",
+    "json": "JSON đã giải mã"
+  },
+  "raw": {
+    "hex": "Hex thô"
+  },
+  "copy": {
+    "json": "Sao chép JSON"
+  },
+  "deploy_token": {
+    "wallet_connection": {
+      "title": "Kết nối Ví",
+      "description": "Kết nối ví của bạn để triển khai token"
+    },
+    "labels": {
+      "select_chain": "Chọn chain",
+      "name_placeholder": "Tên token của bạn",
+      "symbol_placeholder": "VD: MAT",
+      "total_supply_placeholder": "1,000,000",
+      "select_decimals": "Chọn số thập phân",
+      "decimals_option_standard": "18 (Chuẩn)"
+    },
+    "validation": {
+      "required_chain": "Bắt buộc chọn chain",
+      "required_name": "Bắt buộc nhập tên token",
+      "required_symbol": "Bắt buộc nhập ký hiệu",
+      "symbol_alnum": "Chỉ cho phép chữ cái và số, không ký tự đặc biệt",
+      "required_total_supply": "Bắt buộc nhập tổng cung",
+      "total_supply_integer_positive": "Tổng cung phải lớn hơn 0 và không phải số thập phân",
+      "required_decimals": "Bắt buộc chọn số lượng số thập phân",
+      "decimals_integer_range": "Số thập phân phải là số nguyên từ 1 đến 18"
+    },
+    "description_tooltip": "Mô tả này chỉ để ghi chú cá nhân, không được lưu trên blockchain. Metadata token (tên, ký hiệu, decimals) mới được lưu trong smart contract.",
+    "description_note": "💡 Mô tả này chỉ để ghi chú, không được deploy lên blockchain",
+    "notify": {
+      "failure_title": "Thất bại",
+      "tx_failed": "Giao dịch không thành công",
+      "success_title": "Thành công",
+      "deploy_success": "Token của bạn đã được tạo. Kiểm tra thông tin trên trang và email.",
+      "deploy_error_prefix": "Có lỗi xảy ra trong quá trình tạo token: "
+    }
+  },
+  "register_modal": {
+    "title": "Đăng ký tài khoản",
+    "description": "Đăng ký tài khoản để sử dụng dịch vụ",
+    "labels": {
+      "email": "Email",
+      "username": "Tên người dùng"
+    },
+    "placeholders": {
+      "email": "Email của bạn",
+      "username": "Tên người dùng"
+    },
+    "buttons": {
+      "register": "Đăng ký",
+      "registering": "Đang đăng ký"
+    },
+    "validation": {
+      "required_email": "Bắt buộc nhập email",
+      "invalid_email": "Email không hợp lệ",
+      "required_username": "Bắt buộc nhập tên người dùng",
+      "username_alnum": "Chỉ cho phép chữ cái và số, không ký tự đặc biệt"
+    }
   }
 }
