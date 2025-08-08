@@ -95,7 +95,7 @@ export function UnifiedHeader() {
       toast({
         title: t("tool.notavailable"),
         description: t("tool.notavailabledescription"),
-        variant: "destructive",
+        variant: "default",
       })
     }
     setIsMobileMenuOpen(false)
