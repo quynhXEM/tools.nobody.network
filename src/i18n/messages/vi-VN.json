@@ -30,6 +30,7 @@
   },
   "token": {
     "network": "Mạng",
+    "wallet": "Ví",
     "deploy": "Triển khai Token",
     "deploydec": "Phát hành đồng tiền riêng trên các blockchain EVM: Ethereum, BSC, Polygon...",
     "desc": "Triển khai token ERC-20 với các tham số tùy chỉnh trên blockchain",

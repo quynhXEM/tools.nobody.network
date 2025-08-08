@@ -299,9 +299,9 @@ export function ImprovedTokenDeployTool() {
 
                 <div className="space-y-3">
                   <div>
-                    <Label className="text-slate-400 text-sm">{t("token.network")}</Label>
+                    <Label className="text-slate-400 text-sm">{t("token.wallet")}</Label>
                     <div className="bg-slate-700 p-3 rounded-md text-sm text-slate-200 capitalize">
-                      {deployResult.chain?.name}
+                      {deployResult.wallet.address}
                     </div>
                   </div>
 
