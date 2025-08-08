@@ -2,6 +2,10 @@
   "title": "IDS Coin",
   "page_not_found": "Không tìm thấy trang",
   "noti": {},
+  "tool" : {
+    "notavailable": "Sắp ra mắt!",
+    "notavailabledescription": "Công cụ này đang được phát triển"
+  },
   "crypto": {
     "tools": "Công cụ Crypto"
   },

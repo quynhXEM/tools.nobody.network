@@ -5,6 +5,10 @@
   "crypto": {
     "tools": "Crypto Tools"
   },
+  "tool": {
+    "notavailable": "Coming soon!",
+    "notavailabledescription": "This tool is under development"
+  },
   "professional": {
     "blockchain": "Professional blockchain utilities for token management"
   },

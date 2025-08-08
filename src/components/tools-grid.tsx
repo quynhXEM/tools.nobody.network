@@ -84,9 +84,9 @@ export function ToolsGrid() {
       router.push(`/tools/${tool.id}`)
     } else {
       toast({
-        title: "This tool is not available yet",
-        description: "Please check back later",
-        variant: "destructive",
+        title: t("tool.notavailable"),
+        description: t("tool.notavailabledescription"),
+        variant: "default",
       })
     }
   }

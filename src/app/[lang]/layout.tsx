@@ -6,6 +6,7 @@ import { fetchAppMetadata } from "@/libs/utils";
 import { AppMetadataProvider } from "../commons/AppMetadataContext";
 import { NotificationProvider } from "../commons/NotificationContext";
 import { UserWalletProvider } from "../commons/UserWalletContext";
+import { Toaster } from "@/components/ui/toaster"
 export default async function Layout({
   children,
 }: Readonly<{
@@ -25,6 +26,7 @@ export default async function Layout({
           <NotificationProvider>
             <UserWalletProvider>
               {children}
+              <Toaster />
             </UserWalletProvider>
           </NotificationProvider>
         </AppMetadataProvider>

@@ -89,12 +89,12 @@ export function UnifiedHeader() {
 
   const handleNavigation = (itemId: string) => {
     const item = navigationItems.find(nav => nav.id === itemId)
-    if (item && item.active) {
+    if (item && item?.active) {
       router.push(item.path)
     } else {
       toast({
-        title: t("tool.not.available"),
-        description: t("tool.not.available.description"),
+        title: t("tool.notavailable"),
+        description: t("tool.notavailabledescription"),
         variant: "destructive",
       })
     }
