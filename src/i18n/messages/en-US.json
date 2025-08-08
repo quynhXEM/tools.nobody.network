@@ -1,7 +1,188 @@
 {
   "title": "IDS Coin",
-  "page_not_found": "Page Not Found",
-  "noti": {
-    
+  "page_not_found": "Page not found",
+  "noti": {},
+  "crypto": {
+    "tools": "Crypto Tools"
+  },
+  "professional": {
+    "blockchain": "Professional blockchain utilities for token management"
+  },
+  "connect": {
+    "wallet": "Connect Wallet",
+    "first": "Please connect your wallet first"
+  },
+  "disconnect": {
+    "wallet": "Disconnect Wallet",
+    "confirm": "Do you want to disconnect your wallet?"
+  },
+  "cancel": "Cancel",
+  "switch": {
+    "tool": "Switch Tool"
+  },
+  "token": {
+    "deploy": "Deploy Token",
+    "deploydec": "Deploy your own token on EVM blockchains: Ethereum, BSC, Polygon...",
+    "network": "Network",
+    "desc": "Deploy an ERC-20 token with custom parameters on the blockchain",
+    "configuration": "Token Configuration",
+    "name": "Token Name",
+    "nameplaceholder": "Token Name",
+    "symbol": "Token Symbol",
+    "symbolplaceholder": "Token Symbol",
+    "totalsupply": "Total Supply",
+    "totalsupplyplaceholder": "Total Supply",
+    "decimals": "Decimals",
+    "decimalsplaceholder": "Decimals",
+    "description": "Description",
+    "placeholder": "Description of your token...",
+    "deploying": "Deploying...",
+    "actual": {
+      "value": "Actual Value"
+    },
+    "standard": "Standard",
+    "optional": "Optional",
+    "personal": {
+      "note": "This description is for personal notes only and will not be deployed on the blockchain. Token information (name, symbol, decimals) will be stored in the smart contract."
+    },
+    "note": {
+      "not": {
+        "blockchain": "💡 This note is for personal use only and will not be deployed on the blockchain"
+      }
+    },
+    "deployed": {
+      "success": "Token deployed successfully!",
+      "blockchain": "Your token has been deployed to the blockchain"
+    },
+    "info": "Token Information"
+  },
+  "tx": {
+    "decoder": "Transaction Decoder",
+    "desc": "Decode transaction hex data into a readable JSON format",
+    "config": "Transaction Decoder Configuration"
+  },
+  "multi": {
+    "send": "Multi Send",
+    "desc": "Send tokens to multiple addresses in one transaction to increase holders",
+    "config": "Multi Send Configuration",
+    "tokens": "Send Tokens",
+    "successful": "Multi send successful!"
+  },
+  "liquidity": {
+    "manager": "Liquidity Manager",
+    "desc": "Add/remove liquidity from DEX pools and manage LP positions"
+  },
+  "airdrop": {
+    "manager": "Airdrop Manager",
+    "desc": "Distribute tokens via Merkle tree airdrop with claim function"
+  },
+  "price": {
+    "tracker": "Price Tracker",
+    "desc": "Track token prices and set price change alerts"
+  },
+  "contract": {
+    "verifier": "Contract Verifier",
+    "desc": "Automatically verify smart contracts on block explorer",
+    "address": "Contract Address"
+  },
+  "gas": {
+    "optimizer": "Gas Optimizer",
+    "desc": "Optimize transaction gas fees and batch operations",
+    "used": "Gas Used"
+  },
+  "holder": {
+    "analyzer": "Holder Analyzer",
+    "desc": "Analyze holder distribution and wallet behavior"
+  },
+  "deployment": {
+    "results": "Deployment Results",
+    "configure": {
+      "deploy": "Configure your token and click deploy to view results"
+    },
+    "deploying": {
+      "token": "Deploying your token..."
+    },
+    "may": {
+      "take": {
+        "minutes": "This process may take a few minutes"
+      }
+    },
+    "successful": "Deployment successful!"
+  },
+  "transaction": {
+    "hash": "Transaction Hash",
+    "results": "Transaction Results"
+  },
+  "cost": "Cost",
+  "view": {
+    "explorer": "View on Explorer"
+  },
+  "name": "Name",
+  "symbol": "Symbol",
+  "recipients": "Recipients",
+  "add": "Add",
+  "address": "Address",
+  "amount": "Amount",
+  "total": {
+    "recipients": "Total Recipients",
+    "amount": "Total Amount"
+  },
+  "sending": "Sending...",
+  "configure": {
+    "recipients": "Configure recipients and click send to view results"
+  },
+  "processing": {
+    "multisend": "Processing multi send transaction..."
+  },
+  "distributing": {
+    "tokens": "Distributing tokens to all recipients"
+  },
+  "dev": {
+    "panel": "Dev Panel"
+  },
+  "wallet": {
+    "connected": "Wallet Connected",
+    "notconnected": "Wallet Not Connected",
+    "connection": {
+      "title": "Wallet Connection",
+      "description": "Connect your wallet to deploy tokens"
+    }
+  },
+  "multisend": {
+    "completed": "Multi send completed!"
+  },
+  "tokens": {
+    "sent": {
+      "to": "Tokens sent to"
+    }
+  },
+  "copyright": "Copyright © 2025 belongs to",
+  "nobody": {
+    "network": "Nobody Network"
+  },
+  "hex": {
+    "data": "Hex Data",
+    "placeholder": "Paste your transaction hex data here..."
+  },
+  "decode": {
+    "transaction": "Decode Transaction"
+  },
+  "clear": {
+    "data": "Clear"
+  },
+  "load": {
+    "example": "Load Example"
+  },
+  "decoding": "Decoding...",
+  "decoded": {
+    "results": "Decoding Results",
+    "successful": "Decoding successful!",
+    "json": "Decoded JSON"
+  },
+  "raw": {
+    "hex": "Raw Hex"
+  },
+  "copy": {
+    "json": "Copy JSON"
   }
 }

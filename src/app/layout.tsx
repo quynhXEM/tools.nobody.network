@@ -1,6 +1,15 @@
 import "./globals.css";
 import { chakraPetch } from "@/assets/font";
 import { fetchAppMetadata } from "@/libs/utils";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Crypto Tools PWA",
+  description: "Professional crypto tools for token management and blockchain operations",
+  manifest: "/manifest.json",
+  themeColor: "#6366f1",
+  viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
+}
 
 export default async function RootLayout({
   children,

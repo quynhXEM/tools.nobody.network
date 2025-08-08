@@ -16,6 +16,11 @@ const LOCALES = [
   { code: "en-US", label: "English", flag: "🇺🇸" },
 ];
 
+const LOCALE = {
+  "vi-VN": { label: "Vietnamese", flag: "🇻🇳" },
+  "en-US": { label: "English", flag: "🇺🇸" },
+};
+
 export default function LocaleDropdown() {
   const locale = useLocale();
   const pathname = usePathname();
@@ -28,8 +33,9 @@ export default function LocaleDropdown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size={"sm"} className="cursor-pointer outline-none border-none">
-          <LanguagesIcon className="w-4 h-4"/>
+        <Button variant="ghost" size={"sm"} className="cursor-pointer outline-none border-none hover:bg-gray-400/40">
+          <LanguagesIcon className="w-4 h-4 text-white" />
+          <span className="text-white">{LOCALE[locale as keyof typeof LOCALE].label}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-40">
