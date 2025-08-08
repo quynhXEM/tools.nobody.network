@@ -29,7 +29,7 @@
   },
   "token": {
     "deploy": "Deploy Token",
-    "wallet": "Wallet",
+    "wallet": "Wallet Address",
     "deploydec": "Deploy your own token on EVM blockchains: Ethereum, BSC, Polygon...",
     "network": "Network",
     "desc": "Deploy an ERC-20 token with custom parameters on the blockchain",
