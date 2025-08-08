@@ -50,7 +50,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
         children={data?.children}
         type={data.type}
       />
-      <RegisterAccount isOpen={showRE} id={id} onClose={() => setShowRE(false)} t={t} />
+      <RegisterAccount isOpen={showRE} id={id} onClose={() => setShowRE(false)} t={useTranslations("")} />
     </NotificationContext.Provider>
   );
 };

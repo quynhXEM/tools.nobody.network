@@ -1,7 +1,11 @@
 {
   "title": "IDS Coin",
   "page_not_found": "Không tìm thấy trang",
-  "noti": {},
+  "noti": {
+    "web3Error": "Lỗi Web3",
+    "web3ErrorSub":"Môi trường trình duyệt không hỗ trợ web3. Sử dụng các trình duyệt Web3 để tiếp tục"
+
+  },
   "tool" : {
     "notavailable": "Sắp ra mắt!",
     "notavailabledescription": "Công cụ này đang được phát triển"
@@ -188,5 +192,60 @@
   },
   "copy": {
     "json": "Sao chép JSON"
+  },
+  "deploy_token": {
+    "wallet_connection": {
+      "title": "Kết nối Ví",
+      "description": "Kết nối ví của bạn để triển khai token"
+    },
+    "labels": {
+      "select_chain": "Chọn chain",
+      "name_placeholder": "Tên token của bạn",
+      "symbol_placeholder": "VD: MAT",
+      "total_supply_placeholder": "1,000,000",
+      "select_decimals": "Chọn số thập phân",
+      "decimals_option_standard": "18 (Chuẩn)"
+    },
+    "validation": {
+      "required_chain": "Bắt buộc chọn chain",
+      "required_name": "Bắt buộc nhập tên token",
+      "required_symbol": "Bắt buộc nhập ký hiệu",
+      "symbol_alnum": "Chỉ cho phép chữ cái và số, không ký tự đặc biệt",
+      "required_total_supply": "Bắt buộc nhập tổng cung",
+      "total_supply_integer_positive": "Tổng cung phải lớn hơn 0 và không phải số thập phân",
+      "required_decimals": "Bắt buộc chọn số lượng số thập phân",
+      "decimals_integer_range": "Số thập phân phải là số nguyên từ 1 đến 18"
+    },
+    "description_tooltip": "Mô tả này chỉ để ghi chú cá nhân, không được lưu trên blockchain. Metadata token (tên, ký hiệu, decimals) mới được lưu trong smart contract.",
+    "description_note": "💡 Mô tả này chỉ để ghi chú, không được deploy lên blockchain",
+    "notify": {
+      "failure_title": "Thất bại",
+      "tx_failed": "Giao dịch không thành công",
+      "success_title": "Thành công",
+      "deploy_success": "Token của bạn đã được tạo. Kiểm tra thông tin trên trang và email.",
+      "deploy_error_prefix": "Có lỗi xảy ra trong quá trình tạo token: "
+    }
+  },
+  "register_modal": {
+    "title": "Đăng ký tài khoản",
+    "description": "Đăng ký tài khoản để sử dụng dịch vụ",
+    "labels": {
+      "email": "Email",
+      "username": "Tên người dùng"
+    },
+    "placeholders": {
+      "email": "Email của bạn",
+      "username": "Tên người dùng"
+    },
+    "buttons": {
+      "register": "Đăng ký",
+      "registering": "Đang đăng ký"
+    },
+    "validation": {
+      "required_email": "Bắt buộc nhập email",
+      "invalid_email": "Email không hợp lệ",
+      "required_username": "Bắt buộc nhập tên người dùng",
+      "username_alnum": "Chỉ cho phép chữ cái và số, không ký tự đặc biệt"
+    }
   }
 }

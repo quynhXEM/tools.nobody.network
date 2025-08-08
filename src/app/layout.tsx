@@ -1,4 +1,5 @@
 import "./globals.css";
+import "react-tooltip/dist/react-tooltip.css";
 import { chakraPetch } from "@/assets/font";
 import { fetchAppMetadata } from "@/libs/utils";
 import { Metadata } from "next";

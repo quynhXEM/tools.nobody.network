@@ -8,12 +8,13 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { X, Info } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import z from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { toast } from "@/hooks/use-toast";
 
 interface NotificationModalProps {
     t: (key: string) => string;
@@ -21,11 +22,7 @@ interface NotificationModalProps {
     isOpen: boolean;
     onClose: () => void;
 }
-const registerSchema = z.object({
-    email: z.string().email(),
-    username: z.string().min(1).regex(/^[a-zA-Z0-9]+$/, { message: "Chỉ cho phép chữ cái và số, không ký tự đặc biệt" }),
-    totalSupply: z.string().min(1, { message: "Bắt buộc nhập tổng cung" })
-})
+// Schema sẽ được tạo trong component để có thể dùng i18n
 
 export function RegisterAccount({
     t,
@@ -39,6 +36,18 @@ export function RegisterAccount({
     const bgGradient = "bg-gradient-to-r from-emerald-900/20 to-green-900/20"
     const buttonColor = "bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700"
     const [loading, setLoading] = useState<boolean>(false)
+
+    const registerSchema = useMemo(() => z.object({
+        email: z
+            .string()
+            .min(1, { message: t("register_modal.validation.required_email") })
+            .email({ message: t("register_modal.validation.invalid_email") }),
+        username: z
+            .string()
+            .min(1, { message: t("register_modal.validation.required_username") })
+            .regex(/^[a-zA-Z0-9]+$/, { message: t("register_modal.validation.username_alnum") }),
+    }), [t])
+
     const { handleSubmit, control, formState: { errors } } = useForm({
         resolver: zodResolver(registerSchema),
         defaultValues: {
@@ -61,17 +70,9 @@ export function RegisterAccount({
             }),
         }).then((data) => data.json());
         if (update_info.ok) {
-            // notify({
-            //     title: "Thành công",
-            //     message: "Đăng kí thông tin thành công.",
-            //     type: true,
-            // });
+            
         } else {
-            // notify({
-            //     title: "Thất bại",
-            //     message: "Đăng kí thất bại. Vui lòng thử lại.",
-            //     type: false,
-            // });
+           
         }
         setLoading(false);
     }
@@ -91,9 +92,9 @@ export function RegisterAccount({
                             </div>
                             <div>
                                 <CardTitle className={`text-lg ${titleColor}`}>
-                                    Đăng kí tài khoản
+                                    {t("register_modal.title")}
                                 </CardTitle>
-                                <p className="text-white"> Đăng kí tài khoản để sử dụng dịch vụ</p>
+                                <p className="text-white">{t("register_modal.description")}</p>
                             </div>
                         </div>
                         <Button
@@ -114,11 +115,10 @@ export function RegisterAccount({
                             <Controller
                                 name="email"
                                 control={control}
-                                rules={{ required: "Bắt buộc nhập tên token" }}
                                 render={({ field }) => (
                                     <div className="flex flex-col gap-1">
-                                        <Label htmlFor="name" className="text-sm text-white font-medium">Email</Label>
-                                        <Input disabled={loading} id="name" className="text-sm text-white" type="text" {...field} placeholder="Your email" />
+                                        <Label htmlFor="email" className="text-sm text-white font-medium">{t("register_modal.labels.email")}</Label>
+                                        <Input disabled={loading} id="email" className="text-sm text-white" type="text" {...field} placeholder={t("register_modal.placeholders.email")} />
                                         {errors.email && <span className="text-red-500 text-xs">{errors.email.message as string}</span>}
                                     </div>
                                 )}
@@ -126,16 +126,15 @@ export function RegisterAccount({
                             <Controller
                                 name="username"
                                 control={control}
-                                rules={{ required: "Bắt buộc nhập ký hiệu" }}
                                 render={({ field }) => (
                                     <div className="flex flex-col gap-1">
-                                        <Label htmlFor="symbol" className="text-sm text-white font-medium">Username</Label>
-                                        <Input disabled={loading} id="symbol" className="text-sm text-white" type="text" {...field} placeholder="Username" />
+                                        <Label htmlFor="username" className="text-sm text-white font-medium">{t("register_modal.labels.username")}</Label>
+                                        <Input disabled={loading} id="username" className="text-sm text-white" type="text" {...field} placeholder={t("register_modal.placeholders.username")} />
                                         {errors.username && <span className="text-red-500 text-xs">{errors.username.message as string}</span>}
                                     </div>
                                 )}
                             />
-                            <Button type="submit" disabled={loading} className={`w-full md:w-auto ${buttonColor}`}>{loading ? "Đang đăng kí" : "Đăng kí"}</Button>
+                            <Button type="submit" disabled={loading} className={`w-full md:w-auto ${buttonColor}`}>{loading ? t("register_modal.buttons.registering") : t("register_modal.buttons.register")}</Button>
                         </form>
                     </div>
                 </CardContent>

@@ -95,7 +95,7 @@ export function ToolsGrid() {
       {tools.map((tool) => {
         const IconComponent = tool.icon
         return (
-          <Card key={tool.id} onClick={() => navigate(tool)} className={cn(!tool.active && "opacity-50", "tool-card-hover bg-slate-800/50 border-slate-700 backdrop-blur-sm h-full")} >
+          <Card key={tool.id} onClick={() => navigate(tool)} className={cn(!tool.active && "opacity-50", "tool-card-hover bg-slate-800/50 border-slate-700 backdrop-blur-sm h-full cursor-pointer")} >
             <CardHeader className="pb-3">
               <div
                 className={`w-12 h-12 rounded-lg bg-gradient-to-r ${tool.color} flex items-center justify-center mb-3`}

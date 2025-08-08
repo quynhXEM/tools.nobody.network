@@ -128,7 +128,7 @@ export function UnifiedHeader() {
                   {navigationItems.map((item) => {
                     const IconComponent = item.icon
                     return (
-                      <SelectItem key={item.id} value={item.id}>
+                      <SelectItem key={item.id} value={item.id} className="cursor-pointer">
                         <div className={cn("flex items-center gap-2", !item.active && "opacity-50" )}>
                           {item.isLogo ? (
                             <Logo className="w-4 h-4" />
