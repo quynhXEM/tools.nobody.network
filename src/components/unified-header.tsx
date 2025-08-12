@@ -15,7 +15,7 @@ import { toast } from "@/hooks/use-toast"
 const navigationItems = [
   {
     id: "home",
-    nameKey: "crypto.tools",
+    nameKey: "Crypto Tools",
     icon: Logo,
     path: "/home",
     isLogo: true,
@@ -23,56 +23,56 @@ const navigationItems = [
   },
   {
     id: "token-deploy",
-    nameKey: "token.deploy",
+    nameKey: "Token Deploy",
     icon: Coins,
     path: "/tools/token-deploy",
     active: true
   },
   {
     id: "transaction-decoder",
-    nameKey: "tx.decoder",
+    nameKey: "Transaction Decoder",
     icon: FileText,
     path: "/tools/transaction-decoder",
   },
   {
     id: "multi-send",
-    nameKey: "multi.send",
+    nameKey: "Multi Send",
     icon: Send,
     path: "/tools/multi-send",
   },
   {
     id: "liquidity-manager",
-    nameKey: "liquidity.manager",
+    nameKey: "Liquidity Manager",
     icon: Droplets,
     path: "/tools/liquidity-manager",
   },
   {
     id: "airdrop-manager",
-    nameKey: "airdrop.manager",
+    nameKey: "Airdrop Manager",
     icon: Gift,
     path: "/tools/airdrop-manager",
   },
   {
     id: "price-tracker",
-    nameKey: "price.tracker",
+    nameKey: "Price Tracker",
     icon: TrendingUp,
     path: "/tools/price-tracker",
   },
   {
     id: "contract-verifier",
-    nameKey: "contract.verifier",
+    nameKey: "Contract Verifier",
     icon: Shield,
     path: "/tools/contract-verifier",
   },
   {
     id: "gas-optimizer",
-    nameKey: "gas.optimizer",
+    nameKey: "Gas Optimizer",
     icon: Zap,
     path: "/tools/gas-optimizer",
   },
   {
     id: "holder-analyzer",
-    nameKey: "holder.analyzer",
+    nameKey: "Holder Analyzer",
     icon: Users,
     path: "/tools/holder-analyzer",
   },
@@ -135,7 +135,7 @@ export function UnifiedHeader() {
                           ) : (
                             <IconComponent className="w-4 h-4" />
                           )}
-                          <span >{t(item.nameKey)}</span>
+                          <span>{item.nameKey}</span>
                         </div>
                       </SelectItem>
                     )
@@ -151,7 +151,7 @@ export function UnifiedHeader() {
               ) : (
                 <currentItem.icon className="w-6 h-6" />
               )}
-              <span className="font-semibold">{t(currentItem.nameKey)}</span>
+              <span className="font-semibold">{currentItem.nameKey}</span>
             </div>
           </div>
 
