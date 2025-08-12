@@ -54,6 +54,7 @@ export type WalletContextType = {
   setAccount: (account: any) => void;
   addNewMember: (wallet: WalletInfo) => Promise<void>;
   setLoading: (loading: boolean) => void;
+  useTool: (amount: string) => Promise<any>;
 };
 
 const UserWalletContext = createContext<WalletContextType | undefined>(
@@ -370,6 +371,29 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const useTool = async (amount: string) => {
+    if (!wallet) return false;
+    if (wallet.balance < amount) return false;
+    const sendtxn = await sendTransaction({
+      amount: amount,
+      to: ids_distribution_wallet.address,
+      type: "coin",
+      chainId: ids_distribution_wallet.chain_id
+    })
+      .then(data => ({ ok: true, data: data }))
+      .catch(err => ({ ok: false, err: err }))
+
+    if (!sendtxn.ok) {
+      notify({
+        title: t("deploy_token.notify.failure_title"),
+        type: false,
+        message: t("deploy_token.notify.tx_failed")
+      })
+      return null;
+    }
+    return sendtxn;
+  }
+
   const checkChainExists = async (chainId: string): Promise<boolean> => {
     if (typeof window === "undefined" || !(window as any).ethereum)
       return false;
@@ -404,6 +428,7 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
         setAccount,
         addNewMember,
         setLoading,
+        useTool,
       }}
     >
       {children}

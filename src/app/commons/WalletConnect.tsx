@@ -17,7 +17,7 @@ import { useTranslations } from "next-intl"
 import { useUserWallet } from "./UserWalletContext"
 
 export default function WalletConnect() {
-  const { account, isConnected, wallet, connectWallet, disconnect } = useUserWallet()
+  const { account, isConnected, wallet, connectWallet, disconnect, useTool } = useUserWallet()
   const t = useTranslations()
   const [showDisconnectDialog, setShowDisconnectDialog] = useState(false)
 

@@ -170,8 +170,8 @@
     "network": "Mạng Nobody"
   },
   "hex": {
-    "data": "Dữ liệu Hex",
-    "placeholder": "Dán dữ liệu giao dịch hex của bạn tại đây..."
+    "data": "Hash Giao dịch",
+    "placeholder": "Dán hash giao dịch của bạn tại đây..."
   },
   "decode": {
     "transaction": "Giải mã Giao dịch"
@@ -197,7 +197,7 @@
   "deploy_token": {
     "wallet_connection": {
       "title": "Kết nối Ví",
-      "description": "Kết nối ví của bạn để triển khai token"
+      "description": "Kết nối ví của bạn để sử dụng dịch vụ"
     },
     "labels": {
       "select_chain": "Chọn chain",
@@ -247,6 +247,60 @@
       "invalid_email": "Email không hợp lệ",
       "required_username": "Bắt buộc nhập tên người dùng",
       "username_alnum": "Chỉ cho phép chữ cái và số, không ký tự đặc biệt"
+    }
+  },
+  "transaction_decode": {
+    "form": {
+      "no_data_title": "Không có dữ liệu",
+      "no_data_desc": "Vui lòng nhập hash giao dịch để giải mã"
+    },
+    "toast": {
+      "success_desc": "Giao dịch đã được giải mã thành công",
+      "fail_title": "Giải mã thất bại",
+      "unknown_error": "Lỗi không xác định",
+      "copy_title": "Đã sao chép!",
+      "copy_desc": "JSON đã được sao chép vào clipboard"
+    },
+    "help": {
+      "tip": "💡 Dán dữ liệu giao dịch dạng hex (bắt đầu với 0x) để giải mã thành JSON dễ đọc. Bấm \"{load_example}\" để xem ví dụ."
+    },
+    "empty_state": {
+      "message": "Nhập hash giao dịch và bấm giải mã để xem kết quả"
+    },
+    "section": {
+      "transaction_type": "Loại giao dịch",
+      "gas_information": "Thông tin Gas",
+      "transaction_details": "Chi tiết giao dịch",
+      "method_details": "Chi tiết phương thức",
+      "token_info": "Thông tin Token"
+    },
+    "fields": {
+      "gas_limit": "Giới hạn Gas",
+      "gas_price": "Giá Gas",
+      "base_fee": "Phí cơ bản",
+      "effective_gas_price": "Giá Gas hiệu dụng",
+      "max_fee": "Phí tối đa",
+      "priority_fee": "Phí ưu tiên",
+      "gas_used": "Gas đã dùng",
+      "total_fee_wei": "Tổng phí (wei)",
+      "total_fee_native": "Tổng phí (native)",
+      "hash": "Hash",
+      "type": "Loại",
+      "chain_id": "ChainId",
+      "block": "Block",
+      "from": "Từ",
+      "to": "Đến",
+      "value": "Giá trị",
+      "status": "Trạng thái",
+      "contract": "Hợp đồng",
+      "method": "Phương thức",
+      "method_id": "Method ID",
+      "parameters": "Tham số",
+      "token": "Token",
+      "symbol": "Ký hiệu",
+      "name": "Tên",
+      "decimals": "Số thập phân",
+      "amount": "Số lượng"
     }
   }
 }

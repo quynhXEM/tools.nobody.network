@@ -33,6 +33,7 @@ const navigationItems = [
     nameKey: "Transaction Decoder",
     icon: FileText,
     path: "/tools/transaction-decoder",
+    active: true
   },
   {
     id: "multi-send",

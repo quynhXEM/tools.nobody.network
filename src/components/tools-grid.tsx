@@ -1,6 +1,5 @@
 "use client"
 
-import Link from "next/link"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Coins, Send, Droplets, Gift, TrendingUp, Shield, Zap, Users, FileText } from 'lucide-react'
 import { useTranslations } from "next-intl"
@@ -23,6 +22,7 @@ const tools = [
     descKey: "tx.desc",
     icon: FileText,
     color: "from-violet-500 to-purple-500",
+    active: true
   },
   {
     id: "multi-send",

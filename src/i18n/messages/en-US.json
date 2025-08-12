@@ -169,8 +169,8 @@
     "network": "Nobody Network"
   },
   "hex": {
-    "data": "Hex Data",
-    "placeholder": "Paste your transaction hex data here..."
+    "data": "Transaction Hash",
+    "placeholder": "Paste your transaction hash here..."
   },
   "decode": {
     "transaction": "Decode Transaction"
@@ -196,7 +196,7 @@
   "deploy_token": {
     "wallet_connection": {
       "title": "Wallet Connection",
-      "description": "Connect your wallet to deploy tokens"
+      "description": "Connect your wallet to use this tool"
     },
     "labels": {
       "select_chain": "Select chain",
@@ -246,6 +246,60 @@
       "invalid_email": "Invalid email",
       "required_username": "Username is required",
       "username_alnum": "Only letters and numbers are allowed, no special characters"
+    }
+  },
+  "transaction_decode": {
+    "form": {
+      "no_data_title": "No data",
+      "no_data_desc": "Please enter hex data to decode"
+    },
+    "toast": {
+      "success_desc": "Transaction decoded successfully",
+      "fail_title": "Decoding failed",
+      "unknown_error": "Unknown error",
+      "copy_title": "Copied!",
+      "copy_desc": "JSON has been copied to clipboard"
+    },
+    "help": {
+      "tip": "💡 Paste transaction hex data (starts with 0x) to decode into a readable JSON format. Click \"{load_example}\" to see an example."
+    },
+    "empty_state": {
+      "message": "Enter hex data and click decode to see results"
+    },
+    "section": {
+      "transaction_type": "Transaction Type",
+      "gas_information": "Gas Information",
+      "transaction_details": "Transaction Details",
+      "method_details": "Method Details",
+      "token_info": "Token Info"
+    },
+    "fields": {
+      "gas_limit": "Gas Limit",
+      "gas_price": "Gas Price",
+      "base_fee": "Base Fee",
+      "effective_gas_price": "Effective Gas Price",
+      "max_fee": "Max Fee",
+      "priority_fee": "Priority Fee",
+      "gas_used": "Gas Used",
+      "total_fee_wei": "Total Fee (wei)",
+      "total_fee_native": "Total Fee (native)",
+      "hash": "Hash",
+      "type": "Type",
+      "chain_id": "ChainId",
+      "block": "Block",
+      "from": "From",
+      "to": "To",
+      "value": "Value",
+      "status": "Status",
+      "contract": "Contract",
+      "method": "Method",
+      "method_id": "Method ID",
+      "parameters": "Parameters",
+      "token": "Token",
+      "symbol": "Symbol",
+      "name": "Name",
+      "decimals": "Decimals",
+      "amount": "Amount"
     }
   }
 }
