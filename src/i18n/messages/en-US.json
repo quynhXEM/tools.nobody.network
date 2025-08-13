@@ -118,7 +118,7 @@
     "successful": "Deployment successful!"
   },
   "transaction": {
-    "hash": "Transaction hash",
+    "hash": "Transaction hex",
     "results": "Transaction results"
   },
   "cost": "Cost",
@@ -169,8 +169,8 @@
     "network": "Nobody Network"
   },
   "hex": {
-    "data": "Transaction Hash",
-    "placeholder": "Paste your transaction hash here..."
+    "data": "Transaction hex",
+    "placeholder": "Paste your transaction hex here..."
   },
   "decode": {
     "transaction": "Decode Transaction"

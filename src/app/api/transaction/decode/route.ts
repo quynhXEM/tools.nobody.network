@@ -3,8 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req: NextRequest) => {
   try {
-    const { txHash, chainId, rpcUrl } = await req.json();
-    const result = await decodeTransaction({ txHash, rpcUrl, chainId });
+    const { txHex } = await req.json();
+    const result = await decodeTransaction({ txHex });
     return NextResponse.json({ ok: true, result });
   } catch (error: any) {
     console.log(error);

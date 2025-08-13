@@ -171,7 +171,7 @@
   },
   "hex": {
     "data": "Mã giao dịch",
-    "placeholder": "Dán hash giao dịch của bạn tại đây..."
+    "placeholder": "Dán hex giao dịch của bạn tại đây..."
   },
   "decode": {
     "transaction": "Giải mã giao dịch"
@@ -252,7 +252,7 @@
   "transaction_decode": {
     "form": {
       "no_data_title": "Không có dữ liệu",
-      "no_data_desc": "Vui lòng nhập hash giao dịch để giải mã"
+      "no_data_desc": "Vui lòng nhập hex giao dịch để giải mã"
     },
     "toast": {
       "success_desc": "Giao dịch đã được giải mã thành công",
@@ -265,7 +265,7 @@
       "tip": "💡 Dán dữ liệu giao dịch dạng hex (bắt đầu với 0x) để giải mã thành JSON dễ đọc. Bấm \"{load_example}\" để xem ví dụ."
     },
     "empty_state": {
-      "message": "Nhập hash giao dịch và bấm giải mã để xem kết quả"
+      "message": "Nhập hex giao dịch và bấm giải mã để xem kết quả"
     },
     "section": {
       "transaction_type": "Loại giao dịch",
