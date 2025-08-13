@@ -55,8 +55,9 @@ const tools = {
   },
 }
 
-export default async function ToolPage({ params }: { params: { slug: string } }) {
-  const tool = tools[params.slug as keyof typeof tools]
+export default async function ToolPage({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = await params;
+  const tool = tools[resolvedParams.slug as keyof typeof tools];
   const t = await getTranslations();
   if (!tool) {
     notFound()
