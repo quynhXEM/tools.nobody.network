@@ -103,7 +103,7 @@
     "desc": "Analyze holder distribution and wallet behavior"
   },
   "deployment": {
-    "results": "Deployment Results",
+    "results": "Deployment results",
     "configure": {
       "deploy": "Configure your token and click deploy to view results"
     },
@@ -118,8 +118,8 @@
     "successful": "Deployment successful!"
   },
   "transaction": {
-    "hash": "Transaction Hash",
-    "results": "Transaction Results"
+    "hash": "Transaction hash",
+    "results": "Transaction results"
   },
   "cost": "Cost",
   "view": {
@@ -183,7 +183,7 @@
   },
   "decoding": "Decoding...",
   "decoded": {
-    "results": "Decoding Results",
+    "results": "Decoding results",
     "successful": "Decoding successful!",
     "json": "Decoded JSON"
   },

@@ -7,6 +7,7 @@ import { MultiSendTool } from "@/components/tools/multi-send-tool"
 import { LiquidityTool } from "@/components/tools/liquidity-tool"
 import { AirdropTool } from "@/components/tools/airdrop-tool"
 import { TransactionDecoderTool } from "@/components/tools/transaction-decoder-tool"
+import { Coins, Droplets, FileText, Gift, Send } from "lucide-react";
 
 export const generateMetadata = async () => {
     const t = await getTranslations();
@@ -19,34 +20,44 @@ export const generateMetadata = async () => {
 const tools = {
   "token-deploy": {
     title: "Deploy Token",
-    description: "Deploy ERC-20 tokens on blockchain",
+    description: "token.deploydec",
     component: ImprovedTokenDeployTool,
+    icon: Coins,
+    color: "from-blue-500 to-cyan-500",
   },
   "transaction-decoder": {
     title: "Transaction Decoder",
-    description: "Decode hex transaction data to JSON",
+    description: "tx.desc",
     component: TransactionDecoderTool,
+    icon: FileText,
+    color: "from-violet-500 to-purple-500",
   },
   "multi-send": {
     title: "Multi Send",
-    description: "Send tokens to multiple addresses",
+    description: "multi.desc",
     component: MultiSendTool,
+    icon: Send,
+    color: "from-green-500 to-emerald-500",
   },
   "liquidity-manager": {
     title: "Liquidity Manager",
-    description: "Manage DEX liquidity pools",
+    description: "liquidity.desc",
     component: LiquidityTool,
+    icon: Droplets,
+    color: "from-purple-500 to-pink-500",
   },
   "airdrop-manager": {
     title: "Airdrop Manager",
-    description: "Distribute tokens via airdrop",
+    description: "airdrop.desc",
     component: AirdropTool,
+    icon: Gift,
+    color: "from-orange-500 to-red-500",
   },
 }
 
-export default function ToolPage({ params }: { params: { slug: string } }) {
+export default async function ToolPage({ params }: { params: { slug: string } }) {
   const tool = tools[params.slug as keyof typeof tools]
-
+  const t = await getTranslations();
   if (!tool) {
     notFound()
   }
@@ -54,7 +65,7 @@ export default function ToolPage({ params }: { params: { slug: string } }) {
   const ToolComponent = tool.component
 
   return (
-    <SimplifiedToolLayout title={tool.title} description={tool.description}>
+    <SimplifiedToolLayout title={tool.title} description={t(tool.description)} icon={tool.icon} color={tool.color}>
       <ToolComponent />
     </SimplifiedToolLayout>
   )

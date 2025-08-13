@@ -68,7 +68,7 @@
   "tx": {
     "decoder": "Bộ giải mã giao dịch",
     "desc": "Giải mã dữ liệu giao dịch hex sang định dạng JSON dễ đọc",
-    "config": "Cấu hình bộ giải mã giao dịch"
+    "config": "Dữ liệu mã giao dịch"
   },
   "multi": {
     "send": "Gửi hàng loạt",
@@ -104,7 +104,7 @@
     "desc": "Phân tích phân bổ holder và hành vi ví"
   },
   "deployment": {
-    "results": "Kết quả Triển khai",
+    "results": "Kết quả triển khai",
     "configure": {
       "deploy": "Cấu hình token của bạn và bấm triển khai để xem kết quả"
     },
@@ -170,11 +170,11 @@
     "network": "Mạng Nobody"
   },
   "hex": {
-    "data": "Hash Giao dịch",
+    "data": "Mã giao dịch",
     "placeholder": "Dán hash giao dịch của bạn tại đây..."
   },
   "decode": {
-    "transaction": "Giải mã Giao dịch"
+    "transaction": "Giải mã giao dịch"
   },
   "clear": {
     "data": "Xóa"
@@ -184,7 +184,7 @@
   },
   "decoding": "Đang giải mã...",
   "decoded": {
-    "results": "Kết quả Giải mã",
+    "results": "Kết quả giải mã",
     "successful": "Giải mã thành công!",
     "json": "JSON đã giải mã"
   },
