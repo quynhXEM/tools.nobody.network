@@ -8,14 +8,10 @@ import { Label } from "@/components/ui/label"
 import { useToast } from "@/hooks/use-toast"
 import { Loader2, CheckCircle, AlertCircle, Copy, Trash2, FileText } from 'lucide-react'
 import { useTranslations } from "next-intl"
-import { useAppMetadata } from "@/app/commons/AppMetadataContext"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import { CopyBtn } from "@/views/CopyButton"
 
 export function TransactionDecoderTool() {
-  const { custom_fields: { usdt_payment_wallets } } = useAppMetadata()
   const [isDecoding, setIsDecoding] = useState(false)
-  const [chainId, setChainId] = useState("97")
   const [decodeResult, setDecodeResult] = useState<any>(null)
   const { toast } = useToast()
   const t = useTranslations()

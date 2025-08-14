@@ -12,7 +12,6 @@ import React, {
 } from "react";
 import { useTranslations } from "next-intl";
 import { useAppMetadata } from "./AppMetadataContext";
-import { roundDownDecimal } from "@/libs/utils";
 import { useNotification } from "./NotificationContext";
 export type SendTxParams = {
   chainId?: number;
@@ -66,7 +65,7 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState<boolean>(false);
   const {
     custom_fields: {
-      usdt_payment_wallets,
+      chain_info,
       ids_distribution_wallet,
     },
   } = useAppMetadata();
@@ -257,37 +256,36 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
   const sendTransaction = async (params: SendTxParams) => {
     if (!wallet) return;
     const { chainId, to, amount, type, tokenAddress } = params;
+    console.log(params);
+    
     try {
       const provider = (window as any).ethereum;
       // Chuyển mạng nếu cần
       if (chainId) {
         const currentChain = await provider.request({ method: "eth_chainId" });
-        if (parseInt(currentChain, 16) !== chainId) {
+        if (parseInt(currentChain, 16) != chainId) {
           try {
             await provider.request({
               method: "wallet_switchEthereumChain",
               params: [
                 {
-                  chainId:
-                    usdt_payment_wallets[
-                      chainId as keyof typeof usdt_payment_wallets
-                    ]?.chainId || "0x" + chainId.toString(16),
+                  chainId: "0x" + Number(chainId).toString(16),
                 },
               ],
             });
           } catch (switchError: any) {
             if (
               switchError.code === 4902 &&
-              usdt_payment_wallets[
-              chainId as keyof typeof usdt_payment_wallets
+              chain_info[
+              chainId as keyof typeof chain_info
               ]
             ) {
               // Nếu chưa có mạng, thêm mạng vào MetaMask
               await provider.request({
                 method: "wallet_addEthereumChain",
                 params: [
-                  usdt_payment_wallets[
-                  chainId as keyof typeof usdt_payment_wallets
+                  chain_info[
+                  chainId as keyof typeof chain_info
                   ],
                 ],
               });
@@ -297,8 +295,8 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
                 params: [
                   {
                     chainId:
-                      usdt_payment_wallets[
-                        chainId as keyof typeof usdt_payment_wallets
+                      chain_info[
+                        chainId as keyof typeof chain_info
                       ]?.chainId,
                   },
                 ],

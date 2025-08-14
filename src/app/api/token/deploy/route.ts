@@ -4,13 +4,13 @@ import { NextResponse } from "next/server";
 export const POST = async (req: Request) => {
   try {
     const {
-      custom_fields: { usdt_payment_wallets },
+      custom_fields: { chain_info },
     } = await fetchAppMetadata();
     const { name, symbol, totalSupply, decimals, chainId } = await req.json();
     const getChainInfo = (chain_id: any) => {
-      const chain = usdt_payment_wallets.find(
-        (opt: any) => opt.chain_id === Number(chain_id)
-      );
+      const chain = chain_info?.[chainId];
+      console.log(chain);
+      
       return chain;
     };
 
@@ -30,7 +30,7 @@ export const POST = async (req: Request) => {
           totalSupply: totalSupply,
           decimals: decimals,
           chainId: chainId,
-          privateKey: chain.private_key,
+          privateKey: chain.wallet_private_key,
         }),
       }
     ).then((data) => {

@@ -42,8 +42,8 @@
     "totalsupplyplaceholder": "Total Supply",
     "decimals": "Decimals",
     "decimalsplaceholder": "Decimals",
-    "description": "Description",
-    "placeholder": "Description of your token...",
+    "email": "Email",
+    "placeholder": "Your email address",
     "deploying": "Deploying...",
     "actual": {
       "value": "Actual Value"
@@ -216,8 +216,8 @@
       "required_decimals": "Decimals selection is required",
       "decimals_integer_range": "Decimals must be an integer from 1 to 18"
     },
-    "description_tooltip": "This description is for personal notes only and is not stored on the blockchain. Token metadata (name, symbol, decimals) is stored in the smart contract.",
-    "description_note": "💡 This description is for notes only and is not deployed to the blockchain",
+    "description_tooltip": "This email address will receive the information of the token you deploy, such as token details (name, contract address, etc.) and overall wallet information (private key, wallet address).",
+    "description_note": "💡 Enter your email to receive your token information after deployment.",
     "notify": {
       "failure_title": "Failed",
       "tx_failed": "Transaction failed",
@@ -301,5 +301,10 @@
       "decimals": "Decimals",
       "amount": "Amount"
     }
+  },
+  "wait": {
+    "connect_view": "Connect wallet to view",
+    "sub_connect": "Wallet connection required to show and use this tool",
+    "connect_btn": "Connect wallet"
   }
 }

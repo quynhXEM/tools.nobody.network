@@ -43,8 +43,8 @@
     "totalsupplyplaceholder": "Tổng cung",
     "decimals": "Số thập phân",
     "decimalsplaceholder": "Số thập phân",
-    "description": "Mô tả",
-    "placeholder": "Mô tả về token của bạn...",
+    "email": "Email",
+    "placeholder": "Địa chỉ email của bạn",
     "deploying": "Đang triển khai...",
     "actual": {
       "value": "Giá trị thực tế"
@@ -217,8 +217,8 @@
       "required_decimals": "Bắt buộc chọn số lượng số thập phân",
       "decimals_integer_range": "Số thập phân phải là số nguyên từ 1 đến 18"
     },
-    "description_tooltip": "Mô tả này chỉ để ghi chú cá nhân, không được lưu trên blockchain. Metadata token (tên, ký hiệu, decimals) mới được lưu trong smart contract.",
-    "description_note": "💡 Mô tả này chỉ để ghi chú, không được deploy lên blockchain",
+    "description_tooltip": "Địa chỉ email này sẽ nhận các thông tin của token mà bạn deploy như thông tin token ( name, contract address,...) và thông tin ví tổng ( private key, wallet address)",
+    "description_note": "💡 Nhập email để nhận thông tin token của bạn sau khi triển khai",
     "notify": {
       "failure_title": "Thất bại",
       "tx_failed": "Giao dịch không thành công",
@@ -302,5 +302,10 @@
       "decimals": "Số thập phân",
       "amount": "Số lượng"
     }
+  },
+  "wait": {
+    "connect_view": "Cần kết nối ví",
+    "sub_connect": "Cần kết nối ví để xem và sử dụng côgn cụ",
+    "connect_btn": "Kết nối ví"
   }
 }
