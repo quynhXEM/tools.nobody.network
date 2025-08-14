@@ -64,7 +64,7 @@ export function ImprovedTokenDeployTool() {
       symbol: "",
       totalSupply: "",
       decimals: "18",
-      chainId: chain[0].chain_id.id,
+      chainId: chain?.[0]?.chain_id?.id,
       email: ""
     }
   });
