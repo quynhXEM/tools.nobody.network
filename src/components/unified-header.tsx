@@ -108,21 +108,21 @@ export function UnifiedHeader() {
         <div className="flex items-center justify-between">
           {/* Left side - Navigation Dropdown */}
           <div className="flex items-center gap-4">
-            <Button
+            {/* <Button
               variant="ghost"
               size="sm"
               className="md:hidden"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
-            </Button>
+            </Button> */}
 
             {/* Desktop Navigation */}
-            <div className="hidden md:block">
+            <div className="">
               <Select value={currentItem.id} onValueChange={handleNavigation}>
-                <SelectTrigger className="w-64 bg-slate-700 border-slate-600">
+                <SelectTrigger className=" bg-slate-700 border-slate-600">
                   <div className="flex items-center gap-2 text-white">
-                    <SelectValue/>
+                    <SelectValue />
                   </div>
                 </SelectTrigger>
                 <SelectContent>
@@ -130,7 +130,7 @@ export function UnifiedHeader() {
                     const IconComponent = item.icon
                     return (
                       <SelectItem key={item.id} value={item.id} className="cursor-pointer">
-                        <div className={cn("flex items-center gap-2", !item.active && "opacity-50" )}>
+                        <div className={cn("flex items-center gap-2", !item.active && "opacity-50")}>
                           {item.isLogo ? (
                             <Logo className="w-4 h-4" />
                           ) : (
@@ -146,24 +146,24 @@ export function UnifiedHeader() {
             </div>
 
             {/* Mobile - Show current page title */}
-            <div className="md:hidden flex items-center gap-2 text-white">
+            {/* <div className="md:hidden flex items-center gap-2 text-white">
               {currentItem.isLogo ? (
                 <Logo className="w-6 h-6" />
               ) : (
                 <currentItem.icon className="w-6 h-6" />
               )}
               <span className="font-semibold">{currentItem.nameKey}</span>
-            </div>
+            </div> */}
           </div>
 
           {/* Right side - Language Switcher only */}
           <div className="flex items-center">
-              <LocaleDropdown/>
+            <LocaleDropdown />
           </div>
         </div>
 
         {/* Mobile Menu */}
-        {isMobileMenuOpen && (
+        {/* {isMobileMenuOpen && (
           <div className="md:hidden mt-4 pb-4 border-t border-slate-700 pt-4">
             <div className="space-y-2">
               {navigationItems.map((item) => {
@@ -189,7 +189,7 @@ export function UnifiedHeader() {
               })}
             </div>
           </div>
-        )}
+        )} */}
       </div>
     </header>
   )

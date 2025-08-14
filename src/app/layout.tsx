@@ -2,22 +2,16 @@ import "./globals.css";
 import "react-tooltip/dist/react-tooltip.css";
 import { chakraPetch } from "@/assets/font";
 import { fetchAppMetadata } from "@/libs/utils";
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Crypto Tools PWA",
-  description: "Professional crypto tools for token management and blockchain operations",
-  manifest: "/manifest.json",
-  themeColor: "#6366f1",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
-}
+import { cookies, headers } from "next/headers";
 
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const metadata = await fetchAppMetadata();
+  const cookieStore = await cookies();
+  let locale = cookieStore.get("NEXT_LOCALE")?.value;
+  const metadata = await fetchAppMetadata(locale);
   const iconId = metadata?.icon;
   const faviconUrl = `${
     process.env.NEXT_PUBLIC_API_URL
@@ -27,7 +21,8 @@ export default async function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" href={faviconUrl} />
-        <title>{metadata?.name}</title>
+        <meta name="description" content={metadata?.translation[0].description} />
+        <title>{metadata?.translation[0].name}</title>
       </head>
       <body className={`${chakraPetch.variable} antialiased`}>
         {children}

@@ -7,8 +7,6 @@ export const POST = async (req: NextRequest) => {
     const result = await decodeTransaction({ txHex });
     return NextResponse.json({ ok: true, result });
   } catch (error: any) {
-    console.log(error);
-
     const message = error?.error?.message || error.toString();
     return NextResponse.json({ ok: false, error: message }, { status: 400 });
   }

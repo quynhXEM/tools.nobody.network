@@ -9,14 +9,6 @@ import { AirdropTool } from "@/components/tools/airdrop-tool"
 import { TransactionDecoderTool } from "@/components/tools/transaction-decoder-tool"
 import { Coins, Droplets, FileText, Gift, Send } from "lucide-react";
 
-export const generateMetadata = async () => {
-    const t = await getTranslations();
-
-    return {
-        title: t("title"),
-    };
-};
-
 const tools = {
   "token-deploy": {
     title: "Deploy Token",

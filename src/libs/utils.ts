@@ -5,7 +5,9 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export async function fetchAppMetadata() {
+export async function fetchAppMetadata(locale?: string) {
+  try {
+  } catch (error) {}
   const myHeaders = new Headers();
   myHeaders.append("Authorization", `Bearer ${process.env.APP_TOKEN}`);
 
@@ -15,7 +17,11 @@ export async function fetchAppMetadata() {
   };
 
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/items/app/${process.env.NEXT_PUBLIC_APP_ID}`,
+    `${process.env.NEXT_PUBLIC_METADATA_URL}/items/app/${
+      process.env.NEXT_PUBLIC_APP_ID
+    }?fields=status,user_id,icon,smtp_host,smtp_port,smtp_secure,smtp_reply_to,smtp_from_email,smtp_from_name,google_service_account,custom_fields,translation.name,translation.short_name,translation.description&deep[translation][_filter][language_code]=${
+      locale ?? "vi-VN"
+    }`,
     requestOptions
   )
     .then((data) => data.json())
