@@ -71,10 +71,10 @@ export function ImprovedTokenDeployTool() {
   });
 
   const onSubmit = async (data: any) => {
-    if (!account?.email) {
-      register(account?.id || "");
-      return;
-    }
+    // if (!account?.email) {
+    //   register(account?.id || "");
+    //   return;
+    // }
 
     setLoading(true)
     const sendtxn = await sendTransaction({
