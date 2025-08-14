@@ -4,13 +4,14 @@ import { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Menu, X, Home, Coins, FileText, Send, Droplets, Gift, TrendingUp, Shield, Zap, Users } from 'lucide-react'
+import { Menu, X, Home, Coins, FileText, Send, Droplets, Gift, TrendingUp, Shield, Zap, Users, ChevronDown } from 'lucide-react'
 import { Logo } from "@/components/logo"
 import { useTranslations } from "next-intl"
 import { usePathname, useRouter } from "@/i18n/navigation"
 import LocaleDropdown from "@/app/commons/LocaleDropdown"
 import { cn } from "@/libs/utils"
 import { toast } from "@/hooks/use-toast"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu"
 
 const navigationItems = [
   {
@@ -118,32 +119,38 @@ export function UnifiedHeader() {
             </Button> */}
 
             {/* Desktop Navigation */}
-            <div className="">
-              <Select value={currentItem.id} onValueChange={handleNavigation}>
-                <SelectTrigger className=" bg-slate-700 border-slate-600">
-                  <div className="flex items-center gap-2 text-white">
-                    <SelectValue />
-                  </div>
-                </SelectTrigger>
-                <SelectContent>
-                  {navigationItems.map((item) => {
-                    const IconComponent = item.icon
-                    return (
-                      <SelectItem key={item.id} value={item.id} className="cursor-pointer">
-                        <div className={cn("flex items-center gap-2", !item.active && "opacity-50")}>
-                          {item.isLogo ? (
-                            <Logo className="w-4 h-4" />
-                          ) : (
-                            <IconComponent className="w-4 h-4" />
-                          )}
-                          <span>{item.nameKey}</span>
-                        </div>
-                      </SelectItem>
-                    )
-                  })}
-                </SelectContent>
-              </Select>
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size={"sm"} className="cursor-pointer outline-none border-none hover:bg-gray-400/40 text-white">
+                  {currentItem.isLogo ? (
+                    <Logo className="w-4 h-4" />
+                  ) : (
+                    <currentItem.icon className="w-4 h-4" />
+                  )}
+                  &nbsp;{currentItem.nameKey}&nbsp;
+                  <ChevronDown className="text-white" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="">
+                {navigationItems.map((l) => {
+                  const IconComponent = l.icon
+                  return (
+                    <DropdownMenuItem
+                      key={l.id}
+                      onClick={() => handleNavigation(l.id)}
+                      className={cn("flex items-center space-x-2 cursor-pointer", !l.active && "opacity-50")}
+                    >
+                      {l.isLogo ? (
+                        <Logo className="w-4 h-4" />
+                      ) : (
+                        <IconComponent className="w-4 h-4" />
+                      )}
+                      &nbsp;{l.nameKey}&nbsp;
+                    </DropdownMenuItem>
+                  )
+                })}
+              </DropdownMenuContent>
+            </DropdownMenu>
 
             {/* Mobile - Show current page title */}
             {/* <div className="md:hidden flex items-center gap-2 text-white">

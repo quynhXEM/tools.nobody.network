@@ -9,16 +9,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
-import { LanguagesIcon } from "lucide-react";
+import { ChevronDown, LanguagesIcon } from "lucide-react";
 
 const LOCALES = [
-  { code: "vi-VN", label: "Vietnamese", flag: "🇻🇳" },
-  { code: "en-US", label: "English", flag: "🇺🇸" },
+  { code: "vi-VN", label: "Vietnamese", flag: <span className="fi fi-vn"></span> },
+  { code: "en-US", label: "English", flag: <span className="fi fi-sh"></span> },
 ];
 
 const LOCALE = {
-  "vi-VN": { label: "Vietnamese", flag: "🇻🇳" },
-  "en-US": { label: "English", flag: "🇺🇸" },
+  "vi-VN": { label: "Vietnamese", flag: <span className="fi fi-vn"></span> },
+  "en-US": { label: "English", flag: <span className="fi fi-sh"></span> },
 };
 
 export default function LocaleDropdown() {
@@ -33,9 +33,12 @@ export default function LocaleDropdown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size={"sm"} className="cursor-pointer outline-none border-none hover:bg-gray-400/40">
-          <LanguagesIcon className="w-4 h-4 text-white" />
-          <span className="text-white">{LOCALE[locale as keyof typeof LOCALE].label}</span>
+        <Button variant="ghost" size={"sm"} className="cursor-pointer outline-none border-none hover:bg-gray-400/40 text-white">
+          {LOCALE[locale as keyof typeof LOCALE].flag}
+          &nbsp;
+          {LOCALE[locale as keyof typeof LOCALE].label}
+          &nbsp;
+          <ChevronDown className="text-white" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-40">
@@ -43,11 +46,10 @@ export default function LocaleDropdown() {
           <DropdownMenuItem
             key={l.code}
             onClick={() => handleChangeLocale(l.code)}
-            className="flex items-center space-x-2"
+            className="flex items-center space-x-2 cursor-pointer"
             disabled={l.code === locale}
           >
-            <span className="text-lg">{l.flag}</span>
-            <span>{l.label}</span>
+            {l.flag}&nbsp;{l.label}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
