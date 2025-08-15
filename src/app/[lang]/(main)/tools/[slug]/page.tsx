@@ -8,6 +8,7 @@ import { LiquidityTool } from "@/components/tools/liquidity-tool"
 import { AirdropTool } from "@/components/tools/airdrop-tool"
 import { TransactionDecoderTool } from "@/components/tools/transaction-decoder-tool"
 import { Coins, Droplets, FileText, Gift, Send } from "lucide-react";
+import { Metadata } from "next";
 
 const tools = {
   "token-deploy": {
@@ -46,6 +47,17 @@ const tools = {
     color: "from-orange-500 to-red-500",
   },
 }
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: string, slug: string }> }): Promise<Metadata> {
+  const resolvedParams = await params;
+  const t = await getTranslations();
+  const tool = tools[resolvedParams.slug as keyof typeof tools];
+  return {
+    title: tool.title,
+    description: t(tool.description),
+  };
+}
+
 
 export default async function ToolPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
