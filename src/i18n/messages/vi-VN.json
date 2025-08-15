@@ -307,5 +307,10 @@
     "connect_view": "Cần kết nối ví",
     "sub_connect": "Cần kết nối ví để xem và sử dụng côgn cụ",
     "connect_btn": "Kết nối ví"
+  },
+  "form_email": {
+    "title": {
+      "deploy_token" : ""
+    }
   }
 }

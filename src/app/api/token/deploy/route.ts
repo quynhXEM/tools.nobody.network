@@ -9,8 +9,6 @@ export const POST = async (req: Request) => {
     const { name, symbol, totalSupply, decimals, chainId } = await req.json();
     const getChainInfo = (chain_id: any) => {
       const chain = chain_info?.[chainId];
-      console.log(chain);
-      
       return chain;
     };
 
@@ -30,20 +28,14 @@ export const POST = async (req: Request) => {
           totalSupply: totalSupply,
           decimals: decimals,
           chainId: chainId,
-          privateKey: chain.wallet_private_key,
+          privateKey: chain.private_key,
         }),
       }
     ).then((data) => {
-      console.log("data", data);
-
       return data.json();
     });
-
-    console.log("response", response);
-
     return NextResponse.json({ ok: true, result: response });
   } catch (error) {
-    console.log("error", error);
     return NextResponse.json({ ok: false, error: error });
   }
 };

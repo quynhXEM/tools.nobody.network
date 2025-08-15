@@ -306,5 +306,10 @@
     "connect_view": "Connect wallet to view",
     "sub_connect": "Wallet connection required to show and use this tool",
     "connect_btn": "Connect wallet"
+  },
+  "form_email": {
+    "title": {
+      "deploy_token" : ""
+    }
   }
 }

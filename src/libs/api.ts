@@ -16,8 +16,7 @@ export const SendEmail = async ({
     });
     return respone.json();
   } catch (error: any) {
-    console.log(error);
-    
     return { error: error.message };
   }
 };
+

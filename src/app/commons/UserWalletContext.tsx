@@ -256,8 +256,6 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
   const sendTransaction = async (params: SendTxParams) => {
     if (!wallet) return;
     const { chainId, to, amount, type, tokenAddress } = params;
-    console.log(params);
-    
     try {
       const provider = (window as any).ethereum;
       // Chuyển mạng nếu cần

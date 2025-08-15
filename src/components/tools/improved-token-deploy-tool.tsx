@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Loader2, CheckCircle, AlertCircle, Info } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { useTranslations } from "next-intl"
+import { useLocale, useTranslations } from "next-intl"
 import { useUserWallet } from "@/app/commons/UserWalletContext"
 import { zodResolver } from "@hookform/resolvers/zod"
 import z from "zod"
@@ -21,6 +21,7 @@ import { formatNumber } from "@/libs/utils"
 import Link from "next/link"
 import { NotConnectLayout } from "@/views/NotConnectLayout"
 import { SendEmail } from "@/libs/api"
+import { DeployTokenEmail } from "@/libs/formemail"
 
 // Schema sẽ được tạo trong component để dùng i18n
 
@@ -32,6 +33,8 @@ export function ImprovedTokenDeployTool() {
   const [loading, setLoading] = useState<boolean>(false);
   const { sendTransaction } = useUserWallet();
   const { custom_fields: { deploy_token_fee, chain_info }, chain } = useAppMetadata()
+  const locale = useLocale();
+  
   
   const FormSchema = useMemo(() => z.object({
     chainId: z.string(),
@@ -70,67 +73,66 @@ export function ImprovedTokenDeployTool() {
     }
   });
 
-  
-
   const onSubmit = async (data: any) => {
     setLoading(true)
-    // const sendtxn = await sendTransaction({
-    //   amount: deploy_token_fee,
-    //   to: chain_info[data.chainId].address,
-    //   type: "coin",
-    //   chainId: data.chainId
-    // })
-    //   .then(data => ({ ok: true, data: data }))
-    //   .catch(err => {
-    //     return { ok: false, err: err }
-    //   })
-
-    // if (!sendtxn.ok) {
-    //   notify({
-    //     title: t("deploy_token.notify.failure_title"),
-    //     type: false,
-    //     message: t("deploy_token.notify.tx_failed")
-    //   })
-    //   setLoading(false);
-    //   return;
-    // }
-    // const response = await fetch(`/api/token/deploy`, {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     name: data.name,
-    //     symbol: data.symbol,
-    //     totalSupply: data.totalSupply,
-    //     decimals: data.decimals,
-    //     chainId: data.chainId,
-    //   })
-    // }).then(data => data.json())
-    // if (response.ok && response.result.data) {
-    //   notify({
-    //     title: t("deploy_token.notify.success_title"),
-    //     type: true,
-    //     message: t("deploy_token.notify.deploy_success")
-    //   })
-    //   setDeployResult({
-    //     ...response.result.data,
-    //     chain: chain.find((opt: any) => opt.chain_id.id == Number(data.chainId))
-    //   })
-    // } else {
-    //   notify({
-    //     title: t("deploy_token.notify.failure_title"),
-    //     type: false,
-    //     message: t("deploy_token.notify.deploy_error_prefix") + (response?.result?.errors[0]?.message ?? "")
-    //   })
-    // }
-    if (data.email) {
-      const response = await SendEmail({
-        to: data.email,
-        subject: t("deploy_token.notify.success_title"),
-        text: t("deploy_token.notify.deploy_success"),
-        html: "<p>Hello</p>"
+    const sendtxn = await sendTransaction({
+      amount: deploy_token_fee,
+      to: chain_info[data.chainId].address,
+      type: "coin",
+      chainId: data.chainId
+    })
+      .then(data => ({ ok: true, data: data }))
+      .catch(err => {
+        return { ok: false, err: err }
       })
 
-      console.log(response);
+    if (!sendtxn.ok) {
+      notify({
+        title: t("deploy_token.notify.failure_title"),
+        type: false,
+        message: t("deploy_token.notify.tx_failed")
+      })
+      setLoading(false);
+      return;
+    }
+    const response = await fetch(`/api/token/deploy`, {
+      method: "POST",
+      body: JSON.stringify({
+        name: data.name,
+        symbol: data.symbol,
+        totalSupply: data.totalSupply,
+        decimals: data.decimals,
+        chainId: data.chainId,
+      })
+    }).then(data => data.json())
+    if (response.ok && response.result.data) {
+      if (data.email) {
+        await SendEmail({
+          to: data.email,
+          subject: t("deploy_token.notify.success_title"),
+          text: t("deploy_token.notify.deploy_success"),
+          html: DeployTokenEmail({locale: locale, data: {
+            ...response.result.data,
+            chain: chain.find((opt: any) => opt.chain_id.id == Number(data.chainId))
+          }})
+        })
+      }
+      notify({
+        title: t("deploy_token.notify.success_title"),
+        type: true,
+        message: t("deploy_token.notify.deploy_success")
+      })
+      setDeployResult({
+        ...response.result.data,
+        chain: chain.find((opt: any) => opt.chain_id.id == Number(data.chainId))
+      })
       
+    } else {
+      notify({
+        title: t("deploy_token.notify.failure_title"),
+        type: false,
+        message: t("deploy_token.notify.deploy_error_prefix") + (response?.result?.errors[0]?.message ?? "")
+      })
     }
     setLoading(false)
   };
