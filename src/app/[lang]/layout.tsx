@@ -9,6 +9,7 @@ import { UserWalletProvider } from "../commons/UserWalletContext";
 import { Toaster } from "@/components/ui/toaster"
 import { cookies } from "next/headers";
 import { Metadata } from "next";
+import { GATracker } from "@/views/GATracker";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const resolvedParams = await params;
@@ -43,6 +44,7 @@ export default async function Layout({
         <AppMetadataProvider initialMetadata={metadata}>
           <NotificationProvider>
             <UserWalletProvider>
+              <GATracker />
               {children}
               <Toaster />
             </UserWalletProvider>
