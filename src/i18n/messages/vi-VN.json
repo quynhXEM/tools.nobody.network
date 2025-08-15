@@ -30,7 +30,7 @@
   },
   "token": {
     "network": "Mạng",
-    "wallet": "Địa Chỉ Ví",
+    "wallet": "Địa chỉ ví",
     "deploy": "Triển khai Token",
     "deploydec": "Phát hành đồng tiền riêng trên các blockchain EVM: Ethereum, BSC, Polygon...",
     "desc": "Triển khai token ERC-20 với các tham số tùy chỉnh trên blockchain",
@@ -90,9 +90,9 @@
     "desc": "Theo dõi giá token và đặt cảnh báo biến động giá"
   },
   "contract": {
-    "verifier": "Xác minh Hợp đồng",
+    "verifier": "Xác minh hợp đồng",
     "desc": "Tự động xác minh smart contract trên block explorer",
-    "address": "Địa chỉ Hợp đồng"
+    "address": "Địa chỉ hợp đồng"
   },
   "gas": {
     "optimizer": "Tối ưu Gas",
@@ -113,14 +113,14 @@
     },
     "may": {
       "take": {
-        "minutes": "Quá trình này có thể mất vài phút"
+        "minutes": "Quá trình này có thể mất vài phút. Vui lòng không tắt trang"
       }
     },
     "successful": "Triển khai thành công!"
   },
   "transaction": {
-    "hash": "Mã băm Giao dịch",
-    "results": "Kết quả Giao dịch"
+    "hash": "Mã băm giao dịch",
+    "results": "Kết quả giao dịch"
   },
   "cost": "Chi phí",
   "view": {
@@ -219,10 +219,19 @@
     },
     "description_tooltip": "Địa chỉ email này sẽ nhận các thông tin của token mà bạn deploy như thông tin token ( name, contract address,...) và thông tin ví tổng ( private key, wallet address)",
     "description_note": "💡 Nhập email để nhận thông tin token của bạn sau khi triển khai",
+    "deployment_fee": "Phí triển khai",
+    "fee_required": "Phí cần thiết để triển khai token",
+    "backup_warning": {
+      "title": "⚠️ QUAN TRỌNG: Sao lưu thông tin ngay!",
+      "description": "Thông tin này chỉ hiển thị MỘT LẦN DUY NHẤT và sẽ không thể khôi phục nếu bạn rời khỏi trang. Vui lòng sao chép và lưu trữ tất cả thông tin bên dưới ở nơi an toàn trước khi đóng trang.",
+      "action": "Sao chép ngay tất cả thông tin quan trọng!"
+    },
     "notify": {
       "failure_title": "Thất bại",
       "tx_failed": "Giao dịch không thành công",
       "success_title": "Thành công",
+      "warning_title": "Cảnh báo",
+      "warning_progress_desc": "Quá trình triển khai đang tiến hành. Vui lòng đợi và không tắt trang web!",
       "deploy_success": "Token của bạn đã được tạo. Kiểm tra thông tin trên trang và email.",
       "deploy_error_prefix": "Có lỗi xảy ra trong quá trình tạo token: "
     }

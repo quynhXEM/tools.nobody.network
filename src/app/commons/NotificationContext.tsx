@@ -8,7 +8,7 @@ import { RegisterAccount } from "@/views/RegisterAccount";
 interface NotificationData {
   title: string;
   message?: string;
-  type: boolean; // true = success, false = error
+  type: boolean | "warning"; // true = success, false = error, "warning" = warning
   children?: ReactNode;
 }
 

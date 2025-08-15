@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Loader2, CheckCircle, AlertCircle, Info } from 'lucide-react'
+import { Loader2, CheckCircle, AlertCircle, Info, AlertTriangle } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { useLocale, useTranslations } from "next-intl"
 import { useUserWallet } from "@/app/commons/UserWalletContext"
@@ -16,12 +16,14 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import z from "zod"
 import { useNotification } from "@/app/commons/NotificationContext"
 import { useAppMetadata } from "@/app/commons/AppMetadataContext"
-import { Controller, useForm } from "react-hook-form"
+import { Controller, useForm, useWatch } from "react-hook-form"
 import { formatNumber } from "@/libs/utils"
 import Link from "next/link"
 import { NotConnectLayout } from "@/views/NotConnectLayout"
 import { SendEmail } from "@/libs/api"
 import { DeployTokenEmail } from "@/libs/formemail"
+import { toast } from "@/hooks/use-toast"
+import { CopyBtn } from "@/views/CopyButton"
 
 // Schema sẽ được tạo trong component để dùng i18n
 
@@ -34,8 +36,8 @@ export function ImprovedTokenDeployTool() {
   const { sendTransaction } = useUserWallet();
   const { custom_fields: { deploy_token_fee, chain_info }, chain } = useAppMetadata()
   const locale = useLocale();
-  
-  
+
+
   const FormSchema = useMemo(() => z.object({
     chainId: z.string(),
     name: z.string().min(1, { message: t("deploy_token.validation.required_name") }),
@@ -76,6 +78,7 @@ export function ImprovedTokenDeployTool() {
   const onSubmit = async (data: any) => {
     setDeployResult(null);
     setLoading(true)
+
     const sendtxn = await sendTransaction({
       amount: deploy_token_fee,
       to: chain_info[data.chainId].address,
@@ -96,6 +99,11 @@ export function ImprovedTokenDeployTool() {
       setLoading(false);
       return;
     }
+    notify({
+      title: t("deploy_token.notify.warning_title"),
+      message: t("deploy_token.notify.warning_progress_desc"),
+      type: "warning"
+    })
     const response = await fetch(`/api/token/deploy`, {
       method: "POST",
       body: JSON.stringify({
@@ -112,10 +120,12 @@ export function ImprovedTokenDeployTool() {
           to: data.email,
           subject: t("form_email.title.deploy_token"),
           text: "",
-          html: DeployTokenEmail({locale: locale, data: {
-            ...response.result.data,
-            chain: chain.find((opt: any) => opt.chain_id.id == Number(data.chainId))
-          }})
+          html: DeployTokenEmail({
+            locale: locale, data: {
+              ...response.result.data,
+              chain: chain.find((opt: any) => opt.chain_id.id == Number(data.chainId))
+            }
+          })
         })
       }
       notify({
@@ -127,7 +137,7 @@ export function ImprovedTokenDeployTool() {
         ...response.result.data,
         chain: chain.find((opt: any) => opt.chain_id.id == Number(data.chainId))
       })
-      
+
     } else {
       notify({
         title: t("deploy_token.notify.failure_title"),
@@ -137,6 +147,16 @@ export function ImprovedTokenDeployTool() {
     }
     setLoading(false)
   };
+
+  const chainId = useWatch({ control, name: "chainId" })
+
+  // Function to shorten address/hash
+  const shorten = (val?: string | null) => {
+    if (!val) return "-"
+    const s = String(val)
+    if (s.length <= 14) return s
+    return `${s.slice(0, 6)}...${s.slice(-4)}`
+  }
 
   return (
     <div className="space-y-6">
@@ -202,13 +222,40 @@ export function ImprovedTokenDeployTool() {
                   name="totalSupply"
                   control={control}
                   rules={{ required: t("deploy_token.validation.required_total_supply") }}
-                  render={({ field }) => (
-                    <div className="flex flex-col gap-1">
-                      <Label htmlFor="totalSupply" className="text-sm text-white font-medium">{t("token.totalsupply")}</Label>
-                      <Input disabled={loading} id="totalSupply" className="text-white" type="number" {...field} placeholder={t("deploy_token.labels.total_supply_placeholder")} />
-                      {errors.totalSupply && <span className="text-red-500 text-xs">{errors.totalSupply.message as string}</span>}
-                    </div>
-                  )}
+                  render={({ field }) => {
+                    // Format số với dấu phân cách
+                    const formatNumber = (value: string) => {
+                      if (!value) return '';
+                      // Loại bỏ tất cả ký tự không phải số
+                      const numericValue = value.replace(/[^0-9]/g, '');
+                      // Thêm dấu phân cách
+                      return numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                    };
+
+                    // Lấy giá trị số thuần (không có dấu phân cách)
+                    const getNumericValue = (value: string) => {
+                      return value.replace(/[^0-9]/g, '');
+                    };
+
+                    return (
+                      <div className="flex flex-col gap-1">
+                        <Label htmlFor="totalSupply" className="text-sm text-white font-medium">{t("token.totalsupply")}</Label>
+                        <Input
+                          disabled={loading}
+                          id="totalSupply"
+                          className="text-white"
+                          type="text"
+                          value={formatNumber(field.value || '')}
+                          onChange={(e) => {
+                            const numericValue = getNumericValue(e.target.value);
+                            field.onChange(numericValue);
+                          }}
+                          placeholder={t("deploy_token.labels.total_supply_placeholder")}
+                        />
+                        {errors.totalSupply && <span className="text-red-500 text-xs">{errors.totalSupply.message as string}</span>}
+                      </div>
+                    );
+                  }}
                 />
                 <Controller
                   name="decimals"
@@ -240,7 +287,7 @@ export function ImprovedTokenDeployTool() {
                         <Label htmlFor="name" className="text-sm text-white font-medium"> {t("token.email")} ({t("token.optional")})</Label>
                         <TooltipProvider>
                           <Tooltip>
-                            <TooltipTrigger>
+                            <TooltipTrigger type="button" className="flex items-center">
                               <Info className="w-4 h-4 text-slate-400" />
                             </TooltipTrigger>
                             <TooltipContent className="max-w-xs">
@@ -251,16 +298,35 @@ export function ImprovedTokenDeployTool() {
                       </div>
                       <Input
                         id="email"
-                        {...field}
+                        type="email"
+                        value={field.value?.toLowerCase() || ''}
+                        onChange={(e) => field.onChange(e.target.value.toLowerCase())}
                         disabled={loading}
                         placeholder={t("token.placeholder")}
                         className="bg-slate-700 text-white border-slate-600"
+                        autoCapitalize="off"
+                        autoComplete="email"
+                        autoCorrect="off"
+                        spellCheck="false"
                       />
                       {errors.email && <span className="text-red-500 text-xs">{errors.email.message as string}</span>}
                       <p className="text-xs text-slate-400">{t("deploy_token.description_note")}</p>
                     </div>
                   )}
                 />
+
+                <div className="bg-slate-700/50 border border-slate-600 rounded-lg p-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      <span className="text-sm font-medium text-white">{t("deploy_token.deployment_fee")}</span>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-lg font-bold text-white">{deploy_token_fee} {chain_info[chainId].symbol}</div>
+                      <div className="text-xs text-slate-400">{t("deploy_token.fee_required")}</div>
+                    </div>
+                  </div>
+                </div>
 
                 <Button type="submit" disabled={loading || !isConnected || loading} className="w-full crypto-gradient">
                   {loading ? (
@@ -301,30 +367,63 @@ export function ImprovedTokenDeployTool() {
 
               {deployResult && (
                 <div className="space-y-4">
+                  {/* Important Backup Warning */}
+                  <div className="bg-gradient-to-r from-orange-900/30 to-red-900/30 border border-orange-500/50 rounded-lg p-4 mb-4">
+                    <div className="flex items-start gap-3">
+                      <div className="flex-shrink-0 w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center mt-0.5">
+                        <AlertTriangle className="w-4 h-4 text-orange-400" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="text-orange-300 font-semibold text-sm mb-2">
+                          {t("deploy_token.backup_warning.title")}
+                        </h4>
+                        <p className="text-orange-100 text-xs leading-relaxed mb-3">
+                          {t("deploy_token.backup_warning.description")}
+                        </p>
+                        <div className="flex items-center gap-2 text-orange-200 text-xs">
+                          <div className="w-1.5 h-1.5 bg-orange-400 rounded-full animate-pulse"></div>
+                          <span className="font-medium">{t("deploy_token.backup_warning.action")}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   <div className="flex items-center gap-2 text-green-400 mb-4">
                     <CheckCircle className="w-5 h-5" />
                     <span className="font-semibold">{t("deployment.successful")}</span>
                   </div>
 
+
+
                   <div className="space-y-3">
                     <div>
                       <Label className="text-slate-400 text-sm">{t("token.wallet")}</Label>
-                      <div className="bg-slate-700 p-3 rounded-md text-sm text-slate-200 capitalize">
-                        {deployResult.wallet.address}
+                      <div className="bg-slate-700 pl-3 rounded-md text-sm text-slate-200 flex items-center justify-between">
+                        <span className="font-mono">{shorten(deployResult?.wallet?.address)}</span>
+                        <CopyBtn data={deployResult?.wallet?.address} />
+                      </div>
+                    </div>
+
+                    <div>
+                      <Label className="text-slate-400 text-sm">Mnemonic</Label>
+                      <div className="bg-slate-700 pl-3 rounded-md text-sm text-slate-200 flex items-center justify-between">
+                        <span className="font-mono ">{shorten(deployResult?.wallet?.mnemonic)}</span>
+                        <CopyBtn data={deployResult?.wallet?.mnemonic} />
                       </div>
                     </div>
 
                     <div>
                       <Label className="text-slate-400 text-sm">{t("contract.address")}</Label>
-                      <div className="bg-slate-700 p-3 rounded-md font-mono text-sm text-slate-200 break-all">
-                        {deployResult.token.address}
+                      <div className="bg-slate-700 pl-3 rounded-md text-sm text-slate-200 flex items-center justify-between">
+                        <span className="font-mono">{shorten(deployResult?.token?.address)}</span>
+                        <CopyBtn data={deployResult?.token?.address} />
                       </div>
                     </div>
 
                     <div>
                       <Label className="text-slate-400 text-sm">{t("transaction.hash")}</Label>
-                      <div className="bg-slate-700 p-3 rounded-md font-mono text-sm text-slate-200 break-all">
-                        {deployResult.initialTransaction}
+                      <div className="bg-slate-700 pl-3 rounded-md text-sm text-slate-200 flex items-center justify-between">
+                        <span className="font-mono">{shorten(deployResult?.initialTransaction)}</span>
+                        <CopyBtn data={deployResult?.initialTransaction} />
                       </div>
                     </div>
 
@@ -333,22 +432,28 @@ export function ImprovedTokenDeployTool() {
                       <div className="space-y-1 text-sm text-slate-400">
                         <div className="flex justify-between">
                           <span>{t("name")}:</span>
-                          <span className="text-slate-200">{deployResult.token.name}</span>
+                          <span className="text-slate-200">{deployResult?.token?.name}</span>
                         </div>
                         <div className="flex justify-between">
                           <span>{t("symbol")}:</span>
-                          <span className="text-slate-200">{deployResult.token.symbol}</span>
+                          <span className="text-slate-200">{deployResult?.token?.symbol}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>{t("token.decimals")}:</span>
+                          <span className="text-slate-200">{deployResult?.token?.decimals}</span>
                         </div>
                         <div className="flex justify-between">
                           <span>{t("token.totalsupply")}:</span>
-                          <span className="text-slate-200">{formatNumber(deployResult.token.totalSupply)}</span>
+                          <span className="text-slate-200">{formatNumber(deployResult?.token?.totalSupply)}</span>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  <Button variant="outline" className="w-full mt-4 bg-transparent text-white">
-                    <Link href={`${deployResult.token.chainId?.explorer_url}/token/${deployResult.token.address}`} target="_blank">{t("view.explorer")}</Link>
+                  <Button variant="outline" className="w-full mt-4 bg-transparent text-white" onClick={() => {
+                    window.open(`${chain_info[chainId].explorer_url}/token/${deployResult?.token?.address}`, "_blank")
+                  }}>
+                    {t("view.explorer")}
                   </Button>
                 </div>
               )}
