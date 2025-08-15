@@ -121,7 +121,7 @@ export function UnifiedHeader() {
             {/* Desktop Navigation */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size={"sm"} className="cursor-pointer outline-none border-none hover:bg-gray-400/40 text-white">
+                <Button variant="ghost" size={"sm"} className="cursor-pointer outline-none border-none hover:bg-gray-400/40 text-white hover:text-white">
                   {currentItem.isLogo ? (
                     <Logo className="w-4 h-4" />
                   ) : (

@@ -33,7 +33,7 @@ export default function LocaleDropdown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size={"sm"} className="cursor-pointer outline-none border-none hover:bg-gray-400/40 text-white">
+        <Button variant="ghost" size={"sm"} className="cursor-pointer outline-none border-none hover:bg-gray-400/40 text-white hover:text-white">
           {LOCALE[locale as keyof typeof LOCALE].flag}
           
           {LOCALE[locale as keyof typeof LOCALE].label}
