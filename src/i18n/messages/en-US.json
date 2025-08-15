@@ -309,7 +309,7 @@
   },
   "form_email": {
     "title": {
-      "deploy_token" : ""
+      "deploy_token" : "Deploy token information"
     }
   }
 }

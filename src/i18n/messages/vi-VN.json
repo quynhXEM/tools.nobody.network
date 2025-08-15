@@ -310,7 +310,7 @@
   },
   "form_email": {
     "title": {
-      "deploy_token" : ""
+      "deploy_token" : "Thông tin token triên khai"
     }
   }
 }

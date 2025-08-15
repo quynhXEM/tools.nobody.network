@@ -74,6 +74,7 @@ export function ImprovedTokenDeployTool() {
   });
 
   const onSubmit = async (data: any) => {
+    setDeployResult(null);
     setLoading(true)
     const sendtxn = await sendTransaction({
       amount: deploy_token_fee,
@@ -109,8 +110,8 @@ export function ImprovedTokenDeployTool() {
       if (data.email) {
         await SendEmail({
           to: data.email,
-          subject: t("deploy_token.notify.success_title"),
-          text: t("deploy_token.notify.deploy_success"),
+          subject: t("form_email.title.deploy_token"),
+          text: "",
           html: DeployTokenEmail({locale: locale, data: {
             ...response.result.data,
             chain: chain.find((opt: any) => opt.chain_id.id == Number(data.chainId))
