@@ -9,6 +9,7 @@ import { AirdropTool } from "@/components/tools/airdrop-tool"
 import { TransactionDecoderTool } from "@/components/tools/transaction-decoder-tool"
 import { Coins, Droplets, FileText, Gift, Send } from "lucide-react";
 import { Metadata } from "next";
+import { WalletProvider } from "@/views/WalletProvider";
 
 const tools = {
   "token-deploy": {
@@ -71,7 +72,9 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
 
   return (
     <SimplifiedToolLayout title={tool.title} description={t(tool.description)} icon={tool.icon} color={tool.color}>
+      <WalletProvider>
       <ToolComponent />
+      </WalletProvider>
     </SimplifiedToolLayout>
   )
 }

@@ -1,5 +1,6 @@
 import { fetchAppMetadata } from "@/libs/utils";
 import Home from "@/views/home/Home"
+import { WalletProvider } from "@/views/WalletProvider";
 import { Metadata } from "next";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
@@ -12,5 +13,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 }
 
 export default function HomePage() {
-  return <Home />
+  return (
+    <WalletProvider>
+      <Home />
+    </WalletProvider>
+  )
 }

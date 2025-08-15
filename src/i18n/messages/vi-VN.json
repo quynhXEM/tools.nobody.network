@@ -305,7 +305,7 @@
   },
   "wait": {
     "connect_view": "Cần kết nối ví",
-    "sub_connect": "Cần kết nối ví để xem và sử dụng côgn cụ",
+    "sub_connect": "Vui lòng kết nối ví để sử dụng công cụ",
     "connect_btn": "Kết nối ví"
   },
   "form_email": {
