@@ -102,7 +102,7 @@ export function ToolsGrid() {
               >
                 <IconComponent className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-white text-lg">{tool.titleKey}</CardTitle>
+              <h2 className="text-white text-lg font-semibold">{tool.titleKey}</h2>
               <CardDescription className="text-slate-400 text-sm leading-relaxed text-center">{t(tool.descKey)}</CardDescription>
             </CardContent>
           </Card>

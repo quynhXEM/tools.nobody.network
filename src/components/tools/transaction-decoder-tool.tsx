@@ -87,7 +87,7 @@ export function TransactionDecoderTool() {
       {/* Input Form */}
       <Card className="bg-slate-800/50 border-slate-700">
         <CardHeader>
-          <CardTitle className="text-white">{t("tx.config")}</CardTitle>
+          <h2 className="text-white font-semibold">{t("tx.config")}</h2>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-2">
@@ -153,7 +153,7 @@ export function TransactionDecoderTool() {
       {/* Results */}
       <Card className="bg-slate-800/50 border-slate-700">
         <CardHeader>
-          <CardTitle className="text-white">{t("decoded.results")}</CardTitle>
+          <h2 className="text-white font-semibold">{t("decoded.results")}</h2>
         </CardHeader>
         <CardContent>
           {!decodeResult && !isDecoding && (

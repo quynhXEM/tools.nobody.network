@@ -146,7 +146,7 @@ export function ImprovedTokenDeployTool() {
         {/* Input Form */}
         <Card className="bg-slate-800/50 border-slate-700">
           <CardHeader>
-            <CardTitle className="text-white">{t("token.configuration")}</CardTitle>
+            <h2 className="text-white font-semibold">{t("token.configuration")}</h2>
           </CardHeader>
           <NotConnectLayout>
             <CardContent className="space-y-6">
