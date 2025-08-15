@@ -14,18 +14,16 @@ export function SimplifiedToolLayout({ title, description, children, icon, color
     <div className="flex-1">
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
-        <div className="mb-8 flex gap-4">
+        <div className="flex mb-1">
           <div
-            className={`min-w-12 h-12 mt-2 rounded-lg bg-gradient-to-r ${color} flex items-center justify-center`}
+            className={`rounded-lg bg-gradient-to-r ${color} items-center justify-center p-2`}
           >
             <IconComponent className="text-white" />
           </div>
-          <div>
-            <h1 className="text-3xl font-bold text-white mb-2">{title}</h1>
-            <p className="text-slate-300">{description}</p>
-          </div>
+          &nbsp;
+          <h1 className="text-3xl font-bold text-white">{title}</h1>
         </div>
-
+        <p className="text-slate-300 mb-8 ">{description}</p>
         {children}
       </main>
     </div>

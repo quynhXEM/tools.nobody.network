@@ -127,7 +127,7 @@ export function UnifiedHeader() {
                   ) : (
                     <currentItem.icon className="w-4 h-4" />
                   )}
-                  &nbsp;{currentItem.nameKey}&nbsp;
+                  {currentItem.nameKey}
                   <ChevronDown className="text-white" />
                 </Button>
               </DropdownMenuTrigger>
@@ -145,7 +145,7 @@ export function UnifiedHeader() {
                       ) : (
                         <IconComponent className="w-4 h-4" />
                       )}
-                      &nbsp;{l.nameKey}&nbsp;
+                      {l.nameKey}
                     </DropdownMenuItem>
                   )
                 })}

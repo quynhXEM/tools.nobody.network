@@ -35,9 +35,9 @@ export default function LocaleDropdown() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size={"sm"} className="cursor-pointer outline-none border-none hover:bg-gray-400/40 text-white">
           {LOCALE[locale as keyof typeof LOCALE].flag}
-          &nbsp;
+          
           {LOCALE[locale as keyof typeof LOCALE].label}
-          &nbsp;
+          
           <ChevronDown className="text-white" />
         </Button>
       </DropdownMenuTrigger>
@@ -49,7 +49,7 @@ export default function LocaleDropdown() {
             className="flex items-center space-x-2 cursor-pointer"
             disabled={l.code === locale}
           >
-            {l.flag}&nbsp;{l.label}
+            {l.flag}{l.label}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
