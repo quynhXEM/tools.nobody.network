@@ -3,6 +3,7 @@ import "react-tooltip/dist/react-tooltip.css";
 import { chakraPetch } from "@/assets/font";
 import { fetchAppMetadata } from "@/libs/utils";
 import { cookies, headers } from "next/headers";
+import { Analytics } from "@vercel/analytics/next"
 
 export default async function RootLayout({
   children,
@@ -26,6 +27,7 @@ export default async function RootLayout({
       </head>
       <body className={`${chakraPetch.variable} antialiased`}>
         {children}
+        <Analytics/>
         <script
           dangerouslySetInnerHTML={{
             __html: `
