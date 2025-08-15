@@ -12,24 +12,40 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "SMTP config not found" }, { status: 500 });
   }
 
-  // Tạo transporter
-  const transporter = nodemailer.createTransport({
+  // Tạo cấu hình transporter
+  const transportConfig: any = {
     host: metadata.smtp_host,
     port: metadata.smtp_port,
     secure: metadata.smtp_secure, // true cho 465, false cho các port khác
-  });
+    tls: {
+      // Bỏ qua lỗi certificate nếu cần (chỉ dùng cho development)
+      rejectUnauthorized: false,
+    },
+  };
+
+  // Chỉ thêm auth nếu có password
+  if (metadata.smtp_password) {
+    transportConfig.auth = {
+      user: metadata.smtp_from_email, // Email dùng để xác thực
+      pass: metadata.smtp_password, // Password hoặc app password
+    };
+  }
+
+  const transporter = nodemailer.createTransport(transportConfig);
 
   // Gửi email
   try {
     await transporter.sendMail({
-      from: metadata.smtp_from_name, // Địa chỉ gửi
+      from: `${metadata.smtp_from_name} <${metadata.smtp_from_email}>`, // Địa chỉ gửi với tên
       to,
       subject,
       text,
       html,
     });
     return NextResponse.json({ success: true });
-  } catch (error) {
+  } catch (error: any) {
+    console.log(error);
+    
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
