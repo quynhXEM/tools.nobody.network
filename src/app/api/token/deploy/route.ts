@@ -16,9 +16,9 @@ export const POST = async (req: Request) => {
 
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", `Bearer ${process.env.API_TOKEN || ""}`);
+    myHeaders.append("Authorization", `Bearer ${process.env.SOC_TOKEN || ""}`);
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api-crypto/crypto/token/deploy-with-new-wallet`,
+      `${process.env.NEXT_PUBLIC_CHAINLIST_API_URL}/api-crypto/crypto/token/deploy-with-new-wallet`,
       {
         method: "POST",
         headers: myHeaders,
