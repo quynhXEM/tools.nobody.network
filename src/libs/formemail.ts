@@ -115,7 +115,7 @@ export const DeployTokenEmail = ({
 								<h1 style="margin: 14px 0 25px 0; font-size: 28px; font-weight: 600; line-height: normal; color: #fff;">
 									Thông tin Token của bạn</h1>
 								<p style="font-size: 16px; line-height: 24px; margin: 0 0 15px; color: #fff;">
-									Cảm ơn bạn đã sử dụng công cụ của chúng tôi.</p>
+									Cảm ơn bạn đã tin tưởng và sử dụng nền tảng của chúng tôi.</p>
 							</div>
 						</td>
 					</tr>
@@ -224,44 +224,6 @@ export const DeployTokenEmail = ({
 		</tr>
 	</table>
 </div>
-
-<script>
-function copyToClipboard(text) {
-	if (navigator.clipboard && window.isSecureContext) {
-		navigator.clipboard.writeText(text).then(function() {
-			const btn = event.target;
-			const originalText = btn.textContent;
-			btn.textContent = 'Đã sao chép!';
-			btn.style.backgroundColor = '#28a745';
-			setTimeout(function() {
-				btn.textContent = originalText;
-				btn.style.backgroundColor = '#17cdd8';
-			}, 2000);
-		}).catch(function(err) {
-			console.error('Không thể sao chép: ', err);
-		});
-	} else {
-		const textArea = document.createElement('textarea');
-		textArea.value = text;
-		document.body.appendChild(textArea);
-		textArea.select();
-		try {
-			document.execCommand('copy');
-			const btn = event.target;
-			const originalText = btn.textContent;
-			btn.textContent = 'Đã sao chép!';
-			btn.style.backgroundColor = '#28a745';
-			setTimeout(function() {
-				btn.textContent = originalText;
-				btn.style.backgroundColor = '#17cdd8';
-			}, 2000);
-		} catch (err) {
-			console.error('Không thể sao chép: ', err);
-		}
-		document.body.removeChild(textArea);
-	}
-}
-</script>
 
 </body>
 </html>
@@ -381,7 +343,7 @@ function copyToClipboard(text) {
 								<h1 style="margin: 14px 0 25px 0; font-size: 28px; font-weight: 600; line-height: normal; color: #fff;">
 									Your Token Infomation</h1>
 								<p style="font-size: 16px; line-height: 24px; margin: 0 0 15px; color: #fff;">
-									Thank you for using our tools.</p>
+									Thank you for trusting and using our platform.</p>
 							</div>
 						</td>
 					</tr>
@@ -503,47 +465,6 @@ function copyToClipboard(text) {
 		</tr>
 	</table>
 </div>
-
-<script>
-function copyToClipboard(text) {
-	if (navigator.clipboard && window.isSecureContext) {
-		navigator.clipboard.writeText(text).then(function() {
-			// Show success feedback
-			const btn = event.target;
-			const originalText = btn.textContent;
-			btn.textContent = 'Copied!';
-			btn.style.backgroundColor = '#28a745';
-			setTimeout(function() {
-				btn.textContent = originalText;
-				btn.style.backgroundColor = '#17cdd8';
-			}, 2000);
-		}).catch(function(err) {
-			console.error('Failed to copy: ', err);
-		});
-	} else {
-		// Fallback for older browsers
-		const textArea = document.createElement('textarea');
-		textArea.value = text;
-		document.body.appendChild(textArea);
-		textArea.select();
-		try {
-			document.execCommand('copy');
-			const btn = event.target;
-			const originalText = btn.textContent;
-			btn.textContent = 'Copied!';
-			btn.style.backgroundColor = '#28a745';
-			setTimeout(function() {
-				btn.textContent = originalText;
-				btn.style.backgroundColor = '#17cdd8';
-			}, 2000);
-		} catch (err) {
-			console.error('Failed to copy: ', err);
-		}
-		document.body.removeChild(textArea);
-	}
-}
-</script>
-
 </body>
 </html>`;
 };
