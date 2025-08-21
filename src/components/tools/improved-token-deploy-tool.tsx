@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Loader2, CheckCircle, AlertCircle, Info, AlertTriangle } from 'lucide-react'
+import { Loader2, CheckCircle, AlertCircle, Info, AlertTriangle, TriangleAlert } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { useLocale, useTranslations } from "next-intl"
 import { useUserWallet } from "@/app/commons/UserWalletContext"
@@ -18,12 +18,10 @@ import { useNotification } from "@/app/commons/NotificationContext"
 import { useAppMetadata } from "@/app/commons/AppMetadataContext"
 import { Controller, useForm, useWatch } from "react-hook-form"
 import { formatNumber } from "@/libs/utils"
-import Link from "next/link"
 import { NotConnectLayout } from "@/views/NotConnectLayout"
-import { SendEmail } from "@/libs/api"
 import { DeployTokenEmail } from "@/libs/formemail"
-import { toast } from "@/hooks/use-toast"
 import { CopyBtn } from "@/views/CopyButton"
+import { Textarea } from "../ui/textarea"
 
 // Schema sẽ được tạo trong component để dùng i18n
 
@@ -99,11 +97,6 @@ export function ImprovedTokenDeployTool() {
       setLoading(false);
       return;
     }
-    notify({
-      title: t("deploy_token.notify.warning_title"),
-      message: t("deploy_token.notify.warning_progress_desc"),
-      type: "warning"
-    })
     const response = await fetch(`/api/token/deploy`, {
       method: "POST",
       body: JSON.stringify({
@@ -116,14 +109,22 @@ export function ImprovedTokenDeployTool() {
     }).then(data => data.json())
     if (response.ok && response.result.data) {
       if (data.email) {
-        await SendEmail({
-          to: data.email,
-          subject: t("form_email.title.deploy_token"),
-          text: "",
-          html: DeployTokenEmail({
-            locale: locale, data: {
-              ...response.result.data,
-              chain: chain.find((opt: any) => opt.chain_id.id == Number(data.chainId))
+        await fetch("/api/directus/request", {
+          method: "POST",
+          body: JSON.stringify({
+            collection: "email_outbox",
+            type: "createItem",
+            items: {
+              status: "scheduled",
+              app_id: process.env.NEXT_PUBLIC_APP_ID,
+              to: data.email,
+              subject: t("form_email.title.deploy_token"),
+              body: DeployTokenEmail({
+                locale: locale, data: {
+                  ...response.result.data,
+                  chain: chain.find((opt: any) => opt.chain_id.id == Number(data.chainId))
+                }
+              })
             }
           })
         })
@@ -135,7 +136,6 @@ export function ImprovedTokenDeployTool() {
       })
       setDeployResult({
         ...response.result.data,
-        chain: chain.find((opt: any) => opt.chain_id.id == Number(data.chainId))
       })
 
     } else {
@@ -361,7 +361,10 @@ export function ImprovedTokenDeployTool() {
                 <div className="text-center py-12">
                   <Loader2 className="w-12 h-12 mx-auto mb-4 animate-spin text-blue-500" />
                   <p className="text-slate-300">{t("token.deploying")}</p>
-                  <p className="text-sm text-slate-400 mt-2">{t("deployment.may.take.minutes")}</p>
+                  <div className="text-yellow-500 font-bold flex flex-col gap-1 items-center justify-center mt-3">
+                    <TriangleAlert className="w-6" />
+                    {t("deploy_token.notify.warning_progress_desc")}
+                  </div>
                 </div>
               )}
 
@@ -391,28 +394,9 @@ export function ImprovedTokenDeployTool() {
                     <CheckCircle className="w-5 h-5" />
                     <span className="font-semibold">{t("deployment.successful")}</span>
                   </div>
-
-
-
                   <div className="space-y-3">
                     <div>
-                      <Label className="text-slate-400 text-sm">{t("token.wallet")}</Label>
-                      <div className="bg-slate-700 pl-3 rounded-md text-sm text-slate-200 flex items-center justify-between">
-                        <span className="font-mono">{shorten(deployResult?.wallet?.address)}</span>
-                        <CopyBtn data={deployResult?.wallet?.address} />
-                      </div>
-                    </div>
-
-                    <div>
-                      <Label className="text-slate-400 text-sm">Mnemonic</Label>
-                      <div className="bg-slate-700 pl-3 rounded-md text-sm text-slate-200 flex items-center justify-between">
-                        <span className="font-mono ">{shorten(deployResult?.wallet?.mnemonic)}</span>
-                        <CopyBtn data={deployResult?.wallet?.mnemonic} />
-                      </div>
-                    </div>
-
-                    <div>
-                      <Label className="text-slate-400 text-sm">{t("contract.address")}</Label>
+                      <Label className="text-slate-400 text-sm mb-1">{t("contract.address")}</Label>
                       <div className="bg-slate-700 pl-3 rounded-md text-sm text-slate-200 flex items-center justify-between">
                         <span className="font-mono">{shorten(deployResult?.token?.address)}</span>
                         <CopyBtn data={deployResult?.token?.address} />
@@ -420,10 +404,18 @@ export function ImprovedTokenDeployTool() {
                     </div>
 
                     <div>
-                      <Label className="text-slate-400 text-sm">{t("transaction.hash")}</Label>
+                      <Label className="text-slate-400 text-sm mb-1">{t("token.mnemonic")}</Label>
                       <div className="bg-slate-700 pl-3 rounded-md text-sm text-slate-200 flex items-center justify-between">
-                        <span className="font-mono">{shorten(deployResult?.initialTransaction)}</span>
-                        <CopyBtn data={deployResult?.initialTransaction} />
+                        <span className="font-mono ">{shorten(deployResult?.wallet?.mnemonic)}</span>
+                        <CopyBtn data={deployResult?.wallet?.mnemonic} />
+                      </div>
+                    </div>
+
+                    <div className="mb-3">
+                      <Label className="text-slate-400 text-sm mb-1">{t("token.data_deployed")}</Label>
+                      <Textarea readOnly className="bg-gray-700/50 text-white font-mono h-60 text-sm" value={JSON.stringify(deployResult, null, 2)} />
+                      <div className="text-white w-full flex justify-end">
+                        <CopyBtn data={JSON.stringify(deployResult, null, 2)} />
                       </div>
                     </div>
 

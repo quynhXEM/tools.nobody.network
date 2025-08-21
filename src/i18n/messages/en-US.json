@@ -35,6 +35,8 @@
     "desc": "Deploy an ERC-20 token with custom parameters on the blockchain",
     "configuration": "Token Configuration",
     "name": "Token name",
+    "mnemonic": "Mnemonic",
+    "data_deployed": "Data deployed",
     "nameplaceholder": "Token name",
     "symbol": "Token symbol",
     "symbolplaceholder": "Token symbol",

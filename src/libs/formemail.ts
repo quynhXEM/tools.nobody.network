@@ -7,308 +7,543 @@ export const DeployTokenEmail = ({
 }) => {
   if (locale == "vi-VN") {
     return `<!DOCTYPE html>
-<html lang="vi">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Token Deploy Thành Công</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+		table,
+		td,
+		th {
+			border-collapse: collapse;
+		}
+
+		div,
+		a,
+		b,
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6,
+		p,
+		td,
+		body,
+		span {
+			font-family: 'Open Sans', Arial, Helvetica, sans-serif !important;
+		}
+
+		a {
+			text-decoration: none !important;
+		}
+
+		@media (max-width: 600px) {
+			.mobile-stack {
+				display: block !important;
+				width: 100% !important;
+				padding-left: 0 !important;
+				padding-right: 0 !important;
+				text-align: center !important;
+			}
+
+			.mobile-center {
+				text-align: center !important;
+			}
+
+			td {
+				border-radius: 0 !important;
+			}
+
+			.container-mobile {
+				padding: 0 !important;
+				border-radius: 0 !important;
+			}
+
+			.mobile-button {
+				display: block !important;
+				width: calc(100% - 40px) !important;
+				margin: 10px 20px !important;
+				text-align: center !important;
+				box-sizing: border-box !important;
+			}
+		}
+
+		.copy-btn {
+			background-color: #17cdd8;
+			color: #fff;
+			border: none;
+			padding: 4px 8px;
+			border-radius: 4px;
+			font-size: 11px;
+			cursor: pointer;
+			margin-left: 8px;
+			transition: background-color 0.2s;
+		}
+
+		.copy-btn:hover {
+			background-color: #14b5c4;
+		}
+
+		.truncated-text {
+			font-family: monospace;
+			font-size: 12px;
+			color: #ccc;
+			display: inline-block;
+			max-width: 200px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			vertical-align: middle;
+		}
+	</style>
 </head>
-<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5;">
-    <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5f5f5; padding: 20px;">
-        <tr>
-            <td align="center">
-                <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden;">
-                    
-                    <!-- Header -->
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; text-align: center;">
-                            <h1 style="color: #ffffff; margin: 0; font-size: 28px; font-weight: 600;">
-                                🎉 Token Deploy Thành Công!
-                            </h1>
-                            <p style="color: #e8f0fe; margin: 10px 0 0 0; font-size: 16px;">
-                                Token của bạn đã được triển khai thành công trên blockchain
-                            </p>
-                        </td>
-                    </tr>
+<body>
+<div style="margin: 0; background-color: #f5f5f5;">
+	<table width="100%" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
+		<tr>
+			<td style="background: #3f3f4c; border-radius: 8px; padding: 50px 60px;"
+				class="container-mobile container-mobile-header">
 
-                    <!-- Success Message -->
-                    <tr>
-                        <td style="padding: 30px;">
-                            <!-- Wallet Information -->
-                            <div style="margin-bottom: 30px;">
-                                <h2 style="color: #1f2937; font-size: 20px; margin-bottom: 20px; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px;">
-                                    🔐 Thông Tin Ví Gốc
-                                </h2>
-                                
-                                <div style="background-color: #fef3c7; border: 1px solid #f59e0b; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
-                                    <p style="margin: 0; color: #92400e; font-size: 14px; font-weight: 600;">
-                                        ⚠️ QUAN TRỌNG: Vui lòng lưu trữ thông tin này ở nơi an toàn và không chia sẻ với bất kỳ ai!
-                                    </p>
-                                </div>
+				<!-- Header -->
+				<table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+						<td style="text-align: center; color: #fff; background-color: #121316; border-radius: 14px; margin-bottom: 20px;">
+							<div style="padding: 24px;">
+								<img src="https://cdn.nobody.network/assets/5c74bc70-c141-403f-86db-4825addc93c3/nobody-network-dark.jpg?height=120"
+									alt="Nobody Network Logo" style="max-width: 180px; display: block; margin: 0 auto 20px;">
+								<h1 style="margin: 14px 0 25px 0; font-size: 28px; font-weight: 600; line-height: normal; color: #fff;">
+									Thông tin Token của bạn</h1>
+								<p style="font-size: 16px; line-height: 24px; margin: 0 0 15px; color: #fff;">
+									Cảm ơn bạn đã sử dụng công cụ của chúng tôi.</p>
+							</div>
+						</td>
+					</tr>
+				</table>
 
-                                <table width="100%" cellpadding="8" cellspacing="0" style="border: 1px solid #e5e7eb; border-radius: 8px;">
-                                    <tr style="background-color: #f9fafb;">
-                                        <td style="font-weight: 600; color: #374151; width: 150px; border-bottom: 1px solid #e5e7eb;">Địa chỉ ví:</td>
-                                        <td style="color: #1f2937; font-family: monospace; font-size: 14px; word-break: break-all; border-bottom: 1px solid #e5e7eb;">
-                                            ${data.wallet.address}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-weight: 600; color: #374151; border-bottom: 1px solid #e5e7eb;">Private Key:</td>
-                                        <td style="color: #dc2626; font-family: monospace; font-size: 14px; word-break: break-all; border-bottom: 1px solid #e5e7eb;">
-                                        ${data.wallet.privateKey}
-                                        </td>
-                                    </tr>
-                                    <tr style="background-color: #f9fafb;">
-                                        <td style="font-weight: 600; color: #374151; border-bottom: 1px solid #e5e7eb;">Seed Phrase:</td>
-                                        <td style="color: #dc2626; font-family: monospace; font-size: 14px; word-break: break-all; border-bottom: 1px solid #e5e7eb;">
-                                        ${data.wallet.mnemonic}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-weight: 600; color: #374151;">Public Key:</td>
-                                        <td style="color: #1f2937; font-family: monospace; font-size: 14px; word-break: break-all;">
-                                        ${data.wallet.publicKey}
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
+				<!-- Token Information -->
+				<table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+						<td style="background-color: #2a2a35; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+							<h2 style="color: #17cdd8; font-size: 20px; margin: 0 0 15px 0; text-align: center;">Thông tin Token</h2>
+							<table width="100%" cellpadding="0" cellspacing="0" style="color: #fff;">
+								<tr>
+									<td style="padding: 8px 0; font-weight: 600; width: 30%;">Địa chỉ:</td>
+									<td style="padding: 8px 0; word-break: break-all; font-family: monospace; font-size: 12px;">${data?.token?.address}</td>
+								</tr>
+								<tr>
+									<td style="padding: 8px 0; font-weight: 600;">Tên:</td>
+									<td style="padding: 8px 0;">${data?.token?.name}</td>
+								</tr>
+								<tr>
+									<td style="padding: 8px 0; font-weight: 600;">Ký hiệu:</td>
+									<td style="padding: 8px 0;">${data?.token?.symbol}</td>
+								</tr>
+								<tr>
+									<td style="padding: 8px 0; font-weight: 600;">Số thập phân:</td>
+									<td style="padding: 8px 0;">${data?.token?.decimals}</td>
+								</tr>
+								<tr>
+									<td style="padding: 8px 0; font-weight: 600;">Tổng cung:</td>
+									<td style="padding: 8px 0;">${data?.token?.totalSupply}</td>
+								</tr>
+								<tr>
+									<td style="padding: 8px 0; font-weight: 600;">Mã nguồn:</td>
+									<td style="padding: 8px 0;">${data?.token?.sourceCode}</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					
+					<!-- Wallet Information -->
+					<tr>
+						<td style="background-color: #2a2a35; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+							<h2 style="color: #17cdd8; font-size: 20px; margin: 0 0 15px 0; text-align: center;">Thông tin Ví</h2>
+							<table width="100%" cellpadding="0" cellspacing="0" style="color: #fff;">
+								<tr>
+									<td style="padding: 8px 0; font-weight: 600; width: 30%;">Địa chỉ:</td>
+									<td style="padding: 8px 0; word-break: break-all; font-family: monospace; font-size: 12px;">${data?.wallet?.address}</td>
+								</tr>
+								<tr>
+									<td style="padding: 8px 0; font-weight: 600; vertical-align: top;">Private Key:</td>
+									<td style="padding: 8px 0; word-break: break-all; font-family: monospace; font-size: 12px; color: #ff9999;">
+										<span style="background-color: #4a1a1a; padding: 4px; border-radius: 4px; display: inline-block;">
+											${data?.wallet?.privateKey}
+										</span>
+									</td>
+								</tr>
+								<tr>
+									<td style="padding: 8px 0; font-weight: 600; vertical-align: top;">Mnemonic:</td>
+									<td style="padding: 8px 0; font-family: monospace; font-size: 12px; color: #ffcc99;">
+										<span style="background-color: #4a3a1a; padding: 4px; border-radius: 4px; display: inline-block;">
+                                        ${data?.wallet?.mnemonic}
+										</span>
+									</td>
+								</tr>
+								<tr>
+									<td style="padding: 8px 0; font-weight: 600; vertical-align: top;">Public Key:</td>
+									<td style="padding: 8px 0; word-break: break-all; font-family: monospace; font-size: 12px;">${data?.wallet?.publicKey}</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
 
-                            <!-- Token Information -->
-                            <div style="margin-bottom: 30px;">
-                                <h2 style="color: #1f2937; font-size: 20px; margin-bottom: 20px; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px;">
-                                    🪙 Thông Tin Token
-                                </h2>
-                                
-                                <table width="100%" cellpadding="8" cellspacing="0" style="border: 1px solid #e5e7eb; border-radius: 8px;">
-                                    <tr style="background-color: #f9fafb;">
-                                        <td style="font-weight: 600; color: #374151; width: 150px; border-bottom: 1px solid #e5e7eb;">Tên Token:</td>
-                                        <td style="color: #1f2937; border-bottom: 1px solid #e5e7eb;">${data.token.name}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-weight: 600; color: #374151; border-bottom: 1px solid #e5e7eb;">Symbol:</td>
-                                        <td style="color: #1f2937; font-weight: 600; border-bottom: 1px solid #e5e7eb;">${data.token.symbol}</td>
-                                    </tr>
-                                    <tr style="background-color: #f9fafb;">
-                                        <td style="font-weight: 600; color: #374151; border-bottom: 1px solid #e5e7eb;">Địa chỉ Token:</td>
-                                        <td style="color: #1f2937; font-family: monospace; font-size: 14px; word-break: break-all; border-bottom: 1px solid #e5e7eb;">
-                                        ${data.token.address}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-weight: 600; color: #374151; border-bottom: 1px solid #e5e7eb;">Decimals:</td>
-                                        <td style="color: #1f2937; border-bottom: 1px solid #e5e7eb;">${data.token.decimals}</td>
-                                    </tr>
-                                    <tr style="background-color: #f9fafb;">
-                                        <td style="font-weight: 600; color: #374151; border-bottom: 1px solid #e5e7eb;">Total Supply:</td>
-                                        <td style="color: #1f2937; border-bottom: 1px solid #e5e7eb;">${data.token.totalSupply}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-weight: 600; color: #374151; border-bottom: 1px solid #e5e7eb;">Network:</td>
-                                        <td style="color: #1f2937; border-bottom: 1px solid #e5e7eb;">${data.chain.chain_id.name}</td>
-                                    </tr>
-                                    <tr style="background-color: #f9fafb;">
-                                        <td style="font-weight: 600; color: #374151; width: 150px; border-bottom: 1px solid #e5e7eb;">Xác thực:</td>
-                                        <td style="color: #1f2937; border-bottom: 1px solid #e5e7eb;">${data.token.verificationStatus}</td>
-                                    </tr>
-                                </table>
-                            </div>
+				<!-- Footer -->
+				<table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+						<td style="color: #ffffff!important; font-size: 14px; text-align: center; padding: 20px;">
+							Email này cung cấp cho bạn thông tin token và ví gốc của hợp đồng thông minh mà bạn vừa triển khai. Vui lòng lưu trữ thông tin này và giữ an toàn, vì chúng tôi sẽ không cung cấp lại.<br><br>
+							Hỗ trợ, vui lòng liên hệ: <a href="mailto:zero@nobody.network" style="color: #17cdd8;">zero@nobody.network</a>
+						</td>
+					</tr>
+				</table>
 
-                            <!-- Transaction Link -->
-                            <div style="margin-bottom: 30px;">
-                                <h2 style="color: #1f2937; font-size: 20px; margin-bottom: 20px; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px;">
-                                    🔗 Giao Dịch Deploy
-                                </h2>
-                                
-                                <div style="background-color: #f0f9ff; border: 1px solid #0ea5e9; border-radius: 8px; padding: 20px; text-align: center;">
-                                    <p style="margin: 0 0 15px 0; color: #0c4a6e; font-size: 16px;">
-                                        Xem chi tiết giao dịch deploy token của bạn:
-                                    </p>
-                                    <a href="${data.chain.chain_id.explorer_url}/tx/${data.initialTransaction}" 
-                                       style="display: inline-block; background-color: #0ea5e9; color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 6px; font-weight: 600; font-size: 16px;">
-                                        📊 Xem trên Etherscan
-                                    </a>
-                                    <p style="margin: 15px 0 0 0; color: #64748b; font-size: 12px; font-family: monospace; word-break: break-all;">
-                                        TX Hash: ${data.initialTransaction}
-                                    </p>
-                                </div>
-                            </div>
+				<!-- Footer Links -->
+				<table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+						<td style="border-top: 1px solid #4e4e52; padding: 10px 20px; text-align: center; margin: 0 20px;">
+							<a href="https://www.nobody.network" target="_blank"
+								style="color: #91919a; font-size: 14px; text-decoration: none; margin: 0 10px;">Truy cập nobody.network</a>
+							<span style="color: #91919a; ">|</span>
+							<a href="/unsubscribe" style="color: #91919a; font-size: 14px; text-decoration: none; margin: 0 10px;">Hủy đăng ký</a>
+						</td>
+					</tr>
+				</table>
 
-                            <!-- Next Steps -->
-                            <div style="margin-bottom: 30px;">
-                                <h2 style="color: #1f2937; font-size: 20px; margin-bottom: 20px; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px;">
-                                    📋 Các Bước Tiếp Theo
-                                </h2>
-                                
-                                <ul style="color: #374151; line-height: 1.6; padding-left: 20px;">
-                                    <li style="margin-bottom: 8px;">Lưu trữ thông tin ví và private key ở nơi an toàn</li>
-                                    <li style="margin-bottom: 8px;">Thêm token vào ví MetaMask hoặc ví khác bằng địa chỉ contract</li>
-                                    <li style="margin-bottom: 8px;">Kiểm tra token trên các block explorer</li>
-                                    <li style="margin-bottom: 8px;">Cân nhắc verify contract source code nếu cần thiết</li>
-                                    <li>Bắt đầu phân phối token theo kế hoạch của bạn</li>
-                                </ul>
-                            </div>
+				<!-- Final Footer -->
+				<table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+						<td style="color: #fff; text-align: center; font-size: 14px;">
+							Email này được gửi bởi Nobody Network.
+						</td>
+					</tr>
+				</table>
 
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
-</body>
-</html>`;
-  }
+			</td>
+		</tr>
+	</table>
+</div>
 
-  return `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Token Deployment Successful</title>
-</head>
-<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5;">
-    <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5f5f5; padding: 20px;">
-        <tr>
-            <td align="center">
-                <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden;">
-                    
-                    <!-- Header -->
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; text-align: center;">
-                            <h1 style="color: #ffffff; margin: 0; font-size: 28px; font-weight: 600;">
-                                🎉 Token Deployment Successful!
-                            </h1>
-                            <p style="color: #e8f0fe; margin: 10px 0 0 0; font-size: 16px;">
-                                Your token has been successfully deployed on the blockchain
-                            </p>
-                        </td>
-                    </tr>
+<script>
+function copyToClipboard(text) {
+	if (navigator.clipboard && window.isSecureContext) {
+		navigator.clipboard.writeText(text).then(function() {
+			const btn = event.target;
+			const originalText = btn.textContent;
+			btn.textContent = 'Đã sao chép!';
+			btn.style.backgroundColor = '#28a745';
+			setTimeout(function() {
+				btn.textContent = originalText;
+				btn.style.backgroundColor = '#17cdd8';
+			}, 2000);
+		}).catch(function(err) {
+			console.error('Không thể sao chép: ', err);
+		});
+	} else {
+		const textArea = document.createElement('textarea');
+		textArea.value = text;
+		document.body.appendChild(textArea);
+		textArea.select();
+		try {
+			document.execCommand('copy');
+			const btn = event.target;
+			const originalText = btn.textContent;
+			btn.textContent = 'Đã sao chép!';
+			btn.style.backgroundColor = '#28a745';
+			setTimeout(function() {
+				btn.textContent = originalText;
+				btn.style.backgroundColor = '#17cdd8';
+			}, 2000);
+		} catch (err) {
+			console.error('Không thể sao chép: ', err);
+		}
+		document.body.removeChild(textArea);
+	}
+}
+</script>
 
-                    <!-- Success Message -->
-                    <tr>
-                        <td style="padding: 30px;">
-                            <!-- Wallet Information -->
-                            <div style="margin-bottom: 30px;">
-                                <h2 style="color: #1f2937; font-size: 20px; margin-bottom: 20px; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px;">
-                                    🔐 Original Wallet Information
-                                </h2>
-                                
-                                <div style="background-color: #fef3c7; border: 1px solid #f59e0b; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
-                                    <p style="margin: 0; color: #92400e; font-size: 14px; font-weight: 600;">
-                                        ⚠️ IMPORTANT: Please store this information in a safe place and do not share it with anyone!
-                                    </p>
-                                </div>
-
-                                <table width="100%" cellpadding="8" cellspacing="0" style="border: 1px solid #e5e7eb; border-radius: 8px;">
-                                    <tr style="background-color: #f9fafb;">
-                                        <td style="font-weight: 600; color: #374151; width: 150px; border-bottom: 1px solid #e5e7eb;">Wallet Address:</td>
-                                        <td style="color: #1f2937; font-family: monospace; font-size: 14px; word-break: break-all; border-bottom: 1px solid #e5e7eb;">
-                                        ${data.wallet.address}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-weight: 600; color: #374151; border-bottom: 1px solid #e5e7eb;">Private Key:</td>
-                                        <td style="color: #dc2626; font-family: monospace; font-size: 14px; word-break: break-all; border-bottom: 1px solid #e5e7eb;">
-                                        ${data.wallet.privateKey}
-                                        </td>
-                                    </tr>
-                                    <tr style="background-color: #f9fafb;">
-                                        <td style="font-weight: 600; color: #374151; border-bottom: 1px solid #e5e7eb;">Seed Phrase:</td>
-                                        <td style="color: #dc2626; font-family: monospace; font-size: 14px; word-break: break-all; border-bottom: 1px solid #e5e7eb;">
-                                        ${data.wallet.mnemonic}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-weight: 600; color: #374151;">Public Key:</td>
-                                        <td style="color: #1f2937; font-family: monospace; font-size: 14px; word-break: break-all;">
-                                        ${data.wallet.publicKey}
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-
-                            <!-- Token Information -->
-                            <div style="margin-bottom: 30px;">
-                                <h2 style="color: #1f2937; font-size: 20px; margin-bottom: 20px; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px;">
-                                    🪙 Token Information
-                                </h2>
-                                
-                                <table width="100%" cellpadding="8" cellspacing="0" style="border: 1px solid #e5e7eb; border-radius: 8px;">
-                                    <tr style="background-color: #f9fafb;">
-                                        <td style="font-weight: 600; color: #374151; width: 150px; border-bottom: 1px solid #e5e7eb;">Token Name:</td>
-                                        <td style="color: #1f2937; border-bottom: 1px solid #e5e7eb;">${data.token.name}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-weight: 600; color: #374151; border-bottom: 1px solid #e5e7eb;">Symbol:</td>
-                                        <td style="color: #1f2937; font-weight: 600; border-bottom: 1px solid #e5e7eb;">${data.token.symbol}</td>
-                                    </tr>
-                                    <tr style="background-color: #f9fafb;">
-                                        <td style="font-weight: 600; color: #374151; border-bottom: 1px solid #e5e7eb;">Token Address:</td>
-                                        <td style="color: #1f2937; font-family: monospace; font-size: 14px; word-break: break-all; border-bottom: 1px solid #e5e7eb;">
-                                        ${data.token.address}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-weight: 600; color: #374151; border-bottom: 1px solid #e5e7eb;">Decimals:</td>
-                                        <td style="color: #1f2937; border-bottom: 1px solid #e5e7eb;">${data.token.decimals}</td>
-                                    </tr>
-                                    <tr style="background-color: #f9fafb;">
-                                        <td style="font-weight: 600; color: #374151; border-bottom: 1px solid #e5e7eb;">Total Supply:</td>
-                                        <td style="color: #1f2937; border-bottom: 1px solid #e5e7eb;">${data.token.totalSupply}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-weight: 600; color: #374151; border-bottom: 1px solid #e5e7eb;">Network:</td>
-                                        <td style="color: #1f2937; border-bottom: 1px solid #e5e7eb;">${data.chain.chain_id.name}</td>
-                                    </tr>
-                                    <tr style="background-color: #f9fafb;">
-                                        <td style="font-weight: 600; color: #374151; width: 150px; border-bottom: 1px solid #e5e7eb;">Verify:</td>
-                                        <td style="color: #1f2937; border-bottom: 1px solid #e5e7eb;">${data.token.verificationStatus}</td>
-                                    </tr>
-                                </table>
-                            </div>
-
-                            <!-- Transaction Link -->
-                            <div style="margin-bottom: 30px;">
-                                <h2 style="color: #1f2937; font-size: 20px; margin-bottom: 20px; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px;">
-                                    🔗 Deployment Transaction
-                                </h2>
-                                
-                                <div style="background-color: #f0f9ff; border: 1px solid #0ea5e9; border-radius: 8px; padding: 20px; text-align: center;">
-                                    <p style="margin: 0 0 15px 0; color: #0c4a6e; font-size: 16px;">
-                                        View the details of your token deployment transaction:
-                                    </p>
-                                    <a href="${data.chain.chain_id.explorer_url}/tx/${data.initialTransaction}" 
-                                       style="display: inline-block; background-color: #0ea5e9; color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 6px; font-weight: 600; font-size: 16px;">
-                                        📊 View on Etherscan
-                                    </a>
-                                    <p style="margin: 15px 0 0 0; color: #64748b; font-size: 12px; font-family: monospace; word-break: break-all;">
-                                        TX Hash: ${data.initialTransaction}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <!-- Next Steps -->
-                            <div style="margin-bottom: 30px;">
-                                <h2 style="color: #1f2937; font-size: 20px; margin-bottom: 20px; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px;">
-                                    📋 Next Steps
-                                </h2>
-                                
-                                <ul style="color: #374151; line-height: 1.6; padding-left: 20px;">
-                                    <li style="margin-bottom: 8px;">Store wallet information and private key in a secure location</li>
-                                    <li style="margin-bottom: 8px;">Add the token to MetaMask or other wallets using the contract address</li>
-                                    <li style="margin-bottom: 8px;">Check the token on block explorers</li>
-                                    <li style="margin-bottom: 8px;">Consider verifying the contract source code if needed</li>
-                                    <li>Start distributing the token according to your plan</li>
-                                </ul>
-                            </div>
-
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
 </body>
 </html>
 `;
+  }
+
+  return `<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+		table,
+		td,
+		th {
+			border-collapse: collapse;
+		}
+
+		div,
+		a,
+		b,
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6,
+		p,
+		td,
+		body,
+		span {
+			font-family: 'Open Sans', Arial, Helvetica, sans-serif !important;
+		}
+
+		a {
+			text-decoration: none !important;
+		}
+
+		@media (max-width: 600px) {
+			.mobile-stack {
+				display: block !important;
+				width: 100% !important;
+				padding-left: 0 !important;
+				padding-right: 0 !important;
+				text-align: center !important;
+			}
+
+			.mobile-center {
+				text-align: center !important;
+			}
+
+			td {
+				border-radius: 0 !important;
+			}
+
+			.container-mobile {
+				padding: 0 !important;
+				border-radius: 0 !important;
+			}
+
+			.mobile-button {
+				display: block !important;
+				width: calc(100% - 40px) !important;
+				margin: 10px 20px !important;
+				text-align: center !important;
+				box-sizing: border-box !important;
+			}
+		}
+
+		/* Added styles for copy button and truncated text */
+		.copy-btn {
+			background-color: #17cdd8;
+			color: #fff;
+			border: none;
+			padding: 4px 8px;
+			border-radius: 4px;
+			font-size: 11px;
+			cursor: pointer;
+			margin-left: 8px;
+			transition: background-color 0.2s;
+		}
+
+		.copy-btn:hover {
+			background-color: #14b5c4;
+		}
+
+		.truncated-text {
+			font-family: monospace;
+			font-size: 12px;
+			color: #ccc;
+			display: inline-block;
+			max-width: 200px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			vertical-align: middle;
+		}
+	</style>
+</head>
+<body>
+<div style="margin: 0; background-color: #f5f5f5;">
+	<!-- Main Container Table -->
+	<table width="100%" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
+		<tr>
+			<td style="background: #3f3f4c; border-radius: 8px; padding: 50px 60px;"
+				class="container-mobile container-mobile-header">
+
+				<!-- Header Section -->
+				<table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+						<td
+							style="text-align: center; color: #fff; background-color: #121316; border-radius: 14px; margin-bottom: 20px;">
+							<div style="padding: 24px;">
+								<img
+									src="https://cdn.nobody.network/assets/5c74bc70-c141-403f-86db-4825addc93c3/nobody-network-dark.jpg?height=120"
+									alt="Nobody Network Logo" style="max-width: 180px; display: block; margin: 0 auto 20px;">
+								<h1 style="margin: 14px 0 25px 0; font-size: 28px; font-weight: 600; line-height: normal; color: #fff;">
+									Your Token Infomation</h1>
+								<p style="font-size: 16px; line-height: 24px; margin: 0 0 15px; color: #fff;">
+									Thank you for using our tools.</p>
+							</div>
+						</td>
+					</tr>
+				</table>
+
+				<!-- Spacing -->
+				<table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+						<td style="height: 20px;"></td>
+					</tr>
+				</table>
+
+				<!-- Verification Button Section -->
+				<table width="100%" cellpadding="0" cellspacing="0">
+					<!-- Added token information section -->
+					<tr>
+						<td style="background-color: #2a2a35; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+							<h2 style="color: #17cdd8; font-size: 20px; margin: 0 0 15px 0; text-align: center;">Token Information</h2>
+							<table width="100%" cellpadding="0" cellspacing="0" style="color: #fff;">
+								<tr>
+									<td style="padding: 8px 0; font-weight: 600; width: 30%;">Address:</td>
+									<td style="padding: 8px 0; word-break: break-all; font-family: monospace; font-size: 12px;">${data?.token?.address}</td>
+								</tr>
+								<tr>
+									<td style="padding: 8px 0; font-weight: 600;">Name:</td>
+									<td style="padding: 8px 0;">${data?.token?.name}</td>
+								</tr>
+								<tr>
+									<td style="padding: 8px 0; font-weight: 600;">Symbol:</td>
+									<td style="padding: 8px 0;">${data?.token?.symbol}</td>
+								</tr>
+								<tr>
+									<td style="padding: 8px 0; font-weight: 600;">Decimals:</td>
+									<td style="padding: 8px 0;">${data?.token?.decimals}</td>
+								</tr>
+								<tr>
+									<td style="padding: 8px 0; font-weight: 600;">Total Supply:</td>
+									<td style="padding: 8px 0;">${data?.token?.totalSupply}</td>
+								</tr>
+								<tr>
+									<td style="padding: 8px 0; font-weight: 600;">Source:</td>
+									<td style="padding: 8px 0;">${data?.token?.sourceCode}</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					
+					<!-- Spacing -->
+					<tr>
+						<td style="height: 20px;"></td>
+					</tr>
+					
+					<!-- Added wallet information section -->
+					<tr>
+						<td style="background-color: #2a2a35; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+							<h2 style="color: #17cdd8; font-size: 20px; margin: 0 0 15px 0; text-align: center;">Wallet Information</h2>
+							<table width="100%" cellpadding="0" cellspacing="0" style="color: #fff;">
+								<tr>
+									<td style="padding: 8px 0; font-weight: 600; width: 30%;">Address:</td>
+									<td style="padding: 8px 0; word-break: break-all; font-family: monospace; font-size: 12px;">${data?.wallet?.address}</td>
+								</tr>
+								<tr>
+									<td style="padding: 8px 0; font-weight: 600; vertical-align: top;">Private Key:</td>
+									<td style="padding: 8px 0; word-break: break-all; font-family: monospace; font-size: 12px; color: #ff9999;">
+										<span style="background-color: #4a1a1a; padding: 4px; border-radius: 4px; display: inline-block;">
+											${data?.wallet?.privateKey}
+										</span>
+									</td>
+								</tr>
+								<tr>
+									<td style="padding: 8px 0; font-weight: 600; vertical-align: top;">Mnemonic:</td>
+									<td style="padding: 8px 0; font-family: monospace; font-size: 12px; color: #ffcc99;">
+										<span style="background-color: #4a3a1a; padding: 4px; border-radius: 4px; display: inline-block;">
+                                        ${data?.wallet?.mnemonic}
+										</span>
+									</td>
+								</tr>
+								<tr>
+									<td style="padding: 8px 0; font-weight: 600; vertical-align: top;">Public Key:</td>
+									<td style="padding: 8px 0; word-break: break-all; font-family: monospace; font-size: 12px;">${data?.wallet?.publicKey}</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+
+				<!-- Footer Text -->
+				<table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+						<td style="color: #ffffff!important; font-size: 14px; text-align: center; padding: 20px;">
+							This email provides you with the token information and the original wallet of the smart contract you have just deployed. Please save this information and keep it secure, as we will not provide it again.<br><br>
+							For support, please contact: <a href="mailto:zero@nobody.network" style="color: #17cdd8;">zero@nobody.network</a>
+						</td>
+					</tr>
+				</table>
+
+				<!-- Footer Links -->
+				<table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+						<td style="border-top: 1px solid #4e4e52; padding: 10px 20px; text-align: center; margin: 0 20px;">
+							<a href="https://www.nobody.network" target="_blank"
+								style="color: #91919a; font-size: 14px; text-decoration: none; margin: 0 10px;">Visit nobody.network</a>
+							<span style="color: #91919a; ">|</span>
+							<a href="/unsubscribe" style="color: #91919a; font-size: 14px; text-decoration: none; margin: 0 10px;">Unsubscribe</a>
+						</td>
+					</tr>
+				</table>
+
+				<!-- Final Footer Text -->
+				<table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+						<td style="color: #fff; text-align: center; font-size: 14px;">
+							This email was sent by Nobody Network.
+						</td>
+					</tr>
+				</table>
+
+			</td>
+		</tr>
+	</table>
+</div>
+
+<script>
+function copyToClipboard(text) {
+	if (navigator.clipboard && window.isSecureContext) {
+		navigator.clipboard.writeText(text).then(function() {
+			// Show success feedback
+			const btn = event.target;
+			const originalText = btn.textContent;
+			btn.textContent = 'Copied!';
+			btn.style.backgroundColor = '#28a745';
+			setTimeout(function() {
+				btn.textContent = originalText;
+				btn.style.backgroundColor = '#17cdd8';
+			}, 2000);
+		}).catch(function(err) {
+			console.error('Failed to copy: ', err);
+		});
+	} else {
+		// Fallback for older browsers
+		const textArea = document.createElement('textarea');
+		textArea.value = text;
+		document.body.appendChild(textArea);
+		textArea.select();
+		try {
+			document.execCommand('copy');
+			const btn = event.target;
+			const originalText = btn.textContent;
+			btn.textContent = 'Copied!';
+			btn.style.backgroundColor = '#28a745';
+			setTimeout(function() {
+				btn.textContent = originalText;
+				btn.style.backgroundColor = '#17cdd8';
+			}, 2000);
+		} catch (err) {
+			console.error('Failed to copy: ', err);
+		}
+		document.body.removeChild(textArea);
+	}
+}
+</script>
+
+</body>
+</html>`;
 };
