@@ -22,6 +22,7 @@ import { NotConnectLayout } from "@/views/NotConnectLayout"
 import { DeployTokenEmail } from "@/libs/formemail"
 import { CopyBtn } from "@/views/CopyButton"
 import { Textarea } from "../ui/textarea"
+import { Badge } from "../ui/badge"
 
 // Schema sẽ được tạo trong component để dùng i18n
 
@@ -368,7 +369,7 @@ export function ImprovedTokenDeployTool() {
                 </div>
               )}
 
-              {deployResult && (
+              {true && (
                 <div className="space-y-4">
                   {/* Important Backup Warning */}
                   <div className="bg-gradient-to-r from-orange-900/30 to-red-900/30 border border-orange-500/50 rounded-lg p-4 mb-4">
@@ -413,9 +414,10 @@ export function ImprovedTokenDeployTool() {
 
                     <div className="mb-3">
                       <Label className="text-slate-400 text-sm mb-1">{t("token.data_deployed")}</Label>
-                      <Textarea readOnly className="bg-gray-700/50 text-white font-mono h-60 text-sm" value={JSON.stringify(deployResult, null, 2)} />
-                      <div className="text-white w-full flex justify-end">
-                        <CopyBtn data={JSON.stringify(deployResult, null, 2)} />
+                      <div className="flex flex-col w-full relative">
+                        <p className="text-white absolute top-1 left-3 text-sm">json</p>
+                        <div className="text-white absolute top-0 right-0"><CopyBtn data={JSON.stringify(deployResult, null, 2)} /></div>
+                        <Textarea readOnly className="bg-gray-700/60 text-white font-mono h-60 text-sm pt-8 border-0" value={JSON.stringify(deployResult, null, 2)} />
                       </div>
                     </div>
 
