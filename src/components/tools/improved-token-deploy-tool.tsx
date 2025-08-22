@@ -369,7 +369,7 @@ export function ImprovedTokenDeployTool() {
                 </div>
               )}
 
-              {true && (
+              {deployResult && (
                 <div className="space-y-4">
                   {/* Important Backup Warning */}
                   <div className="bg-gradient-to-r from-orange-900/30 to-red-900/30 border border-orange-500/50 rounded-lg p-4 mb-4">
