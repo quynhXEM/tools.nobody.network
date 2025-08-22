@@ -119,7 +119,7 @@ export function ImprovedTokenDeployTool() {
               status: "scheduled",
               app_id: process.env.NEXT_PUBLIC_APP_ID,
               to: data.email,
-              subject: t("form_email.title.deploy_token"),
+              subject: t("form_email.title.deploy_token", {contract_address: response.result.data?.token.address}),
               body: DeployTokenEmail({
                 locale: locale, data: {
                   ...response.result.data,

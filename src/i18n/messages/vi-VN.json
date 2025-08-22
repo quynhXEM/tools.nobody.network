@@ -321,7 +321,7 @@
   },
   "form_email": {
     "title": {
-      "deploy_token" : "Triển khai token thành công – Thông tin chi tiết hợp đồng"
+      "deploy_token" : "Triển khai token thành công: {contract_address}"
     }
   }
 }

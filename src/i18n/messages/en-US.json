@@ -320,7 +320,7 @@
   },
   "form_email": {
     "title": {
-      "deploy_token" : "Token Deployment Successful – Contract Details Inside"
+      "deploy_token": "Successfully deployed token: {contract_address}"
     }
   }
 }
