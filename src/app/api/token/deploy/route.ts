@@ -16,9 +16,9 @@ export const POST = async (req: Request) => {
 
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", `Bearer eG2Lf8736fN8hStkXHaEeJGMKtmDV4Tv`);
+    myHeaders.append("Authorization", `Bearer ${process.env.SOC_TOKEN}`);
     const response = await fetch(
-      `https://dev.directus.vn/api-crypto/crypto/token/deploy-with-new-wallet`,
+      `${process.env.NEXT_PUBLIC_CHAINLIST_API_URL}/api/crypto/token/deploy-with-new-wallet`,
       {
         method: "POST",
         headers: myHeaders,
