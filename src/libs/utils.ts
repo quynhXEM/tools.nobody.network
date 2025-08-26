@@ -37,8 +37,6 @@ export async function fetchAppMetadata(locale?: string) {
 }
 
 export async function fetchChain() {
-  try {
-  } catch (error) {}
   const myHeaders = new Headers();
   myHeaders.append("Authorization", `Bearer ${process.env.APP_TOKEN}`);
 
@@ -53,7 +51,51 @@ export async function fetchChain() {
   )
     .then((data) => data.json())
     .then((data) => data.data);
+
+  const chain_list = response.map((item: any) => item.chain_id.symbol).join(",");
+  const token_quote = await fetchTokenQuote(chain_list);
+
+  if (token_quote) {
+    const result = response.map((item: any) => ({
+      ...item,
+      token_quote_usd: token_quote?.[item.chain_id.symbol]?.quote?.USD?.price ?? 1,
+    }))
+    
+    return result;
+  }
+
   return response;
+}
+
+export async function fetchTokenQuote(chain_list: string) {
+  try {
+    const myHeaders = new Headers();
+    myHeaders.append("X-API-Gateway-Currency", "CREDIT");
+    myHeaders.append(
+      "X-API-Gateway-Url",
+      `${process.env.CMC_API_URL}/cryptocurrency/quotes/latest?symbol=${chain_list}`
+    );
+    myHeaders.append(
+      "X-API-Gateway-Description",
+      "CoinMarketCap: Get latest market quote of crypto"
+    );
+    myHeaders.append("Authorization", `Bearer ${process.env.APP_TOKEN}`);
+
+    const requestOptions: RequestInit = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_CHAINLIST_API_URL}/api/gateway/get`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => result.data);
+
+    return response;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
 }
 
 export async function getCountryCodeFromIp(ip: string): Promise<string | null> {

@@ -62,6 +62,13 @@ export function ImprovedTokenDeployTool() {
       ),
     email: z.string().optional(),
   }), [t])
+
+  const getDeployFee = (chainId : any) => {
+    const chain_info = chain.find((opt: any) => opt.chain_id.id == Number(chainId))
+    const deploy_fee = deploy_token_fee / chain_info.token_quote_usd
+    return formatNumber(deploy_fee)
+  }
+
   const { handleSubmit, control, formState: { errors }, } = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -79,7 +86,7 @@ export function ImprovedTokenDeployTool() {
     setLoading(true)
 
     const sendtxn = await sendTransaction({
-      amount: deploy_token_fee,
+      amount: getDeployFee(data.chainId),
       to: chain_info[data.chainId].address,
       type: "coin",
       chainId: data.chainId
@@ -323,7 +330,7 @@ export function ImprovedTokenDeployTool() {
                       <span className="text-sm font-medium text-white">{t("deploy_token.deployment_fee")}</span>
                     </div>
                     <div className="text-right">
-                      <div className="text-lg font-bold text-white">{deploy_token_fee} {chain_info[chainId].symbol}</div>
+                      <div className="text-lg font-bold text-white">{getDeployFee(chainId)} {chain_info[chainId].symbol}</div>
                       <div className="text-xs text-slate-400">{t("deploy_token.fee_required")}</div>
                     </div>
                   </div>
