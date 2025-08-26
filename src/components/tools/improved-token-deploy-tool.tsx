@@ -17,12 +17,11 @@ import z from "zod"
 import { useNotification } from "@/app/commons/NotificationContext"
 import { useAppMetadata } from "@/app/commons/AppMetadataContext"
 import { Controller, useForm, useWatch } from "react-hook-form"
-import { formatNumber } from "@/libs/utils"
+import { formatNumber, getToolFee } from "@/libs/utils"
 import { NotConnectLayout } from "@/views/NotConnectLayout"
 import { DeployTokenEmail } from "@/libs/formemail"
 import { CopyBtn } from "@/views/CopyButton"
 import { Textarea } from "../ui/textarea"
-import { Badge } from "../ui/badge"
 
 // Schema sẽ được tạo trong component để dùng i18n
 
@@ -63,12 +62,6 @@ export function ImprovedTokenDeployTool() {
     email: z.string().optional(),
   }), [t])
 
-  const getDeployFee = (chainId : any) => {
-    const chain_info = chain.find((opt: any) => opt.chain_id.id == Number(chainId))
-    const deploy_fee = deploy_token_fee / chain_info.token_quote_usd
-    return formatNumber(deploy_fee)
-  }
-
   const { handleSubmit, control, formState: { errors }, } = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -86,7 +79,7 @@ export function ImprovedTokenDeployTool() {
     setLoading(true)
 
     const sendtxn = await sendTransaction({
-      amount: getDeployFee(data.chainId),
+      amount: getToolFee(data.chainId, chain, deploy_token_fee),
       to: chain_info[data.chainId].address,
       type: "coin",
       chainId: data.chainId
@@ -168,8 +161,6 @@ export function ImprovedTokenDeployTool() {
 
   return (
     <div className="space-y-6">
-      {/* Wallet Connection Section */}
-
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Input Form */}
         <Card className="bg-slate-800/50 border-slate-700">
@@ -330,7 +321,7 @@ export function ImprovedTokenDeployTool() {
                       <span className="text-sm font-medium text-white">{t("deploy_token.deployment_fee")}</span>
                     </div>
                     <div className="text-right">
-                      <div className="text-lg font-bold text-white">{getDeployFee(chainId)} {chain_info[chainId].symbol}</div>
+                      <div className="text-lg font-bold text-white">{getToolFee(chainId, chain, deploy_token_fee)} {chain_info[chainId].symbol}</div>
                       <div className="text-xs text-slate-400">{t("deploy_token.fee_required")}</div>
                     </div>
                   </div>

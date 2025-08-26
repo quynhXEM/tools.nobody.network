@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl"
 import { cn } from "@/lib/utils"
 import { useRouter } from "@/i18n/navigation"
 import { toast } from "@/hooks/use-toast"
+import DeployChainIcon from "@/res/DeployChainIcon"
 
 const tools = [
   {
@@ -22,6 +23,14 @@ const tools = [
     descKey: "tx.desc",
     icon: FileText,
     color: "from-violet-500 to-purple-500",
+    active: true
+  },
+  {
+    id: "chain-builder",
+    titleKey: "Chain Builder",
+    descKey: "chainbuilder",
+    icon: DeployChainIcon,
+    color: "from-cyan-500 to-emerald-500",
     active: true
   },
   {

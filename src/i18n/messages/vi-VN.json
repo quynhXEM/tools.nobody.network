@@ -105,6 +105,7 @@
     "analyzer": "Phân tích Holder",
     "desc": "Phân tích phân bổ holder và hành vi ví"
   },
+  "chainbuilder": "Triển khai blockchain PoS độc lập, tương thích Ethereum và các chain phổ biến như BNB Chain, Polygon, Avalanche..",
   "deployment": {
     "results": "Kết quả triển khai",
     "configure": {

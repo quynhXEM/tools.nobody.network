@@ -18,7 +18,7 @@ export function SimplifiedToolLayout({ title, description, children, icon, color
           <div
             className={`rounded-lg bg-gradient-to-r ${color} items-center justify-center p-2`}
           >
-            <IconComponent className="text-white" />
+            <IconComponent className="text-white w-6 h-6" color="#ffffff"/>
           </div>
           &nbsp;
           <h1 className="text-3xl font-bold text-white">{title}</h1>

@@ -12,6 +12,7 @@ import LocaleDropdown from "@/app/commons/LocaleDropdown"
 import { cn } from "@/libs/utils"
 import { toast } from "@/hooks/use-toast"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu"
+import DeployChainIcon from "@/res/DeployChainIcon"
 
 const navigationItems = [
   {
@@ -34,6 +35,13 @@ const navigationItems = [
     nameKey: "Transaction Decoder",
     icon: FileText,
     path: "/tools/transaction-decoder",
+    active: true
+  },
+  {
+    id: "chain-builder",
+    nameKey: "Chain Builder",
+    icon: DeployChainIcon,
+    path: "/tools/chain-builder",
     active: true
   },
   {
@@ -143,7 +151,7 @@ export function UnifiedHeader() {
                       {l.isLogo ? (
                         <Logo className="w-4 h-4" />
                       ) : (
-                        <IconComponent className="w-4 h-4" />
+                        <IconComponent className="w-4 h-4" color="#8b8d91" />
                       )}
                       {l.nameKey}
                     </DropdownMenuItem>

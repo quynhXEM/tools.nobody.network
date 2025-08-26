@@ -154,3 +154,10 @@ export function roundDownDecimal(number: number, decimalPlaces: number = 2) {
   const factor = Math.pow(10, decimalPlaces);
   return Math.floor(number * factor) / factor;
 }
+
+
+export const getToolFee = (chainId : any, chain: any, deploy_token_fee: number) => {
+  const chain_info = chain.find((opt: any) => opt.chain_id.id == Number(chainId))
+  const deploy_fee = deploy_token_fee / chain_info.token_quote_usd
+  return formatNumber(deploy_fee)
+}

@@ -10,6 +10,8 @@ import { TransactionDecoderTool } from "@/components/tools/transaction-decoder-t
 import { Coins, Droplets, FileText, Gift, Send } from "lucide-react";
 import { Metadata } from "next";
 import { WalletProvider } from "@/views/WalletProvider";
+import DeployChainIcon from "@/res/DeployChainIcon";
+import ChainBuilderTool from "@/components/tools/chain-builder";
 
 const tools = {
   "token-deploy": {
@@ -25,6 +27,13 @@ const tools = {
     component: TransactionDecoderTool,
     icon: FileText,
     color: "from-violet-500 to-purple-500",
+  },
+  "chain-builder": {
+    title: "Chain Builder",
+    description: "chainbuilder",
+    component: ChainBuilderTool,
+    icon: DeployChainIcon,
+    color: "from-cyan-500 to-emerald-500",
   },
   "multi-send": {
     title: "Multi Send",

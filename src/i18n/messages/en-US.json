@@ -161,6 +161,7 @@
   "multisend": {
     "completed": "Multi send completed!"
   },
+  "chainbuilder": "Deploy independent PoS blockchain, compatible with Ethereum and popular chains like BNB Chain, Polygon, Avalanche..",
   "tokens": {
     "sent": {
       "to": "Tokens sent to"
