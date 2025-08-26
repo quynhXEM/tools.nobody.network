@@ -54,12 +54,12 @@ export default function ChainBuilderTool() {
     const { handleSubmit, control, formState: { errors }, setValue, watch } = useForm({
         resolver: zodResolver(FormSchema),
         defaultValues: {
-            chainName: "ABC Chain",
+            chainName: "",
             chainPay: "123999",
-            rpcUrl: "a-rpc.nobody.network",
-            chainId: "123",
-            symbol: "ACT",
-            explorerDomain: "a-scan.nobody.network",
+            rpcUrl: "",
+            chainId: "",
+            symbol: "",
+            explorerDomain: "",
             email: "",
             icon: undefined,
             logo: undefined,
@@ -141,14 +141,6 @@ export default function ChainBuilderTool() {
         }
         setLoading(false)
     }
-
-    useEffect(()=>{
-        notify({
-            title: t("chain_builder.notify.success_title"),
-            type: true,
-            message: t("chain_builder.notify.deploy_success", { name: "aaa" })
-        })
-    },[])
 
     return (
         <div className="space-y-6">

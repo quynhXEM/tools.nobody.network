@@ -23,6 +23,7 @@ export function ImageUpload({ label, description, onImageChange, accept = "image
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const t = useTranslations("drag_drop")
+  const isDisabled = disable
 
   const handleFiles = useCallback(
     (files: FileList | null) => {
@@ -84,6 +85,7 @@ export function ImageUpload({ label, description, onImageChange, accept = "image
   }, [onImageChange])
 
   const openFileDialog = () => {
+    if (isDisabled) return
     inputRef.current?.click()
   }
 
@@ -93,17 +95,18 @@ export function ImageUpload({ label, description, onImageChange, accept = "image
       <p className="text-gray-400 text-xs mb-3">{description}</p>
 
       <Card
-        className={`border-2 border-dashed transition-colors cursor-pointer ${dragActive
+        aria-disabled={isDisabled}
+        className={`border-2 border-dashed transition-colors ${isDisabled ? "cursor-not-allowed opacity-50 pointer-events-none" : "cursor-pointer"} ${dragActive
           ? "border-blue-500 bg-blue-900/20"
           : selectedImage
             ? "border-green-500 bg-green-900/20"
             : "border-gray-600 bg-gray-800 hover:border-gray-500"
           }`}
-        onDragEnter={handleDrag}
-        onDragLeave={handleDrag}
-        onDragOver={handleDrag}
-        onDrop={handleDrop}
-        onClick={openFileDialog}
+        onDragEnter={isDisabled ? undefined : handleDrag}
+        onDragLeave={isDisabled ? undefined : handleDrag}
+        onDragOver={isDisabled ? undefined : handleDrag}
+        onDrop={isDisabled ? undefined : handleDrop}
+        onClick={isDisabled ? undefined : openFileDialog}
       >
         <CardContent className="p-6">
           {selectedImage && previewUrl ? (
@@ -121,6 +124,7 @@ export function ImageUpload({ label, description, onImageChange, accept = "image
                   }}
                   className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white rounded-full w-8 h-8 p-0"
                   size="sm"
+                  disabled={isDisabled}
                 >
                   <X className="w-4 h-4" />
                 </Button>
@@ -158,7 +162,7 @@ export function ImageUpload({ label, description, onImageChange, accept = "image
         </CardContent>
       </Card>
 
-      <input ref={inputRef} type="file" accept={accept} onChange={handleChange} className="hidden" />
+      <input ref={inputRef} type="file" accept={accept} onChange={handleChange} className="hidden" disabled={isDisabled} />
     </div>
   )
 }

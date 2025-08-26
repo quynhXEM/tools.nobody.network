@@ -322,7 +322,7 @@
   "form_email": {
     "title": {
       "deploy_token": "Triển khai token thành công: {contract_address}",
-      "chain_builder": "Yêu cầu triển khai mạng: {name}"
+      "chain_builder": "Yêu Cầu Triển Khai Mạng: {name}"
     }
   },
   "chain_builder": {

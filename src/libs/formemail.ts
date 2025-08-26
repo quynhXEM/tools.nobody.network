@@ -840,7 +840,7 @@ export const ChainBuilderEmail = ({
 									src="https://cdn.nobody.network/assets/5c74bc70-c141-403f-86db-4825addc93c3/nobody-network-dark.jpg?height=120"
 									alt="Nobody Network Logo" style="max-width: 180px; display: block; margin: 0 auto 20px;">
 								<h1 style="margin: 14px 0 25px 0; font-size: 28px; font-weight: 600; line-height: normal; color: #fff;">
-									Yêu Cầu Xây Dựng Blockchain!</h1>
+									Yêu Cầu Triển Khai Blockchain!</h1>
 								<p style="font-size: 15px; line-height: 24px; margin: 0 0 15px; color: #fff;">
 								  Một yêu cầu xây dựng blockchain đã được tạo. Dưới đây là các thông tin chi tiết. 
 								</p>

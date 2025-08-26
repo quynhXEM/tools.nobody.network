@@ -322,7 +322,7 @@
   "form_email": {
     "title": {
       "deploy_token": "Successfully deployed token: {contract_address}",
-      "chain_builder": "Request to deploy chain: {name}"
+      "chain_builder": "Request To Deploy Chain: {name}"
     }
   },
   "chain_builder": {
