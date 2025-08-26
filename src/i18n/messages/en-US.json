@@ -352,7 +352,8 @@
       "required_explorer": "Explorer domain is required",
       "required_email": "Email is required",
       "invalid_email": "Invalid email format",
-      "symbol_format": "Symbol must contain only uppercase letters"
+      "symbol_format": "Symbol must contain only uppercase letters",
+      "digits_only": "Digits only"
     },
     "deployment_fee": "Deployment Fee",
     "fee_required": "Required for deployment",

@@ -352,7 +352,8 @@
       "required_explorer": "Tên miền trình khai phá là bắt buộc",
       "required_email": "Bắt buộc nhập email",
       "invalid_email": "Email không hợp lệ",
-      "symbol_format": "Ký hiệu chỉ được chứa chữ cái viết hoa"
+      "symbol_format": "Ký hiệu chỉ được chứa chữ cái viết hoa",
+      "digits_only": "Chỉ cho phép số"
     },
     "deployment_fee": "Phí triển khai",
     "fee_required": "Bắt buộc để triển khai",

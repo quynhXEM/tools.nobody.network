@@ -35,7 +35,9 @@ export default function ChainBuilderTool() {
     const FormSchema = useMemo(() => z.object({
         chainName: z.string().min(1, t("chain_builder.validation.required_name")),
         rpcUrl: z.string().min(1, t("chain_builder.validation.required_rpc")),
-        chainId: z.string().min(1, t("chain_builder.validation.required_chain_id")),
+        chainId: z.string()
+            .min(1, t("chain_builder.validation.required_chain_id"))
+            .regex(/^\d+$/, t("chain_builder.validation.digits_only")),
         symbol: z.string()
             .min(1, t("chain_builder.validation.required_symbol"))
             .regex(/^[A-Z]+$/, t("chain_builder.validation.symbol_format")),
@@ -169,6 +171,12 @@ export default function ChainBuilderTool() {
                                                         type="text"
                                                         {...field}
                                                         placeholder="123999"
+                                                        inputMode="numeric"
+                                                        pattern="[0-9]*"
+                                                        onChange={(e) => {
+                                                            const digitsOnly = e.target.value.replace(/\D/g, "");
+                                                            field.onChange(digitsOnly);
+                                                        }}
                                                     />
                                                     {errors.chainId && <span className="text-red-500 text-xs">{errors.chainId.message as string}</span>}
                                                 </div>
