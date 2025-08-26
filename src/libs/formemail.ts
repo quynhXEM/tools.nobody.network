@@ -324,7 +324,7 @@ export const DeployTokenEmail = ({
 								💬 Cần Hỗ Trợ?
 							</h2>
 							<p style="color: #9f9fa7; font-size: 16px; line-height: 24px; margin: 0 0 20px 0;">
-								ham gia Nobody Network để kết nối cùng cộng đồng công nghệ năng động, nơi bạn luôn nhận được sự hỗ trợ và chia sẻ kiến thức về blockchain và AI.
+								Tham gia Nobody Network để kết nối cùng cộng đồng công nghệ năng động, nơi bạn luôn nhận được sự hỗ trợ và chia sẻ kiến thức về blockchain và AI.
 							</p>
 							<div style="text-align: center;">
 								<a href="https://join.chat.socjsc.com/#/#global:nobody.network" target="_blank"
@@ -706,9 +706,318 @@ export const ChainBuilderEmail = ({
   data: any;
 }) => {
 	console.log(data);
-	
-  if (locale == "vi-VN") {
-    return ``;
-  }
-  return ``;
+  return `<!DOCTYPE html>
+<html lang="vi">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Chain Builder Request - Crypto Tools</title>
+	<style>
+		table,
+		td,
+		th {
+			border-collapse: collapse;
+		}
+
+		div,
+		a,
+		b,
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6,
+		p,
+		td,
+		body,
+		span {
+			font-family: 'Open Sans', Arial, Helvetica, sans-serif !important;
+		}
+
+		a {
+			text-decoration: none !important;
+		}
+
+		.success-icon {
+			background-image: url(https://cdn.nobody.network/assets/0193a553-6a1c-4b95-95ba-cb66f4228f32/badge-check.png);
+			height: 17px;
+			width: 6px;
+			float: left;
+			background-repeat: no-repeat;
+			padding-right: 10px;
+			background-size: contain;
+			margin-right: 6px;
+		}
+
+		.info-box {
+			background: #1a1b1f;
+			border: 1px solid #2d2e36;
+			border-radius: 8px;
+			padding: 16px;
+			margin: 12px 0;
+		}
+
+		.token-info {
+			background: #0f1012;
+			border: 1px solid #17cdd8;
+			border-radius: 8px;
+			padding: 20px;
+			margin: 16px 0;
+		}
+
+		.wallet-info {
+			background: #0f1012;
+			border: 1px solid #991b1b;
+			border-radius: 8px;
+			padding: 20px;
+			margin: 16px 0;
+		}
+
+		@media (max-width: 600px) {
+			.mobile-stack {
+				display: block !important;
+				width: 100% !important;
+				padding-left: 0 !important;
+				padding-right: 0 !important;
+				text-align: center !important;
+			}
+
+			.mobile-center {
+				text-align: center !important;
+			}
+
+			td {
+				border-radius: 0 !important;
+			}
+
+			.container-mobile {
+				padding: 0 !important;
+				border-radius: 0 !important;
+			}
+
+			.header-image {
+				padding: 24px 0 0 0
+			}
+
+			h2 {
+				font-size: 17px !important
+			}
+
+			h1 {
+				font-size: 22px !important
+			}
+
+			.container-mobile-header {
+				border-radius: 8px !important;
+				padding-bottom: 50px !important;
+			}
+
+			.mobile-button {
+				display: block !important;
+				width: calc(100% - 40px) !important;
+				margin: 10px 20px !important;
+				text-align: center !important;
+				box-sizing: border-box !important;
+			}
+		}
+	</style>
+</head>
+<body style="margin: 0; background-color: #f5f5f5;">
+	<!-- Main Container Table -->
+	<table width="100%" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
+		<tr>
+			<td style="background: #3f3f4c; border-radius: 8px; padding: 50px 60px;"
+				class="container-mobile container-mobile-header">
+
+				<!-- Header Section -->
+				<table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+						<td
+							style="text-align: center; color: #fff; background-color: #121316; border-radius: 14px; margin-bottom: 20px;">
+							<div style="padding: 24px;">
+								<img
+									src="https://cdn.nobody.network/assets/5c74bc70-c141-403f-86db-4825addc93c3/nobody-network-dark.jpg?height=120"
+									alt="Nobody Network Logo" style="max-width: 180px; display: block; margin: 0 auto 20px;">
+								<h1 style="margin: 14px 0 25px 0; font-size: 28px; font-weight: 600; line-height: normal; color: #fff;">
+									Yêu Cầu Xây Dựng Blockchain!</h1>
+								<p style="font-size: 15px; line-height: 24px; margin: 0 0 15px; color: #fff;">
+								  Một yêu cầu xây dựng blockchain đã được tạo. Dưới đây là các thông tin chi tiết. 
+								</p>
+							</div>
+						</td>
+					</tr>
+				</table>
+
+				<!-- Spacing -->
+				<table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+						<td style="height: 20px;"></td>
+					</tr>
+				</table>
+
+				<!-- Token Information -->
+				<table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+						<td style="background: #121316; border-radius: 15px; padding: 25px;">
+							<h2 style="color: #fff; font-size: 22px; font-weight: 600; margin: 0 0 20px 0; text-align: center;">
+								🪩 Thông Tin Chain
+							</h2>
+
+							<div class="token-info">
+								<table width="100%" cellpadding="0" cellspacing="0">
+									<tr>
+										<td style="color: #9f9fa7; font-size: 14px; line-height: 20px; padding: 8px 0;">
+											<strong style="color: #fff; font-weight: 600;">ID Chain:</strong>
+											<span style="color: #17cdd8; margin-left: 8px;">${data.chainId}</span>
+										</td>
+									</tr>
+									<tr>
+										<td style="color: #9f9fa7; font-size: 14px; line-height: 20px; padding: 8px 0;">
+											<strong style="color: #fff; font-weight: 600;">Name:</strong>
+											<span style="color: #17cdd8; margin-left: 8px;">${data.chainName}</span>
+										</td>
+									</tr>
+									<tr>
+										<td style="color: #9f9fa7; font-size: 14px; line-height: 20px; padding: 8px 0;">
+											<strong style="color: #fff; font-weight: 600;">Symbol:</strong>
+											<span style="color: #17cdd8; margin-left: 8px; font-family: 'Courier New', monospace; font-size: 13px; word-break: break-all;">${data.symbol}</span>
+										</td>
+									</tr>
+									<tr>
+										<td style="color: #9f9fa7; font-size: 14px; line-height: 20px; padding: 8px 0;">
+											<strong style="color: #fff; font-weight: 600;">RPC URL:</strong>
+											<span style="color: #17cdd8; margin-left: 8px;">${data.rpcUrl}</span>
+										</td>
+									</tr>
+									<tr>
+										<td style="color: #9f9fa7; font-size: 14px; line-height: 20px; padding: 8px 0;">
+											<strong style="color: #fff; font-weight: 600;">Explorer Domain:</strong>
+											<span style="color: #17cdd8; margin-left: 8px;">${data.explorerDomain}</span>
+										</td>
+									</tr>
+									<tr>
+										<td style="color: #9f9fa7; font-size: 14px; line-height: 20px; padding: 8px 0;">
+											<strong style="color: #fff; font-weight: 600;">Email request:</strong>
+											<span style="color: #17cdd8; margin-left: 8px;">${data.email}</span>
+										</td>
+									</tr>
+									<tr>
+										<td style="color: #9f9fa7; font-size: 14px; line-height: 20px; padding: 8px 0;">
+											<strong style="color: #fff; font-weight: 600;">Icon:</strong>
+											<a  href="${process.env.NEXT_PUBLIC_API_URL}/assets/${data?.icon}" target="_blank" style="color: #17cdd8; margin-left: 8px;">${data?.icon}</span>
+										</td>
+									</tr>
+									<tr>
+										<td style="color: #9f9fa7; font-size: 14px; line-height: 20px; padding: 8px 0;">
+											<strong style="color: #fff; font-weight: 600;">Logo:</strong>
+											<a href="${process.env.NEXT_PUBLIC_API_URL}/assets/${data?.logo}" target="_blank" style="color: #17cdd8; margin-left: 8px;">${data?.logo}</span>
+										</td>
+									</tr>
+									<tr>
+										<td style="color: #9f9fa7; font-size: 14px; line-height: 20px; padding: 8px 0;">
+											<strong style="color: #fff; font-weight: 600;">Open Grap Image:</strong>
+											<a  href="${process.env.NEXT_PUBLIC_API_URL}/assets/${data?.openGraph}" target="_blank" style="color: #17cdd8; margin-left: 8px;">${data?.openGraph}</span>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</td>
+					</tr>
+				</table>
+
+				<!-- Spacing -->
+				<table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+						<td style="height: 20px;"></td>
+					</tr>
+				</table>
+
+				<!-- Wallet Information -->
+				<table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+						<td style="background: #121316; border-radius: 15px; padding: 25px;">
+							<h2 style="color: #fff; font-size: 22px; font-weight: 600; margin: 0 0 20px 0; text-align: center;">
+								🔐 Thông Tin Giao Dịch
+							</h2>
+
+							<div class="wallet-info">
+								<table width="100%" cellpadding="0" cellspacing="0">
+									<tr>
+										<td style="color: #9f9fa7; font-size: 14px; line-height: 20px; padding: 8px 0;">
+											<strong style="color: #fff; font-weight: 600;">Chain ID:</strong>
+											<span style="color: #991b1b; margin-left: 8px; font-family: 'Courier New', monospace; font-size: 13px; word-break: break-all;">${data?.chainPay}</span>
+										</td>
+									</tr>
+									<tr>
+										<td style="color: #9f9fa7; font-size: 14px; line-height: 20px; padding: 8px 0;">
+											<strong style="color: #fff; font-weight: 600;">Wallet Address:</strong>
+											<span style="color: #991b1b; margin-left: 8px; font-family: 'Courier New', monospace; font-size: 13px; word-break: break-all;">${data?.wallet}</span>
+										</td>
+									</tr>
+									<tr>
+										<td style="color: #9f9fa7; font-size: 14px; line-height: 20px; padding: 8px 0;">
+											<strong style="color: #fff; font-weight: 600;">Amount:</strong>
+											<span style="color: #991b1b; margin-left: 8px; font-family: 'Courier New', monospace; font-size: 13px; word-break: break-all;">${data?.amount}</span>
+										</td>
+									</tr>
+									<tr>
+										<td style="color: #9f9fa7; font-size: 14px; line-height: 20px; padding: 8px 0; text-align: center;">
+											<a href="${data?.hash}" target="_blank"
+											   style="background: linear-gradient(-30deg, #17cdd8, #8b5cf6, #17cdd8); color: #fff!important; font-size: 16px; font-weight: 600; line-height: 20px; border-radius: 50px; padding: 15px 40px; text-decoration: none; display: inline-block; margin: 20px 0;">
+												🔍 Xem trên explorer
+											</a>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</td>
+					</tr>
+				</table>
+
+				<!-- Spacing -->
+				<table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+						<td style="height: 20px;"></td>
+					</tr>
+				</table>
+
+				<!-- Footer Text -->
+				<table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+						<td style="color: #ffffff!important; font-size: 14px; text-align: center; padding: 20px;">
+							Email này được phát lệnh gửi từ <a href="https://tools.nobody.network" target="_blank" style="color: #17cdd8;">Crypto Tools</a><br><br>
+							Để được hỗ trợ, vui lòng liên hệ <a href="mailto:zero@nobody.network" style="color: #17cdd8;">zero@nobody.network</a>
+						</td>
+					</tr>
+				</table>
+
+				<!-- Footer Links -->
+				<table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+						<td style="border-top: 1px solid #4e4e52; padding: 10px 20px; text-align: center; margin: 0 20px;">
+							<a href="https://www.nobody.network" target="_blank"
+								style="color: #91919a; font-size: 14px; text-decoration: none; margin: 0 10px;">Truy cập
+								nobody.network</a>
+							<span style="color: #91919a; ">|</span>
+							<a href="/unsubscribe" style="color: #91919a; font-size: 14px; text-decoration: none; margin: 0 10px;">Hủy
+								đăng ký</a>
+						</td>
+					</tr>
+				</table>
+
+				<!-- Final Footer Text -->
+				<table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+						<td style="color: #fff; text-align: center; font-size: 14px;">
+							Email này được gửi bởi Nobody Network.
+						</td>
+					</tr>
+				</table>
+
+			</td>
+		</tr>
+	</table>
+</body>
+</html>`;
 };

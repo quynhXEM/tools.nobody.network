@@ -14,10 +14,10 @@ interface ImageUploadProps {
   onImageChange: (file: File | null) => void
   accept?: string
   children?: React.ReactNode
-  disable?: false
+  disable?: boolean
 }
 
-export function ImageUpload({ label, description, onImageChange, accept = "image/*", children }: ImageUploadProps) {
+export function ImageUpload({ label, description, onImageChange, accept = "image/*", children, disable = false }: ImageUploadProps) {
   const [dragActive, setDragActive] = useState(false)
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)

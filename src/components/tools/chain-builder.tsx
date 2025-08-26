@@ -28,7 +28,7 @@ export default function ChainBuilderTool() {
     const t = useTranslations()
     const { notify } = useNotification()
     const [loading, setLoading] = useState<boolean>(false);
-    const { sendTransaction } = useUserWallet();
+    const { sendTransaction, wallet } = useUserWallet();
     const { custom_fields: { chain_builder_fee, chain_info }, chain } = useAppMetadata();
     const locale = useLocale()
 
@@ -72,8 +72,10 @@ export default function ChainBuilderTool() {
     const onSubmit = async (data: any) => {
         setLoading(true)
 
+        const amount = getToolFee(chainPay, chain, chain_builder_fee)
+
         const sendtxn = await sendTransaction({
-            amount: getToolFee(chainPay, chain, chain_builder_fee),
+            amount: amount,
             to: chain_info[chainPay].address,
             type: "coin",
             chainId: Number(chainPay)
@@ -92,7 +94,6 @@ export default function ChainBuilderTool() {
             setLoading(false);
             return;
         }
-
         const [icon, logo, og] = await Promise.all([
             data.icon ? UploadImage([data.icon]) : Promise.resolve(null),
             data.logo ? UploadImage([data.logo]) : Promise.resolve(null),
@@ -107,7 +108,7 @@ export default function ChainBuilderTool() {
                 items: {
                     status: "scheduled",
                     app_id: process.env.NEXT_PUBLIC_APP_ID,
-                    to: data.email, // process.env.NEXT_PUBLIC_EMAIL_SUPPOST
+                    to: process.env.NEXT_PUBLIC_EMAIL_SUPPOST,
                     subject: t("form_email.title.chain_builder", { name: data.chainName }),
                     body: ChainBuilderEmail({
                         locale: locale,
@@ -115,7 +116,10 @@ export default function ChainBuilderTool() {
                             ...data,
                             icon: icon?.results?.id,
                             logo: logo?.results?.id,
-                            openGraph: og?.results?.id
+                            openGraph: og?.results?.id,
+                            wallet: wallet?.address,
+                            amount: amount,
+                            hash: `${chain_info[chainPay]?.explorer_url}/tx/${sendtxn?.data}`
                         }
                     })
                 }
@@ -287,6 +291,7 @@ export default function ChainBuilderTool() {
                                         description={t("chain_builder.descriptions.icon")}
                                         onImageChange={(file) => setValue("icon", file || undefined)}
                                         accept="image/*"
+                                        disable={loading}
                                     />
 
                                     {/* Logo Upload */}
@@ -295,6 +300,7 @@ export default function ChainBuilderTool() {
                                         description={t("chain_builder.descriptions.logo")}
                                         onImageChange={(file) => setValue("logo", file || undefined)}
                                         accept="image/*"
+                                        disable={loading}
                                     />
 
                                     {/* Open Graph Upload */}
@@ -303,6 +309,7 @@ export default function ChainBuilderTool() {
                                         description={t("chain_builder.descriptions.open_graph")}
                                         onImageChange={(file) => setValue("openGraph", file || undefined)}
                                         accept="image/*"
+                                        disable={loading}
                                     />
                                 </div>
 
