@@ -321,7 +321,56 @@
   },
   "form_email": {
     "title": {
-      "deploy_token": "Successfully deployed token: {contract_address}"
+      "deploy_token": "Successfully deployed token: {contract_address}",
+      "chain_builder": "Request to deploy chain: {name}"
     }
+  },
+  "chain_builder": {
+    "title": "Chain Configuration",
+    "pay": "Payment",
+    "labels": {
+      "chain_name": "Chain name",
+      "rpc_url": "RPC URL",
+      "chain_id": "Chain id",
+      "symbol": "Currency symbol",
+      "explorer_domain": "Explorer domain",
+      "email": "Email",
+      "icon": "Chain ccon",
+      "logo": "Chain logo",
+      "open_graph": "Open graph image"
+    },
+    "descriptions": {
+      "icon": "Upload chain icon (optional)",
+      "logo": "Upload chain logo (optional)",
+      "open_graph": "Upload open graph image for social sharing (optional)"
+    },
+    "validation": {
+      "required_name": "Chain name is required",
+      "required_rpc": "RPC URL is required",
+      "required_chain_id": "Chain ID is required",
+      "required_symbol": "Currency symbol is required",
+      "required_explorer": "Explorer domain is required",
+      "required_email": "Email is required",
+      "invalid_email": "Invalid email format",
+      "symbol_format": "Symbol must contain only uppercase letters"
+    },
+    "deployment_fee": "Deployment Fee",
+    "fee_required": "Required for deployment",
+    "fill_chain_info": "Fill chain information to see fee",
+    "notify": {
+      "failure_title": "Failed",
+      "tx_failed": "Transaction failed",
+      "success_title": "Success",
+      "warning_title": "Warning",
+      "warning_progress_desc": "The request deployment process is in progress. Please wait and do not close the page!",
+      "deploy_success": "The request deployment has been sent. The result will be sent via email.",
+      "deploy_error_prefix": "An error occurred while sending the request: "
+    }
+  },
+  "drag_drop": {
+    "drop_here": "Thả ảnh vào đây",
+    "drag_drop_here": "Kéo thả ảnh vào đây",
+    "or_click_to_select": "hoặc click để chọn file",
+    "supported_formats": "Hỗ trợ: JPG, PNG (tối đa 10MB)"
   }
 }

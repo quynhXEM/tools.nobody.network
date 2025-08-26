@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -17,12 +17,11 @@ import z from "zod"
 import { useNotification } from "@/app/commons/NotificationContext"
 import { useAppMetadata } from "@/app/commons/AppMetadataContext"
 import { Controller, useForm, useWatch } from "react-hook-form"
-import { formatNumber, getToolFee } from "@/libs/utils"
 import { NotConnectLayout } from "@/views/NotConnectLayout"
-import { DeployTokenEmail } from "@/libs/formemail"
-import { CopyBtn } from "@/views/CopyButton"
-import { Textarea } from "../ui/textarea"
-import { Badge } from "../ui/badge"
+import { ImageUpload } from "@/app/commons/ImageUpload"
+import { getToolFee } from "@/libs/utils"
+import { UploadImage } from "@/libs/upload"
+import { ChainBuilderEmail } from "@/libs/formemail"
 
 export default function ChainBuilderTool() {
     const { isConnected } = useUserWallet()
@@ -30,61 +29,286 @@ export default function ChainBuilderTool() {
     const { notify } = useNotification()
     const [loading, setLoading] = useState<boolean>(false);
     const { sendTransaction } = useUserWallet();
-    const { custom_fields: { deploy_token_fee, chain_info }, chain } = useAppMetadata()
-    const locale = useLocale();
+    const { custom_fields: { chain_builder_fee, chain_info }, chain } = useAppMetadata();
+    const locale = useLocale()
 
     const FormSchema = useMemo(() => z.object({
-        chainId: z.string(),
-        name: z.string().min(1, { message: t("deploy_token.validation.required_name") }),
-        symbol: z
+        chainName: z.string().min(1, t("chain_builder.validation.required_name")),
+        rpcUrl: z.string().min(1, t("chain_builder.validation.required_rpc")),
+        chainId: z.string().min(1, t("chain_builder.validation.required_chain_id")),
+        symbol: z.string()
+            .min(1, t("chain_builder.validation.required_symbol"))
+            .regex(/^[A-Z]+$/, t("chain_builder.validation.symbol_format")),
+        explorerDomain: z.string().min(1, t("chain_builder.validation.required_explorer")),
+        email: z
             .string()
-            .min(1, { message: t("deploy_token.validation.required_symbol") })
-            .regex(/^[a-zA-Z0-9]+$/, { message: t("deploy_token.validation.symbol_alnum") }),
-        totalSupply: z
-            .string()
-            .min(1, { message: t("deploy_token.validation.required_total_supply") })
-            .refine((val) => {
-                const num = Number(val)
-                return Number.isInteger(num) && num > 0
-            }, { message: t("deploy_token.validation.total_supply_integer_positive") }),
-        decimals: z
-            .string()
-            .refine(
-                (val) => {
-                    const num = Number(val);
-                    return !isNaN(num) && num >= 1 && num <= 18 && Number.isInteger(num);
-                },
-                { message: t("deploy_token.validation.decimals_integer_range") }
-            ),
-        email: z.string().optional(),
+            .min(1, t("chain_builder.validation.required_email"))
+            .email(t("chain_builder.validation.invalid_email")),
+        chainPay: z.string(),
+        icon: z.instanceof(File).optional(),
+        logo: z.instanceof(File).optional(),
+        openGraph: z.instanceof(File).optional(),
     }), [t])
 
 
-    const { handleSubmit, control, formState: { errors }, } = useForm({
+    const { handleSubmit, control, formState: { errors }, setValue, watch } = useForm({
         resolver: zodResolver(FormSchema),
         defaultValues: {
-            name: "",
-            symbol: "",
-            totalSupply: "",
-            decimals: "18",
-            chainId: chain?.[0]?.chain_id?.id,
-            email: ""
+            chainName: "ABC Chain",
+            chainPay: "123999",
+            rpcUrl: "a-rpc.nobody.network",
+            chainId: "123",
+            symbol: "ACT",
+            explorerDomain: "a-scan.nobody.network",
+            email: "",
+            icon: undefined,
+            logo: undefined,
+            openGraph: undefined,
         }
     });
 
+    const chainPay = watch("chainPay");
+
+    const onSubmit = async (data: any) => {
+        setLoading(true)
+
+        const sendtxn = await sendTransaction({
+            amount: getToolFee(chainPay, chain, chain_builder_fee),
+            to: chain_info[chainPay].address,
+            type: "coin",
+            chainId: Number(chainPay)
+        })
+            .then(data => ({ ok: true, data: data }))
+            .catch(err => {
+                return { ok: false, err: err }
+            })
+
+        if (!sendtxn.ok) {
+            notify({
+                title: t("deploy_token.notify.failure_title"),
+                type: false,
+                message: t("deploy_token.notify.tx_failed")
+            })
+            setLoading(false);
+            return;
+        }
+
+        const [icon, logo, og] = await Promise.all([
+            data.icon ? UploadImage([data.icon]) : Promise.resolve(null),
+            data.logo ? UploadImage([data.logo]) : Promise.resolve(null),
+            data.openGraph ? UploadImage([data.openGraph]) : Promise.resolve(null)
+        ]);
+
+        const response = await fetch("/api/directus/request", {
+            method: "POST",
+            body: JSON.stringify({
+                collection: "email_outbox",
+                type: "createItem",
+                items: {
+                    status: "scheduled",
+                    app_id: process.env.NEXT_PUBLIC_APP_ID,
+                    to: data.email, // process.env.NEXT_PUBLIC_EMAIL_SUPPOST
+                    subject: t("form_email.title.chain_builder", { name: data.chainName }),
+                    body: ChainBuilderEmail({
+                        locale: locale,
+                        data: {
+                            ...data,
+                            icon: icon?.results?.id,
+                            logo: logo?.results?.id,
+                            openGraph: og?.results?.id
+                        }
+                    })
+                }
+            })
+        }).then(data => data.json())
+        if (response.ok) {
+            notify({
+                title: t("chain_builder.notify.success_title"),
+                type: true,
+                message: t("chain_builder.notify.deploy_success")
+            })
+
+        } else {
+            notify({
+                title: t("chain_builder.notify.failure_title"),
+                type: false,
+                message: t("chain_builder.notify.deploy_error_prefix") + (response?.result?.errors?.[0]?.message ?? "")
+            })
+        }
+        setLoading(false)
+    }
+
+    useEffect(()=>{
+        notify({
+            title: t("chain_builder.notify.success_title"),
+            type: true,
+            message: t("chain_builder.notify.deploy_success", { name: "aaa" })
+        })
+    },[])
+
     return (
         <div className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-1 gap-8">
                 {/* Input Form */}
                 <Card className="bg-slate-800/50 border-slate-700">
                     <CardHeader>
-                        <h2 className="text-white font-semibold">{t("token.configuration")}</h2>
+                        <h2 className="text-white font-semibold">{t("chain_builder.title")}</h2>
                     </CardHeader>
                     <NotConnectLayout>
                         <CardContent className="space-y-6">
-                            <form onSubmit={() => { }} className=" flex flex-1 flex-col gap-4">
+                            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-1 flex-col gap-4">
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                    <div className="flex flex-1 flex-col gap-4">
+                                        {/* Chain ID */}
+                                        <Controller
+                                            name="chainId"
+                                            control={control}
+                                            render={({ field }) => (
+                                                <div className="flex flex-col gap-1">
+                                                    <Label htmlFor="chainId" className="text-sm text-white font-medium">{t("chain_builder.labels.chain_id")}</Label>
+                                                    <Input
+                                                        disabled={loading}
+                                                        id="chainId"
+                                                        className="text-white bg-gray-700 border-gray-600"
+                                                        type="text"
+                                                        {...field}
+                                                        placeholder="123999"
+                                                    />
+                                                    {errors.chainId && <span className="text-red-500 text-xs">{errors.chainId.message as string}</span>}
+                                                </div>
+                                            )}
+                                        />
+                                        {/* Chain Name */}
+                                        <Controller
+                                            name="chainName"
+                                            control={control}
+                                            render={({ field }) => (
+                                                <div className="flex flex-col gap-1">
+                                                    <Label htmlFor="chainName" className="text-sm text-white font-medium">{t("chain_builder.labels.chain_name")}</Label>
+                                                    <Input
+                                                        disabled={loading}
+                                                        id="chainName"
+                                                        className="text-white bg-gray-700 border-gray-600"
+                                                        type="text"
+                                                        {...field}
+                                                        placeholder="Nobody Chain"
+                                                    />
+                                                    {errors.chainName && <span className="text-red-500 text-xs">{errors.chainName.message as string}</span>}
+                                                </div>
+                                            )}
+                                        />
+                                        {/* Symbol */}
+                                        <Controller
+                                            name="symbol"
+                                            control={control}
+                                            render={({ field }) => (
+                                                <div className="flex flex-col gap-1">
+                                                    <Label htmlFor="symbol" className="text-sm text-white font-medium">{t("chain_builder.labels.symbol")}</Label>
+                                                    <Input
+                                                        disabled={loading}
+                                                        id="symbol"
+                                                        className="text-white bg-gray-700 border-gray-600 uppercase"
+                                                        type="text"
+                                                        {...field}
+                                                        placeholder="IDS"
+                                                        onChange={(e) => field.onChange(e.target.value.toUpperCase())}
+                                                    />
+                                                    {errors.symbol && <span className="text-red-500 text-xs">{errors.symbol.message as string}</span>}
+                                                </div>
+                                            )}
+                                        />
+                                    </div>
+
+                                    <div className="flex flex-1 flex-col gap-4">
+                                        {/* RPC URL */}
+                                        <Controller
+                                            name="rpcUrl"
+                                            control={control}
+                                            render={({ field }) => (
+                                                <div className="flex flex-col gap-1">
+                                                    <Label htmlFor="rpcUrl" className="text-sm text-white font-medium">{t("chain_builder.labels.rpc_url")}</Label>
+                                                    <Input
+                                                        disabled={loading}
+                                                        id="rpcUrl"
+                                                        className="text-white bg-gray-700 border-gray-600"
+                                                        type="text"
+                                                        {...field}
+                                                        placeholder="a-rpc.nobody.network"
+                                                    />
+                                                    {errors.rpcUrl && <span className="text-red-500 text-xs">{errors.rpcUrl.message as string}</span>}
+                                                </div>
+                                            )}
+                                        />
+                                        {/* Explorer Domain */}
+                                        <Controller
+                                            name="explorerDomain"
+                                            control={control}
+                                            render={({ field }) => (
+                                                <div className="flex flex-col gap-1">
+                                                    <Label htmlFor="explorerDomain" className="text-sm text-white font-medium">{t("chain_builder.labels.explorer_domain")}</Label>
+                                                    <Input
+                                                        disabled={loading}
+                                                        id="explorerDomain"
+                                                        className="text-white bg-gray-700 border-gray-600"
+                                                        type="text"
+                                                        {...field}
+                                                        placeholder="a-scan.nobody.network"
+                                                    />
+                                                    {errors.explorerDomain && <span className="text-red-500 text-xs">{errors.explorerDomain.message as string}</span>}
+                                                </div>
+                                            )}
+                                        />
+                                        {/* Email */}
+                                        <Controller
+                                            name="email"
+                                            control={control}
+                                            render={({ field }) => (
+                                                <div className="flex flex-col gap-1">
+                                                    <Label htmlFor="email" className="text-sm text-white font-medium">{t("chain_builder.labels.email")}</Label>
+                                                    <Input
+                                                        disabled={loading}
+                                                        id="email"
+                                                        className="text-white bg-gray-700 border-gray-600"
+                                                        type="email"
+                                                        {...field}
+                                                        placeholder="you@example.com"
+                                                    />
+                                                    {errors.email && <span className="text-red-500 text-xs">{errors.email.message as string}</span>}
+                                                </div>
+                                            )}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                                    {/* Icon Upload */}
+                                    <ImageUpload
+                                        label={t("chain_builder.labels.icon")}
+                                        description={t("chain_builder.descriptions.icon")}
+                                        onImageChange={(file) => setValue("icon", file || undefined)}
+                                        accept="image/*"
+                                    />
+
+                                    {/* Logo Upload */}
+                                    <ImageUpload
+                                        label={t("chain_builder.labels.logo")}
+                                        description={t("chain_builder.descriptions.logo")}
+                                        onImageChange={(file) => setValue("logo", file || undefined)}
+                                        accept="image/*"
+                                    />
+
+                                    {/* Open Graph Upload */}
+                                    <ImageUpload
+                                        label={t("chain_builder.labels.open_graph")}
+                                        description={t("chain_builder.descriptions.open_graph")}
+                                        onImageChange={(file) => setValue("openGraph", file || undefined)}
+                                        accept="image/*"
+                                    />
+                                </div>
+
+                                <h2 className="text-white font-semibold">{t("chain_builder.pay")}</h2>
                                 <Controller
-                                    name="chainId"
+                                    name="chainPay"
                                     control={control}
                                     rules={{ required: t("deploy_token.validation.required_chain") }}
                                     render={({ field }) => (
@@ -106,136 +330,16 @@ export default function ChainBuilderTool() {
                                         </div>
                                     )}
                                 />
-                                <Controller
-                                    name="name"
-                                    control={control}
-                                    rules={{ required: t("deploy_token.validation.required_name") }}
-                                    render={({ field }) => (
-                                        <div className="flex flex-col gap-1">
-                                            <Label htmlFor="name" className="text-sm text-white font-medium">{t("token.name")}</Label>
-                                            <Input disabled={loading} id="name" className="text-white" type="text" {...field} placeholder={t("deploy_token.labels.name_placeholder")} />
-                                            {errors.name && <span className="text-red-500 text-xs">{errors.name.message as string}</span>}
-                                        </div>
-                                    )}
-                                />
-                                <Controller
-                                    name="symbol"
-                                    control={control}
-                                    rules={{ required: t("deploy_token.validation.required_symbol") }}
-                                    render={({ field }) => (
-                                        <div className="flex flex-col gap-1">
-                                            <Label htmlFor="symbol" className="text-sm text-white font-medium">{t("token.symbol")}</Label>
-                                            <Input disabled={loading} id="symbol" className="text-white" type="text" {...field} placeholder={t("deploy_token.labels.symbol_placeholder")} />
-                                            {errors.symbol && <span className="text-red-500 text-xs">{errors.symbol.message as string}</span>}
-                                        </div>
-                                    )}
-                                />
-                                <Controller
-                                    name="totalSupply"
-                                    control={control}
-                                    rules={{ required: t("deploy_token.validation.required_total_supply") }}
-                                    render={({ field }) => {
-                                        // Format số với dấu phân cách
-                                        const formatNumber = (value: string) => {
-                                            if (!value) return '';
-                                            // Loại bỏ tất cả ký tự không phải số
-                                            const numericValue = value.replace(/[^0-9]/g, '');
-                                            // Thêm dấu phân cách
-                                            return numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                                        };
-
-                                        // Lấy giá trị số thuần (không có dấu phân cách)
-                                        const getNumericValue = (value: string) => {
-                                            return value.replace(/[^0-9]/g, '');
-                                        };
-
-                                        return (
-                                            <div className="flex flex-col gap-1">
-                                                <Label htmlFor="totalSupply" className="text-sm text-white font-medium">{t("token.totalsupply")}</Label>
-                                                <Input
-                                                    disabled={loading}
-                                                    id="totalSupply"
-                                                    className="text-white"
-                                                    type="text"
-                                                    value={formatNumber(field.value || '')}
-                                                    onChange={(e) => {
-                                                        const numericValue = getNumericValue(e.target.value);
-                                                        field.onChange(numericValue);
-                                                    }}
-                                                    placeholder={t("deploy_token.labels.total_supply_placeholder")}
-                                                />
-                                                {errors.totalSupply && <span className="text-red-500 text-xs">{errors.totalSupply.message as string}</span>}
-                                            </div>
-                                        );
-                                    }}
-                                />
-                                <Controller
-                                    name="decimals"
-                                    control={control}
-                                    rules={{ required: t("deploy_token.validation.required_decimals") }}
-                                    render={({ field }) => (
-                                        <div className="flex flex-col gap-1 w-full">
-                                            <Label htmlFor="decimalsNum" className="text-sm text-white font-medium">{t("token.decimals")}</Label>
-                                            <Select value={String(field.value)} onValueChange={field.onChange}>
-                                                <SelectTrigger disabled={loading} id="decimalsNum" className="w-full text-white bg-gray-700">
-                                                    <SelectValue placeholder={t("deploy_token.labels.select_decimals")} />
-                                                </SelectTrigger>
-                                                <SelectContent className="bg-gray-700 text-white">
-                                                    <SelectItem value="18">{t("deploy_token.labels.decimals_option_standard")}</SelectItem>
-                                                    <SelectItem value="8">8</SelectItem>
-                                                    <SelectItem value="6">6</SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                            {errors.chainId && <span className="text-red-500 text-xs">{errors.chainId.message as string}</span>}
-                                        </div>
-                                    )}
-                                />
-                                <Controller
-                                    name="email"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <div className="flex flex-col gap-1">
-                                            <div className="flex gap-1">
-                                                <Label htmlFor="name" className="text-sm text-white font-medium"> {t("token.email")} ({t("token.optional")})</Label>
-                                                <TooltipProvider>
-                                                    <Tooltip>
-                                                        <TooltipTrigger type="button" className="flex items-center">
-                                                            <Info className="w-4 h-4 text-slate-400" />
-                                                        </TooltipTrigger>
-                                                        <TooltipContent className="max-w-xs">
-                                                            <p className="text-white">{t("deploy_token.description_tooltip")}</p>
-                                                        </TooltipContent>
-                                                    </Tooltip>
-                                                </TooltipProvider>
-                                            </div>
-                                            <Input
-                                                id="email"
-                                                type="email"
-                                                value={field.value?.toLowerCase() || ''}
-                                                onChange={(e) => field.onChange(e.target.value.toLowerCase())}
-                                                disabled={loading}
-                                                placeholder={t("token.placeholder")}
-                                                className="bg-slate-700 text-white border-slate-600"
-                                                autoCapitalize="off"
-                                                autoComplete="email"
-                                                autoCorrect="off"
-                                                spellCheck="false"
-                                            />
-                                            {errors.email && <span className="text-red-500 text-xs">{errors.email.message as string}</span>}
-                                            <p className="text-xs text-slate-400">{t("deploy_token.description_note")}</p>
-                                        </div>
-                                    )}
-                                />
 
                                 <div className="bg-slate-700/50 border border-slate-600 rounded-lg p-4">
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-2">
                                             <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                                            <span className="text-sm font-medium text-white">{t("deploy_token.deployment_fee")}</span>
+                                            <span className="text-sm font-medium text-white">{t("chain_builder.deployment_fee")}</span>
                                         </div>
                                         <div className="text-right">
-                                            <div className="text-lg font-bold text-white">{getToolFee(123999, chain, deploy_token_fee)} {chain_info[123999].symbol}</div>
-                                            <div className="text-xs text-slate-400">{t("deploy_token.fee_required")}</div>
+                                            <div className="text-lg font-bold text-white">{getToolFee(chainPay, chain, chain_builder_fee)} {chain_info[chainPay].symbol}</div>
+                                            <div className="text-xs text-slate-400">{t("chain_builder.fee_required")}</div>
                                         </div>
                                     </div>
                                 </div>

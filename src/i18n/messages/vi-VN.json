@@ -3,10 +3,9 @@
   "page_not_found": "Không tìm thấy trang",
   "noti": {
     "web3Error": "Lỗi Web3",
-    "web3ErrorSub":"Môi trường trình duyệt không hỗ trợ web3. Sử dụng các trình duyệt Web3 để tiếp tục"
-
+    "web3ErrorSub": "Môi trường trình duyệt không hỗ trợ web3. Sử dụng các trình duyệt Web3 để tiếp tục"
   },
-  "tool" : {
+  "tool": {
     "notavailable": "Sắp ra mắt!",
     "notavailabledescription": "Công cụ này đang được phát triển"
   },
@@ -322,7 +321,56 @@
   },
   "form_email": {
     "title": {
-      "deploy_token" : "Triển khai token thành công: {contract_address}"
+      "deploy_token": "Triển khai token thành công: {contract_address}",
+      "chain_builder": "Yêu cầu triển khai mạng: {name}"
     }
+  },
+  "chain_builder": {
+    "title": "Cấu hình Mạng",
+    "pay": "Thanh toán",
+    "labels": {
+      "chain_name": "Tên mạng",
+      "rpc_url": "RPC URL",
+      "chain_id": "ID mạng",
+      "symbol": "Ký hiệu tiền tệ",
+      "explorer_domain": "Tên miền trình khai phá",
+      "email": "Email",
+      "icon": "Icon mạng",
+      "logo": "Logo mạng",
+      "open_graph": "Hình ảnh open graph"
+    },
+    "descriptions": {
+      "icon": "Tải lên icon chain (tùy chọn)",
+      "logo": "Tải lên logo chain (tùy chọn)",
+      "open_graph": "Tải lên hình ảnh open graph để chia sẻ mạng xã hội (tùy chọn)"
+    },
+    "validation": {
+      "required_name": "Tên chain là bắt buộc",
+      "required_rpc": "RPC URL là bắt buộc",
+      "required_chain_id": "Chain ID là bắt buộc",
+      "required_symbol": "Ký hiệu tiền tệ là bắt buộc",
+      "required_explorer": "Tên miền trình khai phá là bắt buộc",
+      "required_email": "Bắt buộc nhập email",
+      "invalid_email": "Email không hợp lệ",
+      "symbol_format": "Ký hiệu chỉ được chứa chữ cái viết hoa"
+    },
+    "deployment_fee": "Phí triển khai",
+    "fee_required": "Bắt buộc để triển khai",
+    "fill_chain_info": "Điền thông tin chain để xem phí",
+    "notify": {
+      "failure_title": "Thất bại",
+      "tx_failed": "Giao dịch không thành công",
+      "success_title": "Thành công",
+      "warning_title": "Cảnh báo",
+      "warning_progress_desc": "Quá trình gửi yêu cầu đang tiến hành. Vui lòng đợi và không tắt trang web!",
+      "deploy_success": "Yêu cầu triển khai đã được gửi. Kết quả sẽ được gửi qua email.",
+      "deploy_error_prefix": "Có lỗi xảy ra trong quá trình gửi yêu cầu: "
+    }
+  },
+  "drag_drop": {
+    "drop_here": "Drop image here",
+    "drag_drop_here": "Drag and drop image here",
+    "or_click_to_select": "or click to select file",
+    "supported_formats": "Supported: JPG, PNG (max 10MB)"
   }
 }

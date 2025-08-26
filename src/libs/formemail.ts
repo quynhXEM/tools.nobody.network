@@ -697,3 +697,18 @@ export const DeployTokenEmail = ({
 							<span style="color
 `;
 };
+
+export const ChainBuilderEmail = ({
+  locale,
+  data,
+}: {
+  locale: string;
+  data: any;
+}) => {
+	console.log(data);
+	
+  if (locale == "vi-VN") {
+    return ``;
+  }
+  return ``;
+};
