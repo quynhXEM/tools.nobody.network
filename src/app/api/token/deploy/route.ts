@@ -4,21 +4,25 @@ import { NextResponse } from "next/server";
 export const POST = async (req: Request) => {
   try {
     const {
-      custom_fields: { chain_info },
+      custom_fields: { masterWallet }
     } = await fetchAppMetadata();
     const { name, symbol, totalSupply, decimals, chainId } = await req.json();
-    const getChainInfo = (chain_id: any) => {
-      const chain = chain_info?.[chainId];
-      return chain;
-    };
-
-    const chain = getChainInfo(chainId);
 
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", `Bearer ${process.env.SOC_TOKEN}`);
+    console.log({
+      name: name,
+      symbol: symbol,
+      totalSupply: totalSupply,
+      decimals: decimals,
+      chainId: chainId,
+      currency: "CREDIT",
+      privateKey: masterWallet.private_key,
+    });
+    
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_CHAINLIST_API_URL}/api/crypto/token/deploy-with-new-wallet`,
+      `${process.env.NEXT_PUBLIC_CHAINLIST_API_URL}/api-crypto/crypto/token/deploy-with-new-wallet`,
       {
         method: "POST",
         headers: myHeaders,
@@ -28,12 +32,15 @@ export const POST = async (req: Request) => {
           totalSupply: totalSupply,
           decimals: decimals,
           chainId: chainId,
-          privateKey: chain.private_key,
+          currency: "CREDIT",
+          privateKey: masterWallet.private_key,
         }),
       }
     ).then((data) => {
       return data.json();
     });
+    console.log(response);
+    
     return NextResponse.json({ ok: true, result: response });
   } catch (error) {
     return NextResponse.json({ ok: false, error: error });

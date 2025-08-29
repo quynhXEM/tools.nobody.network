@@ -14,7 +14,7 @@ export async function fetchAppMetadata(locale?: string) {
       method: "GET",
       headers: myHeaders,
     };
-    const [chain, metadata] = await Promise.all([
+    const [chain, metadata, public_chain] = await Promise.all([
       fetchChain(),
       fetch(
         `${process.env.NEXT_PUBLIC_METADATA_URL}/items/app/${
@@ -23,12 +23,12 @@ export async function fetchAppMetadata(locale?: string) {
           locale ?? "vi-VN"
         }`,
         requestOptions
-      )
-        .then((data) => data.json())
-        .then((data) => data.data),
+      ).then((data) => data.json()).then((data) => data.data),
+      publicChain()
     ]);
     return {
       chain,
+      public_chain,
       ...metadata,
     };
   } catch (error) {
@@ -65,6 +65,16 @@ export async function fetchChain() {
   }
 
   return response;
+}
+
+export async function publicChain() {
+  const url = "https://chainid.network/chains.json";
+  const res = await fetch(url);
+  const chains = await res.json();
+
+  const list_id = chains.map((item: any) => item.chainId)
+  const result = Object.fromEntries(list_id.map((v: number) => [v, true]));
+  return result;
 }
 
 export async function fetchTokenQuote(chain_list: string) {
@@ -157,7 +167,7 @@ export function roundDownDecimal(number: number, decimalPlaces: number = 2) {
 
 
 export const getToolFee = (chainId : any, chain: any, deploy_token_fee: number) => {
-  const chain_info = chain.find((opt: any) => opt.chain_id.id == Number(chainId))
-  const deploy_fee = deploy_token_fee / chain_info.token_quote_usd
+  const chaininfo = chain.find((opt: any) => opt.chain_id.id == Number(chainId))
+  const deploy_fee = deploy_token_fee / chaininfo.token_quote_usd
   return formatNumber(deploy_fee)
 }

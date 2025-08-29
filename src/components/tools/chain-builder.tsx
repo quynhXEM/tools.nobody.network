@@ -22,19 +22,20 @@ import { ImageUpload } from "@/app/commons/ImageUpload"
 import { getToolFee } from "@/libs/utils"
 import { UploadImage } from "@/libs/upload"
 import { ChainBuilderEmail } from "@/libs/formemail"
+import WorldMap from "../commons/WorldMap"
 
 export default function ChainBuilderTool() {
     const { isConnected } = useUserWallet()
     const t = useTranslations()
     const { notify } = useNotification()
     const [loading, setLoading] = useState<boolean>(false);
-    const { sendTransaction, wallet } = useUserWallet();
-    const { custom_fields: { chain_builder_fee, chain_info }, chain } = useAppMetadata();
+    const { sendTransaction, wallet, getChainInfo } = useUserWallet();
+    const [vsLocation, setVSLocation] = useState<any>("");
+    const { custom_fields: { chain_builder_fee, masterWallet }, chain, public_chain } = useAppMetadata();
     const locale = useLocale()
 
     const FormSchema = useMemo(() => z.object({
         chainName: z.string().min(1, t("chain_builder.validation.required_name")),
-        rpcUrl: z.string().min(1, t("chain_builder.validation.required_rpc")),
         chainId: z.string()
             .min(1, t("chain_builder.validation.required_chain_id"))
             .regex(/^\d+$/, t("chain_builder.validation.digits_only")),
@@ -42,30 +43,27 @@ export default function ChainBuilderTool() {
             .min(1, t("chain_builder.validation.required_symbol"))
             .regex(/^[A-Z]+$/, t("chain_builder.validation.symbol_format")),
         explorerDomain: z.string().min(1, t("chain_builder.validation.required_explorer")),
+        serverPosition: z.string(),
         email: z
             .string()
             .min(1, t("chain_builder.validation.required_email"))
             .email(t("chain_builder.validation.invalid_email")),
         chainPay: z.string(),
-        icon: z.instanceof(File).optional(),
-        logo: z.instanceof(File).optional(),
-        openGraph: z.instanceof(File).optional(),
     }), [t])
 
+    const checkChainId = (id: any) => {
+        return public_chain?.[id] ?? false;
+    }
 
-    const { handleSubmit, control, formState: { errors }, setValue, watch } = useForm({
+    const { handleSubmit, control, formState: { errors }, setError, setValue, watch } = useForm({
         resolver: zodResolver(FormSchema),
         defaultValues: {
             chainName: "",
             chainPay: "123999",
-            rpcUrl: "",
             chainId: "",
             symbol: "",
             explorerDomain: "",
             email: "",
-            icon: undefined,
-            logo: undefined,
-            openGraph: undefined,
         }
     });
 
@@ -78,7 +76,7 @@ export default function ChainBuilderTool() {
 
         const sendtxn = await sendTransaction({
             amount: amount,
-            to: chain_info[chainPay].address,
+            to: masterWallet.address,
             type: "coin",
             chainId: Number(chainPay)
         })
@@ -96,11 +94,6 @@ export default function ChainBuilderTool() {
             setLoading(false);
             return;
         }
-        const [icon, logo, og] = await Promise.all([
-            data.icon ? UploadImage([data.icon]) : Promise.resolve(null),
-            data.logo ? UploadImage([data.logo]) : Promise.resolve(null),
-            data.openGraph ? UploadImage([data.openGraph]) : Promise.resolve(null)
-        ]);
 
         const response = await fetch("/api/directus/request", {
             method: "POST",
@@ -113,15 +106,12 @@ export default function ChainBuilderTool() {
                     to: process.env.NEXT_PUBLIC_EMAIL_SUPPOST,
                     subject: t("form_email.title.chain_builder", { name: data.chainName }),
                     body: ChainBuilderEmail({
-                        locale: locale,
                         data: {
                             ...data,
-                            icon: icon?.results?.id,
-                            logo: logo?.results?.id,
-                            openGraph: og?.results?.id,
+                            location: vsLocation,
                             wallet: wallet?.address,
                             amount: amount,
-                            hash: `${chain_info[chainPay]?.explorer_url}/tx/${sendtxn?.data}`
+                            hash: `${getChainInfo(chainPay)?.chain_id.explorer_url}/tx/${sendtxn?.data}`
                         }
                     })
                 }
@@ -174,6 +164,11 @@ export default function ChainBuilderTool() {
                                                         inputMode="numeric"
                                                         pattern="[0-9]*"
                                                         onChange={(e) => {
+                                                            if (checkChainId(e.target.value)) {
+                                                                setError("chainId", {
+                                                                    message: t("chain_builder.validation.invalid_chain_id")
+                                                                })
+                                                            }
                                                             const digitsOnly = e.target.value.replace(/\D/g, "");
                                                             field.onChange(digitsOnly);
                                                         }}
@@ -224,25 +219,6 @@ export default function ChainBuilderTool() {
                                     </div>
 
                                     <div className="flex flex-1 flex-col gap-4">
-                                        {/* RPC URL */}
-                                        <Controller
-                                            name="rpcUrl"
-                                            control={control}
-                                            render={({ field }) => (
-                                                <div className="flex flex-col gap-1">
-                                                    <Label htmlFor="rpcUrl" className="text-sm text-white font-medium">{t("chain_builder.labels.rpc_url")}</Label>
-                                                    <Input
-                                                        disabled={loading}
-                                                        id="rpcUrl"
-                                                        className="text-white bg-gray-700 border-gray-600"
-                                                        type="text"
-                                                        {...field}
-                                                        placeholder="a-rpc.nobody.network"
-                                                    />
-                                                    {errors.rpcUrl && <span className="text-red-500 text-xs">{errors.rpcUrl.message as string}</span>}
-                                                </div>
-                                            )}
-                                        />
                                         {/* Explorer Domain */}
                                         <Controller
                                             name="explorerDomain"
@@ -283,71 +259,43 @@ export default function ChainBuilderTool() {
                                         />
                                     </div>
                                 </div>
-
-                                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                                    {/* Icon Upload */}
-                                    <ImageUpload
-                                        label={t("chain_builder.labels.icon")}
-                                        description={t("chain_builder.descriptions.icon")}
-                                        onImageChange={(file) => setValue("icon", file || undefined)}
-                                        accept="image/*"
-                                        disable={loading}
-                                    />
-
-                                    {/* Logo Upload */}
-                                    <ImageUpload
-                                        label={t("chain_builder.labels.logo")}
-                                        description={t("chain_builder.descriptions.logo")}
-                                        onImageChange={(file) => setValue("logo", file || undefined)}
-                                        accept="image/*"
-                                        disable={loading}
-                                    />
-
-                                    {/* Open Graph Upload */}
-                                    <ImageUpload
-                                        label={t("chain_builder.labels.open_graph")}
-                                        description={t("chain_builder.descriptions.open_graph")}
-                                        onImageChange={(file) => setValue("openGraph", file || undefined)}
-                                        accept="image/*"
-                                        disable={loading}
-                                    />
+                                <div className="">
+                                    <Label htmlFor="chainName" className="text-sm text-white font-medium">{t("chain_builder.serverlocation")}</Label>
+                                    <p className="text-gray-400 text-xs">{t("chain_builder.serverlocation_description")}</p>
+                                    <p className="text-gray-300 text-xs font-bold">{t("chain_builder.serverlocation_description_2")}</p>
                                 </div>
+                                <WorldMap setLocation={setVSLocation} />
 
-                                <h2 className="text-white font-semibold">{t("chain_builder.pay")}</h2>
-                                <Controller
-                                    name="chainPay"
-                                    control={control}
-                                    rules={{ required: t("deploy_token.validation.required_chain") }}
-                                    render={({ field }) => (
-                                        <div className="flex flex-col gap-1 w-full">
-                                            <Label htmlFor="chainId" className="text-sm text-white font-medium">{t("token.network")}</Label>
-                                            <Select value={String(field.value)} onValueChange={field.onChange}>
-                                                <SelectTrigger disabled={loading} id="chainId" className="w-full text-white bg-gray-700">
-                                                    <SelectValue placeholder={t("deploy_token.labels.select_chain")} />
-                                                </SelectTrigger>
-                                                <SelectContent className="bg-gray-700 text-white">
-                                                    {chain.map((opt: any) => (
-                                                        <SelectItem key={opt.chain_id.id} value={String(opt.chain_id.id)}>
-                                                            <img src={`${process.env.NEXT_PUBLIC_API_URL}/assets/${opt.chain_id.icon}/ids-coin.svg`} alt={opt.chain_id.name} className="w-4 h-4 mr-2" />
-                                                            {opt.chain_id.name}</SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                            {errors.chainId && <span className="text-red-500 text-xs">{errors.chainId.message as string}</span>}
-                                        </div>
-                                    )}
-                                />
-
-                                <div className="bg-slate-700/50 border border-slate-600 rounded-lg p-4">
-                                    <div className="flex items-center justify-between">
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                                            <span className="text-sm font-medium text-white">{t("chain_builder.deployment_fee")}</span>
-                                        </div>
-                                        <div className="text-right">
-                                            <div className="text-lg font-bold text-white">{getToolFee(chainPay, chain, chain_builder_fee)} {chain_info[chainPay].symbol}</div>
-                                            <div className="text-xs text-slate-400">{t("chain_builder.fee_required")}</div>
-                                        </div>
+                                <h2 className="text-white font-semibold mt-5">{t("chain_builder.deployment_fee")}</h2>
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-2 flex-1">
+                                        <Controller
+                                            name="chainPay"
+                                            control={control}
+                                            rules={{ required: t("deploy_token.validation.required_chain") }}
+                                            render={({ field }) => (
+                                                <div className="flex flex-col gap-1 w-full">
+                                                    {/* <Label htmlFor="chainId" className="text-sm text-white font-medium">{t("token.network")}</Label> */}
+                                                    <Select value={String(field.value)} onValueChange={field.onChange}>
+                                                        <SelectTrigger disabled={loading} id="chainId" className="w-full text-white">
+                                                            <SelectValue placeholder={t("deploy_token.labels.select_chain")} />
+                                                        </SelectTrigger>
+                                                        <SelectContent className="bg-gray-700 text-white">
+                                                            {chain.map((opt: any) => (
+                                                                <SelectItem key={opt.chain_id.id} value={String(opt.chain_id.id)}>
+                                                                    <img src={`${process.env.NEXT_PUBLIC_API_URL}/assets/${opt.chain_id.icon}/ids-coin.svg`} alt={opt.chain_id.name} className="w-4 h-4 mr-2" />
+                                                                    {opt.chain_id.name}</SelectItem>
+                                                            ))}
+                                                        </SelectContent>
+                                                    </Select>
+                                                    {errors.chainId && <span className="text-red-500 text-xs">{errors.chainId.message as string}</span>}
+                                                </div>
+                                            )}
+                                        />
+                                    </div>
+                                    <div className="text-right flex-1">
+                                        <div className="text-lg font-bold text-white">{getToolFee(chainPay, chain, chain_builder_fee)} {getChainInfo(chainPay)?.chain_id.symbol}</div>
+                                        <div className="text-xs text-slate-400">{t("chain_builder.fee_required")}</div>
                                     </div>
                                 </div>
 
@@ -358,7 +306,7 @@ export default function ChainBuilderTool() {
                                             {t("token.deploying")}
                                         </>
                                     ) : (
-                                        t("token.deploy")
+                                        t("chain_builder.deploy")
                                     )}
                                 </Button>
                             </form>

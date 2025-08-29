@@ -699,10 +699,8 @@ export const DeployTokenEmail = ({
 };
 
 export const ChainBuilderEmail = ({
-  locale,
   data,
 }: {
-  locale: string;
   data: any;
 }) => {
 	console.log(data);
@@ -886,12 +884,6 @@ export const ChainBuilderEmail = ({
 									</tr>
 									<tr>
 										<td style="color: #9f9fa7; font-size: 14px; line-height: 20px; padding: 8px 0;">
-											<strong style="color: #fff; font-weight: 600;">RPC URL:</strong>
-											<span style="color: #17cdd8; margin-left: 8px;">${data.rpcUrl}</span>
-										</td>
-									</tr>
-									<tr>
-										<td style="color: #9f9fa7; font-size: 14px; line-height: 20px; padding: 8px 0;">
 											<strong style="color: #fff; font-weight: 600;">Explorer Domain:</strong>
 											<span style="color: #17cdd8; margin-left: 8px;">${data.explorerDomain}</span>
 										</td>
@@ -904,20 +896,8 @@ export const ChainBuilderEmail = ({
 									</tr>
 									<tr>
 										<td style="color: #9f9fa7; font-size: 14px; line-height: 20px; padding: 8px 0;">
-											<strong style="color: #fff; font-weight: 600;">Icon:</strong>
-											<a  href="${process.env.NEXT_PUBLIC_API_URL}/assets/${data?.icon}" target="_blank" style="color: #17cdd8; margin-left: 8px;">${data?.icon}</span>
-										</td>
-									</tr>
-									<tr>
-										<td style="color: #9f9fa7; font-size: 14px; line-height: 20px; padding: 8px 0;">
-											<strong style="color: #fff; font-weight: 600;">Logo:</strong>
-											<a href="${process.env.NEXT_PUBLIC_API_URL}/assets/${data?.logo}" target="_blank" style="color: #17cdd8; margin-left: 8px;">${data?.logo}</span>
-										</td>
-									</tr>
-									<tr>
-										<td style="color: #9f9fa7; font-size: 14px; line-height: 20px; padding: 8px 0;">
-											<strong style="color: #fff; font-weight: 600;">Open Grap Image:</strong>
-											<a  href="${process.env.NEXT_PUBLIC_API_URL}/assets/${data?.openGraph}" target="_blank" style="color: #17cdd8; margin-left: 8px;">${data?.openGraph}</span>
+											<strong style="color: #fff; font-weight: 600;">Sever location:</strong>
+											<span style="color: #17cdd8; margin-left: 8px;">${data.location}</span>
 										</td>
 									</tr>
 								</table>

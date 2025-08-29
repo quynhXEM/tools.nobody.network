@@ -328,6 +328,10 @@
   "chain_builder": {
     "title": "Cấu hình Mạng",
     "pay": "Thanh toán",
+    "deploy": "Triển khai Blockchain",
+    "serverlocation": "Vị trí server",
+    "serverlocation_description": "Chúng tôi triển khai 2 node trên 2 server khác nhau ở cùng 1 vị trí, nếu muốn bổ sung server làm node ở châu lục khác chúng tôi sẽ tư vấn sau khi bạn đăng ký",
+    "serverlocation_description_2": "Bấm để chọn vị trí đặt server",
     "labels": {
       "chain_name": "Tên mạng",
       "rpc_url": "RPC URL",

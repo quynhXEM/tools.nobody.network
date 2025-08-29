@@ -328,6 +328,10 @@
   "chain_builder": {
     "title": "Chain Configuration",
     "pay": "Payment",
+    "deploy": "Deploy Blockchain",
+    "serverlocation": "Server location",
+    "serverlocation_description": "We deploy 2 nodes on 2 different servers in the same location, if you want to add a server to make a node in a different continent, we will consult after you register",
+    "serverlocation_description_2": "Click to select server location",
     "labels": {
       "chain_name": "Chain name",
       "rpc_url": "RPC URL",

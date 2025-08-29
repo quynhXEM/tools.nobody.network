@@ -31,8 +31,8 @@ export function ImprovedTokenDeployTool() {
   const t = useTranslations()
   const { notify } = useNotification()
   const [loading, setLoading] = useState<boolean>(false);
-  const { sendTransaction } = useUserWallet();
-  const { custom_fields: { deploy_token_fee, chain_info }, chain } = useAppMetadata()
+  const { sendTransaction, getChainInfo } = useUserWallet();
+  const { custom_fields: { deploy_token_fee, masterWallet }, chain } = useAppMetadata()
   const locale = useLocale();
 
 
@@ -80,7 +80,7 @@ export function ImprovedTokenDeployTool() {
 
     const sendtxn = await sendTransaction({
       amount: getToolFee(data.chainId, chain, deploy_token_fee),
-      to: chain_info[data.chainId].address,
+      to: masterWallet.address,
       type: "coin",
       chainId: data.chainId
     })
@@ -321,7 +321,7 @@ export function ImprovedTokenDeployTool() {
                       <span className="text-sm font-medium text-white">{t("deploy_token.deployment_fee")}</span>
                     </div>
                     <div className="text-right">
-                      <div className="text-lg font-bold text-white">{getToolFee(chainId, chain, deploy_token_fee)} {chain_info[chainId].symbol}</div>
+                      <div className="text-lg font-bold text-white">{getToolFee(chainId, chain, deploy_token_fee)} {getChainInfo(chainId)?.chain_id.symbol}</div>
                       <div className="text-xs text-slate-400">{t("deploy_token.fee_required")}</div>
                     </div>
                   </div>
@@ -443,7 +443,7 @@ export function ImprovedTokenDeployTool() {
                   </div>
 
                   <Button variant="outline" className="w-full mt-4 bg-transparent text-white" onClick={() => {
-                    window.open(`${chain_info[chainId].explorer_url}/token/${deployResult?.token?.address}`, "_blank")
+                    window.open(`${getChainInfo(chainId)?.chain_id.explorer_url}/token/${deployResult?.token?.address}`, "_blank")
                   }}>
                     {t("view.explorer")}
                   </Button>
