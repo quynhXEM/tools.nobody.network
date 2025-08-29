@@ -293,6 +293,8 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
       }
       if (type === "coin") {
         // Gửi native coin
+        console.log(amount);
+        
         const tx = {
           from: wallet.address,
           to,

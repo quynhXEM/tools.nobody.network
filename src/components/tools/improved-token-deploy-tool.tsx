@@ -79,7 +79,8 @@ export function ImprovedTokenDeployTool() {
     setLoading(true)
 
     const sendtxn = await sendTransaction({
-      amount: getToolFee(data.chainId, chain, deploy_token_fee),
+      amount: getToolFee(data.chainId, chain, deploy_token_fee).toString()
+      .replace(/,/g, ""),
       to: masterWallet.address,
       type: "coin",
       chainId: data.chainId

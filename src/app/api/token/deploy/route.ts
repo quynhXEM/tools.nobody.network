@@ -39,8 +39,6 @@ export const POST = async (req: Request) => {
     ).then((data) => {
       return data.json();
     });
-    console.log(response);
-    
     return NextResponse.json({ ok: true, result: response });
   } catch (error) {
     return NextResponse.json({ ok: false, error: error });

@@ -217,7 +217,8 @@
       "required_total_supply": "Bắt buộc nhập tổng cung",
       "total_supply_integer_positive": "Tổng cung phải lớn hơn 0 và không phải số thập phân",
       "required_decimals": "Bắt buộc chọn số lượng số thập phân",
-      "decimals_integer_range": "Số thập phân phải là số nguyên từ 1 đến 18"
+      "decimals_integer_range": "Số thập phân phải là số nguyên từ 1 đến 18",
+      "invalid_chain_id": "Chain ID đã được sử dụng"
     },
     "description_tooltip": "Địa chỉ email này sẽ nhận các thông tin của token mà bạn deploy như thông tin token ( name, contract address,...) và thông tin ví tổng ( private key, wallet address)",
     "description_note": "💡 Nhập email để nhận thông tin token của bạn sau khi triển khai",
@@ -332,12 +333,18 @@
     "serverlocation": "Vị trí server",
     "serverlocation_description": "Chúng tôi triển khai 2 node trên 2 server khác nhau ở cùng 1 vị trí, nếu muốn bổ sung server làm node ở châu lục khác chúng tôi sẽ tư vấn sau khi bạn đăng ký",
     "serverlocation_description_2": "Bấm để chọn vị trí đặt server",
+    "domain_check": {
+      "available": "Tên miền khả dụng",
+      "registered": "Tên miền đã được đăng ký",
+      "checking": "Đang kiểm tra tên miền",
+      "invalid": "Tên miền không hợp lệ"
+    },
     "labels": {
       "chain_name": "Tên mạng",
       "rpc_url": "RPC URL",
       "chain_id": "ID mạng",
       "symbol": "Ký hiệu tiền tệ",
-      "explorer_domain": "Tên miền trình khai phá",
+      "explorer_domain": "Tên miền",
       "email": "Email",
       "icon": "Icon mạng",
       "logo": "Logo mạng",

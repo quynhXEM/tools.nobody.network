@@ -332,12 +332,18 @@
     "serverlocation": "Server location",
     "serverlocation_description": "We deploy 2 nodes on 2 different servers in the same location, if you want to add a server to make a node in a different continent, we will consult after you register",
     "serverlocation_description_2": "Click to select server location",
+    "domain_check": {
+      "available": "Domain is available",
+      "registered": "Domain is registered",
+      "checking": "Checking domain",
+      "invalid": "Invalid domain"
+    },
     "labels": {
       "chain_name": "Chain name",
       "rpc_url": "RPC URL",
       "chain_id": "Chain id",
       "symbol": "Currency symbol",
-      "explorer_domain": "Explorer domain",
+      "explorer_domain": "Domain",
       "email": "Email",
       "icon": "Chain icon",
       "logo": "Chain logo",
@@ -357,11 +363,13 @@
       "required_email": "Email is required",
       "invalid_email": "Invalid email format",
       "symbol_format": "Symbol must contain only uppercase letters",
-      "digits_only": "Digits only"
+      "digits_only": "Digits only",
+      "invalid_chain_id": "Chain ID already exists"
     },
     "deployment_fee": "Deployment Fee",
     "fee_required": "Required for deployment",
     "fill_chain_info": "Fill chain information to see fee",
+    "about_fee": "Includes domain fee",
     "notify": {
       "failure_title": "Failed",
       "tx_failed": "Transaction failed",

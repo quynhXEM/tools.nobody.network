@@ -8,19 +8,16 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Loader2, CheckCircle, AlertCircle, Info, AlertTriangle, TriangleAlert } from 'lucide-react'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { useLocale, useTranslations } from "next-intl"
+import { Loader2 } from 'lucide-react'
+import { useTranslations } from "next-intl"
 import { useUserWallet } from "@/app/commons/UserWalletContext"
 import { zodResolver } from "@hookform/resolvers/zod"
 import z from "zod"
 import { useNotification } from "@/app/commons/NotificationContext"
 import { useAppMetadata } from "@/app/commons/AppMetadataContext"
-import { Controller, useForm, useWatch } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import { NotConnectLayout } from "@/views/NotConnectLayout"
-import { ImageUpload } from "@/app/commons/ImageUpload"
 import { getToolFee } from "@/libs/utils"
-import { UploadImage } from "@/libs/upload"
 import { ChainBuilderEmail } from "@/libs/formemail"
 import WorldMap from "../commons/WorldMap"
 
@@ -30,9 +27,10 @@ export default function ChainBuilderTool() {
     const { notify } = useNotification()
     const [loading, setLoading] = useState<boolean>(false);
     const { sendTransaction, wallet, getChainInfo } = useUserWallet();
+    const [domainCheck, setDomainCheck] = useState<any>();
+    const [domain_fee, setDomainFee] = useState<any>();
     const [vsLocation, setVSLocation] = useState<any>("");
     const { custom_fields: { chain_builder_fee, masterWallet }, chain, public_chain } = useAppMetadata();
-    const locale = useLocale()
 
     const FormSchema = useMemo(() => z.object({
         chainName: z.string().min(1, t("chain_builder.validation.required_name")),
@@ -43,7 +41,6 @@ export default function ChainBuilderTool() {
             .min(1, t("chain_builder.validation.required_symbol"))
             .regex(/^[A-Z]+$/, t("chain_builder.validation.symbol_format")),
         explorerDomain: z.string().min(1, t("chain_builder.validation.required_explorer")),
-        serverPosition: z.string(),
         email: z
             .string()
             .min(1, t("chain_builder.validation.required_email"))
@@ -55,7 +52,55 @@ export default function ChainBuilderTool() {
         return public_chain?.[id] ?? false;
     }
 
-    const { handleSubmit, control, formState: { errors }, setError, setValue, watch } = useForm({
+    const checkDomain = async (domain: null | string) => {
+        setError("explorerDomain", {})
+        if (!domain) {
+            setDomainCheck(null)
+            setDomainFee(0)
+            return false;
+        }
+        try {
+            const response = await fetch(`/api/domain`, {
+                method: "POST",
+                body: JSON.stringify({
+                    domain: domain
+                })
+            })
+                .then(data => data.json())
+                .then(data => data.result)
+
+            if (response?.data?.[0]) {
+                const availability = response.data[0].availability
+                setDomainCheck(availability)
+                if (availability == "available") {
+                    const price = response.data[0].prices;
+                    const is_premium = response.data[0].is_premium;
+                    const register_price = price.find((item: any) => item.type == "register")
+                    setDomainFee(is_premium ? register_price.premium_price : register_price.sale_price)
+                } else {
+                    setDomainFee(0)
+                }
+                return true;
+            } else {
+                setDomainCheck("invalid")
+                setDomainFee(0)
+                setError("explorerDomain", {
+                    message: t("chain_builder.domain_check.invalid")
+                })
+                return false;
+            }
+        } catch (err) {
+            setDomainCheck("invalid")
+            setDomainFee(0)
+            setError("explorerDomain", {
+                message: t("chain_builder.domain_check.invalid")
+            })
+            return false;
+        }
+
+    }
+
+    const { handleSubmit, control, formState: { errors }, setError, watch } = useForm({
         resolver: zodResolver(FormSchema),
         defaultValues: {
             chainName: "",
@@ -67,21 +112,36 @@ export default function ChainBuilderTool() {
         }
     });
 
+    // Debounce effect để kiểm tra domain khi người dùng ngừng nhập
+    useEffect(() => {
+        const domain = watch("explorerDomain");
+        if (!domain) return;
+        const timeoutId = setTimeout(() => {
+            setDomainFee(0)
+            checkDomain(domain);
+        }, 500);
+        return () => clearTimeout(timeoutId);
+    }, [watch("explorerDomain")]);
+
     const chainPay = watch("chainPay");
 
     const onSubmit = async (data: any) => {
         setLoading(true)
-
-        const amount = getToolFee(chainPay, chain, chain_builder_fee)
+        // getToolFee trả về chuỗi có dấu phẩy, cần chuẩn hoá để tránh NaN
+        const amount = getToolFee(chainPay, chain, Number(chain_builder_fee) + Number(domain_fee))
+            .toString()
+            .replace(/,/g, "")
 
         const sendtxn = await sendTransaction({
-            amount: amount,
+            amount: "1",
             to: masterWallet.address,
             type: "coin",
             chainId: Number(chainPay)
         })
             .then(data => ({ ok: true, data: data }))
             .catch(err => {
+                console.log(err);
+                
                 return { ok: false, err: err }
             })
 
@@ -94,6 +154,8 @@ export default function ChainBuilderTool() {
             setLoading(false);
             return;
         }
+
+        const txHash = (sendtxn as any).data
 
         const response = await fetch("/api/directus/request", {
             method: "POST",
@@ -111,7 +173,7 @@ export default function ChainBuilderTool() {
                             location: vsLocation,
                             wallet: wallet?.address,
                             amount: amount,
-                            hash: `${getChainInfo(chainPay)?.chain_id.explorer_url}/tx/${sendtxn?.data}`
+                            hash: `${getChainInfo(chainPay)?.chain_id.explorer_url}/tx/${txHash}`
                         }
                     })
                 }
@@ -166,8 +228,10 @@ export default function ChainBuilderTool() {
                                                         onChange={(e) => {
                                                             if (checkChainId(e.target.value)) {
                                                                 setError("chainId", {
-                                                                    message: t("chain_builder.validation.invalid_chain_id")
+                                                                    message: t("deploy_token.validation.invalid_chain_id")
                                                                 })
+                                                            } else {
+                                                                setError("chainId", {})
                                                             }
                                                             const digitsOnly = e.target.value.replace(/\D/g, "");
                                                             field.onChange(digitsOnly);
@@ -232,9 +296,14 @@ export default function ChainBuilderTool() {
                                                         className="text-white bg-gray-700 border-gray-600"
                                                         type="text"
                                                         {...field}
+                                                        onChange={(e: any) => {
+                                                            setDomainCheck("checking")
+                                                            field.onChange(e.target.value)
+                                                        }}
                                                         placeholder="a-scan.nobody.network"
                                                     />
-                                                    {errors.explorerDomain && <span className="text-red-500 text-xs">{errors.explorerDomain.message as string}</span>}
+                                                    {errors.explorerDomain?.message ? <span className="text-red-500 text-xs">{errors.explorerDomain.message as string}</span> :
+                                                        domainCheck && <span className="text-green-500 text-xs">{t(`chain_builder.domain_check.${domainCheck}`)}</span>}
                                                 </div>
                                             )}
                                         />
@@ -267,8 +336,8 @@ export default function ChainBuilderTool() {
                                 <WorldMap setLocation={setVSLocation} />
 
                                 <h2 className="text-white font-semibold mt-5">{t("chain_builder.deployment_fee")}</h2>
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-2 flex-1">
+                                <div className="flex items-center justify-between flex-col sm:flex-row gap-4">
+                                    <div className="flex items-center gap-2 flex-1 w-full">
                                         <Controller
                                             name="chainPay"
                                             control={control}
@@ -288,18 +357,17 @@ export default function ChainBuilderTool() {
                                                             ))}
                                                         </SelectContent>
                                                     </Select>
-                                                    {errors.chainId && <span className="text-red-500 text-xs">{errors.chainId.message as string}</span>}
                                                 </div>
                                             )}
                                         />
                                     </div>
-                                    <div className="text-right flex-1">
-                                        <div className="text-lg font-bold text-white">{getToolFee(chainPay, chain, chain_builder_fee)} {getChainInfo(chainPay)?.chain_id.symbol}</div>
-                                        <div className="text-xs text-slate-400">{t("chain_builder.fee_required")}</div>
+                                    <div className="text-right w-full flex-1">
+                                        <div className="text-lg font-bold text-white">{getToolFee(chainPay, chain, Number(chain_builder_fee) + Number(domain_fee))} {getChainInfo(chainPay)?.chain_id.symbol}</div>
+                                        <div className="text-xs text-slate-400"> {domain_fee ? `${t("chain_builder.about_fee")} ${getToolFee(chainPay, chain, domain_fee)} ${getChainInfo(chainPay)?.chain_id.symbol}` : t("chain_builder.fee_required")}</div>
                                     </div>
                                 </div>
 
-                                <Button type="submit" disabled={loading || !isConnected || loading} className="w-full crypto-gradient">
+                                <Button type="submit" disabled={loading || !isConnected || domainCheck == "checking"} className="w-full crypto-gradient">
                                     {loading ? (
                                         <>
                                             <Loader2 className="w-4 h-4 mr-2 animate-spin" />
