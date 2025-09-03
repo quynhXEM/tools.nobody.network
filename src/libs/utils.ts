@@ -17,7 +17,7 @@ export async function fetchAppMetadata(locale?: string) {
     const [chain, metadata, public_chain] = await Promise.all([
       fetchChain(),
       fetch(
-        `${process.env.NEXT_PUBLIC_METADATA_URL}/items/app/${
+        `${process.env.NEXT_PUBLIC_API_URL}/items/app/${
           process.env.NEXT_PUBLIC_APP_ID
         }?fields=status,icon,smtp_host,smtp_port,smtp_secure,smtp_username,smtp_reply_to,smtp_from_email,smtp_password,smtp_from_name,google_service_account,custom_fields,translation.name,translation.short_name,translation.description&deep[translation][_filter][language_code]=${
           locale ?? "vi-VN"
@@ -46,7 +46,7 @@ export async function fetchChain() {
   };
 
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_METADATA_URL}/items/app_chain?filter[status]=published&filter[app_id]=${process.env.NEXT_PUBLIC_APP_ID}&filter[chain_id][status]=published&filter[chain_id][type]=evm&limit=10&fields=chain_id.id,chain_id.name,chain_id.symbol,chain_id.native_currency,chain_id.rpc_url,chain_id.explorer_url,chain_id.icon,app_chain_token.name,app_chain_token.symbol,app_chain_token.decimals,app_chain_token.address,app_chain_token.icon`,
+    `${process.env.NEXT_PUBLIC_API_URL}/items/app_chain?filter[status]=published&filter[app_id]=${process.env.NEXT_PUBLIC_APP_ID}&filter[chain_id][status]=published&filter[chain_id][type]=evm&limit=10&fields=chain_id.id,chain_id.name,chain_id.symbol,chain_id.native_currency,chain_id.rpc_url,chain_id.explorer_url,chain_id.icon,app_chain_token.name,app_chain_token.symbol,app_chain_token.decimals,app_chain_token.address,app_chain_token.icon`,
     requestOptions
   )
     .then((data) => data.json())
@@ -97,7 +97,7 @@ export async function fetchTokenQuote(chain_list: string) {
       redirect: "follow",
     };
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_CHAINLIST_API_URL}/api/gateway/get`, requestOptions)
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/gateway/get`, requestOptions)
       .then((response) => response.json())
       .then((result) => result.data);
 
