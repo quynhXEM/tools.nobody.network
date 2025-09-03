@@ -20,6 +20,7 @@ import { NotConnectLayout } from "@/views/NotConnectLayout"
 import { getToolFee } from "@/libs/utils"
 import { ChainBuilderEmail } from "@/libs/formemail"
 import WorldMap from "../commons/WorldMap"
+import { serverLocations } from "../commons/WorldMap"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
 
 export default function ChainBuilderTool() {
@@ -31,6 +32,14 @@ export default function ChainBuilderTool() {
     const [domainCheck, setDomainCheck] = useState<any>();
     const [domain_fee, setDomainFee] = useState<any>(0);
     const [vsLocation, setVSLocation] = useState<any>("");
+    const [selectedServerLocation, setSelectedServerLocation] = useState<string>(serverLocations[0].id);
+
+    // Cập nhật selectedServerLocation khi vsLocation thay đổi từ WorldMap
+    useEffect(() => {
+        if (vsLocation && vsLocation !== selectedServerLocation) {
+            setSelectedServerLocation(vsLocation)
+        }
+    }, [vsLocation])
     const { custom_fields: { chain_builder_fee, masterWallet }, chain, public_chain } = useAppMetadata();
 
     const FormSchema = useMemo(() => z.object({
@@ -340,7 +349,7 @@ export default function ChainBuilderTool() {
                                             render={({ field }) => (
                                                 <div className="flex flex-col gap-1">
                                                     <div className="flex gap-1">
-                                                    <Label htmlFor="email" className="text-sm text-white font-medium">{t("chain_builder.labels.email")}</Label>
+                                                        <Label htmlFor="email" className="text-sm text-white font-medium">{t("chain_builder.labels.email")}</Label>
                                                         <TooltipProvider>
                                                             <Tooltip>
                                                                 <TooltipTrigger type="button" className="flex items-center">
@@ -364,14 +373,31 @@ export default function ChainBuilderTool() {
                                                 </div>
                                             )}
                                         />
+
+                                        {/* Select chọn quốc qia đồng bộ với map bên dưới có thể chọn bằng select hoặc map đều được*/}
+                                        {/* Select dropdown để chọn vị trí server */}
+                                        <div className="flex flex-col gap-1">
+                                            <Label className="text-sm text-white font-medium">{t("chain_builder.serverlocation")}</Label>
+                                            <Select value={selectedServerLocation} onValueChange={setSelectedServerLocation}>
+                                                <SelectTrigger className="w-full text-white bg-gray-700 border-gray-600">
+                                                    <SelectValue placeholder={t("chain_builder.select_server_placeholder")} />
+                                                </SelectTrigger>
+                                                <SelectContent className="bg-gray-700 text-white">
+                                                    {serverLocations.map((location) => (
+                                                        <SelectItem key={location.id} value={location.id}>
+                                                            {location.country}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="">
-                                    <Label htmlFor="chainName" className="text-sm text-white font-medium">{t("chain_builder.serverlocation")}</Label>
-                                    <p className="text-gray-400 text-xs">{t("chain_builder.serverlocation_description")}</p>
                                     <p className="text-gray-300 text-xs font-bold">{t("chain_builder.serverlocation_description_2")}</p>
+                                    <p className="text-gray-400 text-xs">{t("chain_builder.serverlocation_description")}</p>
                                 </div>
-                                <WorldMap setLocation={setVSLocation} />
+                                <WorldMap setLocation={setVSLocation} selectedLocation={selectedServerLocation} />
 
                                 <h2 className="text-white font-semibold mt-5">{t("chain_builder.deployment_fee")}</h2>
                                 <div className="flex items-center justify-between flex-col sm:flex-row gap-4">

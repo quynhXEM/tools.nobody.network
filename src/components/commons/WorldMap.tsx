@@ -14,26 +14,40 @@ interface ServerLocation {
   coordinates: [number, number] // [longitude, latitude]
 }
 
-const serverLocations: ServerLocation[] = [
+export const serverLocations: ServerLocation[] = [
   // Europe
-  { id: "germany", name: "Germany", country: "Germany", coordinates: [13.405, 52.52] }, // Berlin
-  { id: "france", name: "France", country: "France", coordinates: [4.8357, 45.7640] }, // Lyon
-  { id: "lithuania", name: "Lithuania", country: "Lithuania", coordinates: [25.2797, 54.6872] }, // Vilnius
-  { id: "uk", name: "United Kingdom", country: "United Kingdom", coordinates: [-2.5879, 51.4545] }, // Bristol
-  { id: "usa-east", name: "USA", country: "United States", coordinates: [-74.006, 40.7128] }, // New York
   { id: "brazil", name: "Brazil", country: "Brazil", coordinates: [-46.6333, -23.5505] }, // São Paulo
-  { id: "malaysia", name: "Malaysia", country: "Malaysia", coordinates: [101.6869, 3.1390] }, // Kuala Lumpur
-  { id: "indonesia", name: "Indonesia", country: "Indonesia", coordinates: [116.8456, -6.2088] }, // Jakarta
+  { id: "lithuania", name: "Lithuania", country: "Lithuania", coordinates: [25.2797, 54.6872] }, // Vilnius
+  { id: "germany", name: "Germany", country: "Germany", coordinates: [13.405, 52.52] }, // Berlin
+  { id: "uk", name: "United Kingdom", country: "United Kingdom", coordinates: [-2.5879, 51.4545] }, // Bristol
+  { id: "usa-east", name: " USA ", country: "United States", coordinates: [-74.006, 40.7128] }, // New York
+  { id: "france", name: "France", country: "France", coordinates: [4.8357, 45.7640] }, // Lyon
   { id: "india", name: "India", country: "India", coordinates: [77.1025, 28.7041] }, // New Delhi
   { id: "vietnam", name: "Vietnam", country: "Vietnam", coordinates: [105.8342, 21.0278] }, // Hanoi
+  { id: "malaysia", name: "Malaysia", country: "Malaysia", coordinates: [101.6869, 3.1390] }, // Kuala Lumpur
+  { id: "indonesia", name: "Indonesia", country: "Indonesia", coordinates: [116.8456, -6.2088] }, // Jakarta
+  
+  
+  
 ]
 
-export default function WorldMap({ setLocation }: { setLocation: (location: any) => void }) {
-  const [selectedServer, setSelectedServer] = useState<string | null>(serverLocations[0].id)
+export default function WorldMap({ setLocation, selectedLocation }: { setLocation: (location: any) => void, selectedLocation?: string }) {
+  const [selectedServer, setSelectedServer] = useState<string | null>(selectedLocation || serverLocations[0].id)
 
   useEffect(() => {
     setLocation(selectedServer)
   }, [selectedServer])
+
+  useEffect(() => {
+    if (selectedLocation && selectedLocation !== selectedServer) {
+      setSelectedServer(selectedLocation)
+    }
+  }, [selectedLocation])
+
+  const handleServerClick = (serverId: string) => {
+    setSelectedServer(serverId)
+    setLocation(serverId)
+  }
   return (
     <div className="w-full max-w-6xl mx-auto">
       <div className="relative bg-[#346b88] rounded-lg border p-4">
@@ -70,19 +84,34 @@ export default function WorldMap({ setLocation }: { setLocation: (location: any)
                   <circle r="8" fill="rgb(251 191 36)" className="wave-animation wave-animation-delay-2" />
                   <circle r="8" fill="rgb(251 191 36)" className="wave-animation wave-animation-delay-3" />
                   <circle r="8" fill="rgb(251 191 36)" className="wave-animation wave-animation-delay-4" />
+
                   
-                  {/* Hiển thị tên quốc gia khi được chọn */}
+                                     {/* Nền cho text */}
+                   <rect
+                     x={-(server.name.length * 10) / 2}
+                     y="-40"
+                     width={server.name.length * 10}
+                     height="25"
+                     rx="12"
+                     fill="rgba(255, 255, 255, 0.9)"
+                     stroke="rgb(251 191 36)"
+                     strokeWidth="2"
+                     style={{
+                       filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
+                     }}
+                   />
+                  
+                  {/* Text trên nền */}
                   <text
                     x="0"
-                    y="-25"
-                    z="100"
+                    y="-22"
+                    z="101"
                     textAnchor="middle"
                     className="text-sm font-semibold fill-current"
                     style={{
-                      fontSize: '14px',
+                      fontSize: '16px',
                       fontWeight: 'bold',
                       fill: '#1f2937',
-                      textShadow: '0 0 4px rgba(255,255,255,0.8)',
                     }}
                   >
                     {server.name}
@@ -98,7 +127,7 @@ export default function WorldMap({ setLocation }: { setLocation: (location: any)
                   "cursor-pointer transition-all duration-200 hover:r-8",
                   selectedServer === server.id ? "drop-shadow-lg scale-175" : "hover:drop-shadow-md scale-150",
                 )}
-                onClick={() => setSelectedServer(server.id)}
+                onClick={() => handleServerClick(server.id)}
               />
             </Marker>
           ))}
