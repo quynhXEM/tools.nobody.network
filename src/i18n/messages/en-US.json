@@ -370,6 +370,9 @@
     "fee_required": "Required for deployment",
     "fill_chain_info": "Fill chain information to see fee",
     "about_fee": "Includes domain fee",
+    "chain_id_check": "Please check and ensure it doesn't conflict with networks currently public at chainlist.org",
+    "domain_info": "Choose a completely new domain, the system will deploy explorer on subdomain scan.yourdomain.com, and for yourdomain.com homepage you will deploy your own website introducing your blockchain",
+    "email_contact": "The unique email address that we will contact to discuss and respond to requests related to the blockchain you are deploying",
     "notify": {
       "failure_title": "Failed",
       "tx_failed": "Transaction failed",

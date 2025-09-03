@@ -18,19 +18,19 @@ const tools = [
     active: true
   },
   {
-    id: "transaction-decoder",
-    titleKey: "Transaction Decoder",
-    descKey: "tx.desc",
-    icon: FileText,
-    color: "from-violet-500 to-purple-500",
-    active: true
-  },
-  {
     id: "chain-builder",
     titleKey: "Chain Builder",
     descKey: "chainbuilder",
     icon: DeployChainIcon,
     color: "from-cyan-500 to-emerald-500",
+    active: true
+  },
+  {
+    id: "transaction-decoder",
+    titleKey: "Transaction Decoder",
+    descKey: "tx.desc",
+    icon: FileText,
+    color: "from-violet-500 to-purple-500",
     active: true
   },
   {

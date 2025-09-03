@@ -204,3 +204,38 @@
     appearance: textfield;
   }
 }
+
+/* Wave Map animation */
+@keyframes waveExpand {
+  0% {
+    transform: scale(0);
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+.wave-animation {
+  animation: waveExpand 2s ease-out infinite;
+}
+
+.wave-animation-delay-1 {
+  animation-delay: 0s;
+}
+
+.wave-animation-delay-2 {
+  animation-delay: 0.5s;
+}
+
+.wave-animation-delay-3 {
+  animation-delay: 1s;
+}
+
+.wave-animation-delay-4 {
+  animation-delay: 1.5s;
+}

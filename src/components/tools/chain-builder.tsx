@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Loader2 } from 'lucide-react'
+import { Info, Loader2 } from 'lucide-react'
 import { useTranslations } from "next-intl"
 import { useUserWallet } from "@/app/commons/UserWalletContext"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -20,6 +20,7 @@ import { NotConnectLayout } from "@/views/NotConnectLayout"
 import { getToolFee } from "@/libs/utils"
 import { ChainBuilderEmail } from "@/libs/formemail"
 import WorldMap from "../commons/WorldMap"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
 
 export default function ChainBuilderTool() {
     const { isConnected } = useUserWallet()
@@ -28,7 +29,7 @@ export default function ChainBuilderTool() {
     const [loading, setLoading] = useState<boolean>(false);
     const { sendTransaction, wallet, getChainInfo } = useUserWallet();
     const [domainCheck, setDomainCheck] = useState<any>();
-    const [domain_fee, setDomainFee] = useState<any>();
+    const [domain_fee, setDomainFee] = useState<any>(0);
     const [vsLocation, setVSLocation] = useState<any>("");
     const { custom_fields: { chain_builder_fee, masterWallet }, chain, public_chain } = useAppMetadata();
 
@@ -141,7 +142,7 @@ export default function ChainBuilderTool() {
             .then(data => ({ ok: true, data: data }))
             .catch(err => {
                 console.log(err);
-                
+
                 return { ok: false, err: err }
             })
 
@@ -215,7 +216,20 @@ export default function ChainBuilderTool() {
                                             control={control}
                                             render={({ field }) => (
                                                 <div className="flex flex-col gap-1">
-                                                    <Label htmlFor="chainId" className="text-sm text-white font-medium">{t("chain_builder.labels.chain_id")}</Label>
+                                                    <div className="flex gap-1">
+                                                        <Label htmlFor="chainId" className="text-sm text-white font-medium">{t("chain_builder.labels.chain_id")}</Label>
+                                                        <TooltipProvider>
+                                                            <Tooltip>
+                                                                <TooltipTrigger type="button" className="flex items-center">
+                                                                    <Info className="w-4 h-4 text-slate-400" />
+                                                                </TooltipTrigger>
+                                                                <TooltipContent className="max-w-xs">
+                                                                    <p className="text-white">{t("chain_builder.chain_id_check")}</p>
+                                                                </TooltipContent>
+                                                            </Tooltip>
+                                                        </TooltipProvider>
+                                                    </div>
+
                                                     <Input
                                                         disabled={loading}
                                                         id="chainId"
@@ -289,7 +303,19 @@ export default function ChainBuilderTool() {
                                             control={control}
                                             render={({ field }) => (
                                                 <div className="flex flex-col gap-1">
-                                                    <Label htmlFor="explorerDomain" className="text-sm text-white font-medium">{t("chain_builder.labels.explorer_domain")}</Label>
+                                                    <div className="flex gap-1">
+                                                        <Label htmlFor="explorerDomain" className="text-sm text-white font-medium">{t("chain_builder.labels.explorer_domain")}</Label>
+                                                        <TooltipProvider>
+                                                            <Tooltip>
+                                                                <TooltipTrigger type="button" className="flex items-center">
+                                                                    <Info className="w-4 h-4 text-slate-400" />
+                                                                </TooltipTrigger>
+                                                                <TooltipContent className="max-w-xs">
+                                                                    <p className="text-white">{t("chain_builder.domain_info")}</p>
+                                                                </TooltipContent>
+                                                            </Tooltip>
+                                                        </TooltipProvider>
+                                                    </div>
                                                     <Input
                                                         disabled={loading}
                                                         id="explorerDomain"
@@ -313,7 +339,19 @@ export default function ChainBuilderTool() {
                                             control={control}
                                             render={({ field }) => (
                                                 <div className="flex flex-col gap-1">
+                                                    <div className="flex gap-1">
                                                     <Label htmlFor="email" className="text-sm text-white font-medium">{t("chain_builder.labels.email")}</Label>
+                                                        <TooltipProvider>
+                                                            <Tooltip>
+                                                                <TooltipTrigger type="button" className="flex items-center">
+                                                                    <Info className="w-4 h-4 text-slate-400" />
+                                                                </TooltipTrigger>
+                                                                <TooltipContent className="max-w-xs">
+                                                                    <p className="text-white">{t("chain_builder.email_contact")}</p>
+                                                                </TooltipContent>
+                                                            </Tooltip>
+                                                        </TooltipProvider>
+                                                    </div>
                                                     <Input
                                                         disabled={loading}
                                                         id="email"

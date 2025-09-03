@@ -369,6 +369,10 @@
     "deployment_fee": "Phí triển khai",
     "fee_required": "Bắt buộc để triển khai",
     "fill_chain_info": "Điền thông tin chain để xem phí",
+    "about_fee": "Bao gồm phí tên miền",
+    "chain_id_check": "Vui lòng kiểm tra và đảm bảo không trùng với các mạng đang public tại chainlist.org",
+    "domain_info": "Chọn tên miền mới hoàn toàn, hệ thống sẽ triển khai explorer trên subdomain scan.yourdomain.com, còn trang chủ yourdomain.com bạn sẽ tự triển khai trang web giới thiệu về blockchain của mình",
+    "email_contact": "Địa chỉ email duy nhất mà chúng tôi sẽ liên lạc trao đổi và đáp ứng các yêu cầu liên quan đến blockchain mà bạn đang triển khai",
     "notify": {
       "failure_title": "Thất bại",
       "tx_failed": "Giao dịch không thành công",

@@ -31,17 +31,17 @@ const navigationItems = [
     active: true
   },
   {
-    id: "transaction-decoder",
-    nameKey: "Transaction Decoder",
-    icon: FileText,
-    path: "/tools/transaction-decoder",
-    active: true
-  },
-  {
     id: "chain-builder",
     nameKey: "Chain Builder",
     icon: DeployChainIcon,
     path: "/tools/chain-builder",
+    active: true
+  },
+  {
+    id: "transaction-decoder",
+    nameKey: "Transaction Decoder",
+    icon: FileText,
+    path: "/tools/transaction-decoder",
     active: true
   },
   {
