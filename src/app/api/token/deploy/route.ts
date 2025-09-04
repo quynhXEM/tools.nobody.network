@@ -22,7 +22,7 @@ export const POST = async (req: Request) => {
     });
     
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api-crypto/crypto/token/deploy-with-new-wallet`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/crypto/token/deploy-with-new-wallet`,
       {
         method: "POST",
         headers: myHeaders,
