@@ -17,11 +17,11 @@ import { useTranslations } from "next-intl"
 import { useUserWallet } from "./UserWalletContext"
 
 export default function WalletConnect() {
-  const { account, isConnected, wallet, connectWallet, disconnect } = useUserWallet()
+  const { isConnected, wallet, connectWallet, disconnect } = useUserWallet()
   const t = useTranslations()
   const [showDisconnectDialog, setShowDisconnectDialog] = useState(false)
 
-  if (isConnected && account) {
+  if (isConnected && wallet) {
     return (
       <>
         <div

@@ -35,23 +35,23 @@ export type WalletContextType = {
   connectWallet: () => void;
   sendTransaction: (params: SendTxParams) => Promise<any>;
   balance: { ids: string; usdt: string };
-  account: {
-    id: string;
-    status: string;
-    app_id: string;
-    email: string;
-    password: unknown;
-    username: string;
-    country_code: string | null;
-    email_verified: boolean;
-    wallet_address: string;
-    referrer_id: string | null;
-    avatar: string | null;
-  } | null;
+  // account: {
+  //   id: string;
+  //   status: string;
+  //   app_id: string;
+  //   email: string;
+  //   password: unknown;
+  //   username: string;
+  //   country_code: string | null;
+  //   email_verified: boolean;
+  //   wallet_address: string;
+  //   referrer_id: string | null;
+  //   avatar: string | null;
+  // } | null;
   checkChainExists: (chainId: string) => Promise<boolean>;
   loading: boolean;
-  setAccount: (account: any) => void;
-  addNewMember: (wallet: WalletInfo) => Promise<void>;
+  // setAccount: (account: any) => void;
+  // addNewMember: (wallet: WalletInfo) => Promise<void>;
   setLoading: (loading: boolean) => void;
   getChainInfo: (chainId: string| number) => any;
 };
@@ -69,21 +69,21 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
     ids: "0",
     usdt: "0",
   });
-  const [account, setAccount] = useState<{
-    id: string;
-    status: string;
-    app_id: string;
-    email: string;
-    password: unknown;
-    username: string;
-    country_code: string | null;
-    email_verified: boolean;
-    wallet_address: string;
-    referrer_id: string | null;
-    avatar: string | null;
-    isVip: boolean;
-    stake_history: any[];
-  } | null>(null);
+  // const [account, setAccount] = useState<{
+  //   id: string;
+  //   status: string;
+  //   app_id: string;
+  //   email: string;
+  //   password: unknown;
+  //   username: string;
+  //   country_code: string | null;
+  //   email_verified: boolean;
+  //   wallet_address: string;
+  //   referrer_id: string | null;
+  //   avatar: string | null;
+  //   isVip: boolean;
+  //   stake_history: any[];
+  // } | null>(null);
   const isConnected = !!wallet;
   const path = usePathname();
   const { notify } = useNotification();
@@ -114,85 +114,85 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
   }
 
   // Lỗi thêm 2 ví cùng lúc ( khôgn có ví, co người giới thiệu)
-  const addNewMember = async (wallet: WalletInfo) => {
-    if (isCreatingMemberRef.current) return; // Ngăn gọi lặp
-    isCreatingMemberRef.current = true;
-    try {
-      // Check user is exist
-      const exist = await fetch("/api/directus/request", {
-        method: "POST",
-        body: JSON.stringify({
-          type: "readItems",
-          collection: "member",
-          params: {
-            filter: {
-              wallet_address: wallet?.address?.toLocaleLowerCase(),
-              status: "active",
-              app_id:
-                process.env.NEXT_PUBLIC_APP_ID ??
-                "db2a722c-59e2-445c-b89e-7b692307119a",
-            },
-          },
-        }),
-      })
-        .then((data) => data.json())
-        .then((data) => data.result[0])
-        .catch(() => null);
-      if (exist) {
-        setAccount({
-          ...exist,
-        });
-        return;
-      }
+  // const addNewMember = async (wallet: WalletInfo) => {
+  //   if (isCreatingMemberRef.current) return; // Ngăn gọi lặp
+  //   isCreatingMemberRef.current = true;
+  //   try {
+  //     // Check user is exist
+  //     const exist = await fetch("/api/directus/request", {
+  //       method: "POST",
+  //       body: JSON.stringify({
+  //         type: "readItems",
+  //         collection: "member",
+  //         params: {
+  //           filter: {
+  //             wallet_address: wallet?.address?.toLocaleLowerCase(),
+  //             status: "active",
+  //             app_id:
+  //               process.env.NEXT_PUBLIC_APP_ID ??
+  //               "db2a722c-59e2-445c-b89e-7b692307119a",
+  //           },
+  //         },
+  //       }),
+  //     })
+  //       .then((data) => data.json())
+  //       .then((data) => data.result[0])
+  //       .catch(() => null);
+  //     if (exist) {
+  //       setAccount({
+  //         ...exist,
+  //       });
+  //       return;
+  //     }
 
-      let ref = null;
-      if (!path.includes("/home")) {
-        ref = await fetch("/api/directus/request", {
-          method: "POST",
-          body: JSON.stringify({
-            type: "readItems",
-            collection: "member",
-            params: {
-              filter: {
-                username: path.split("/")[1],
-                status: "active",
-                app_id:
-                  process.env.NEXT_PUBLIC_APP_ID ??
-                  "db2a722c-59e2-445c-b89e-7b692307119a",
-              },
-              fields: ["id"],
-            },
-          }),
-        })
-          .then((data) => data.json())
-          .then((data) => data.result[0]?.id)
-          .catch(() => null);
-      }
-      const newusser = await fetch("/api/directus/request", {
-        method: "POST",
-        body: JSON.stringify({
-          type: "createItem",
-          collection: "member",
-          ct_code: true,
-          items: {
-            status: "active",
-            app_id:
-              process.env.NEXT_PUBLIC_APP_ID ??
-              "db2a722c-59e2-445c-b89e-7b692307119a",
-            wallet_address: wallet?.address?.toLocaleLowerCase(),
-            referrer_id: ref,
-          },
-          fields: ["*"],
-        }),
-      }).then((data) => data.json());
-      setAccount({
-        ...newusser.result,
-      });
-    } finally {
-      isCreatingMemberRef.current = false;
-      setLoading(false);
-    }
-  };
+  //     let ref = null;
+  //     if (!path.includes("/home")) {
+  //       ref = await fetch("/api/directus/request", {
+  //         method: "POST",
+  //         body: JSON.stringify({
+  //           type: "readItems",
+  //           collection: "member",
+  //           params: {
+  //             filter: {
+  //               username: path.split("/")[1],
+  //               status: "active",
+  //               app_id:
+  //                 process.env.NEXT_PUBLIC_APP_ID ??
+  //                 "db2a722c-59e2-445c-b89e-7b692307119a",
+  //             },
+  //             fields: ["id"],
+  //           },
+  //         }),
+  //       })
+  //         .then((data) => data.json())
+  //         .then((data) => data.result[0]?.id)
+  //         .catch(() => null);
+  //     }
+  //     const newusser = await fetch("/api/directus/request", {
+  //       method: "POST",
+  //       body: JSON.stringify({
+  //         type: "createItem",
+  //         collection: "member",
+  //         ct_code: true,
+  //         items: {
+  //           status: "active",
+  //           app_id:
+  //             process.env.NEXT_PUBLIC_APP_ID ??
+  //             "db2a722c-59e2-445c-b89e-7b692307119a",
+  //           wallet_address: wallet?.address?.toLocaleLowerCase(),
+  //           referrer_id: ref,
+  //         },
+  //         fields: ["*"],
+  //       }),
+  //     }).then((data) => data.json());
+  //     setAccount({
+  //       ...newusser.result,
+  //     });
+  //   } finally {
+  //     isCreatingMemberRef.current = false;
+  //     setLoading(false);
+  //   }
+  // };
 
 
   const connectWallet = async () => {
@@ -211,10 +211,10 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
         method: "eth_requestAccounts",
       });
       const chainId = await provider.request({ method: "eth_chainId" });
-      await addNewMember({
-        address: accounts[0],
-        chainId: parseInt(chainId, 16),
-      });
+      // await addNewMember({
+      //   address: accounts[0],
+      //   chainId: parseInt(chainId, 16),
+      // });
       setWallet({ address: accounts[0], chainId: parseInt(chainId, 16) });
       localStorage.setItem("is_connect", "true");
     } catch (err) {
@@ -383,11 +383,11 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
         connectWallet,
         sendTransaction,
         balance,
-        account,
+        // account,
         checkChainExists,
         loading,
-        setAccount,
-        addNewMember,
+        // setAccount,
+        // addNewMember,
         setLoading,
         getChainInfo
       }}
