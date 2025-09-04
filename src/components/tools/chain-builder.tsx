@@ -377,7 +377,19 @@ export default function ChainBuilderTool() {
                                         {/* Select chọn quốc qia đồng bộ với map bên dưới có thể chọn bằng select hoặc map đều được*/}
                                         {/* Select dropdown để chọn vị trí server */}
                                         <div className="flex flex-col gap-1">
-                                            <Label className="text-sm text-white font-medium">{t("chain_builder.serverlocation")}</Label>
+                                            <div className="flex gap-1">
+                                                <Label className="text-sm text-white font-medium">{t("chain_builder.serverlocation")}</Label>
+                                                <TooltipProvider>
+                                                    <Tooltip>
+                                                        <TooltipTrigger type="button" className="flex items-center">
+                                                            <Info className="w-4 h-4 text-slate-400" />
+                                                        </TooltipTrigger>
+                                                        <TooltipContent className="max-w-xs">
+                                                            <p className="text-white">{t("chain_builder.serverlocation_description")}</p>
+                                                        </TooltipContent>
+                                                    </Tooltip>
+                                                </TooltipProvider>
+                                            </div>
                                             <Select value={selectedServerLocation} onValueChange={setSelectedServerLocation}>
                                                 <SelectTrigger className="w-full text-white bg-gray-700 border-gray-600">
                                                     <SelectValue placeholder={t("chain_builder.select_server_placeholder")} />
@@ -392,10 +404,6 @@ export default function ChainBuilderTool() {
                                             </Select>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="">
-                                    <p className="text-gray-300 text-xs font-bold">{t("chain_builder.serverlocation_description_2")}</p>
-                                    <p className="text-gray-400 text-xs">{t("chain_builder.serverlocation_description")}</p>
                                 </div>
                                 <WorldMap setLocation={setVSLocation} selectedLocation={selectedServerLocation} />
 

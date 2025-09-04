@@ -330,7 +330,7 @@
     "pay": "Payment",
     "deploy": "Deploy Blockchain",
     "serverlocation": "Server location",
-    "serverlocation_description": "We deploy 2 nodes on 2 different servers in the same location, if you want to add a server to make a node in a different continent, we will consult after you register",
+    "serverlocation_description": "We deploy two nodes on separate servers at the same location. If additional nodes are required at a different site, we will provide detailed consultation after payment.",
     "serverlocation_description_2": "Click to select server location",
     "select_server_placeholder": "Select server location",
     "domain_check": {

@@ -331,7 +331,7 @@
     "pay": "Thanh toán",
     "deploy": "Triển khai Blockchain",
     "serverlocation": "Vị trí server",
-    "serverlocation_description": "Chúng tôi triển khai 2 node trên 2 server khác nhau ở cùng 1 vị trí, nếu muốn bổ sung server làm node ở châu lục khác chúng tôi sẽ tư vấn sau khi bạn đăng ký",
+    "serverlocation_description": "Chúng tôi triển khai 2 node trên 2 server khác nhau tại cùng một địa điểm. Nếu cần thêm node ở vị trí khác, chúng tôi sẽ tư vấn chi tiết sau khi bạn thanh toán.",
     "serverlocation_description_2": "Bấm để chọn vị trí đặt server",
     "select_server_placeholder": "Chọn vị trí server",
     "domain_check": {
