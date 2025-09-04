@@ -197,7 +197,7 @@ export const DeployTokenEmail = ({
 									</tr>
 									<tr>
 										<td style="color: #9f9fa7; font-size: 14px; line-height: 20px; padding: 8px 0; text-align: center;">
-											<a href="https://a-scan.nobody.network/address/${data.token.address}" target="_blank"
+											<a href="${data?.chain?.chain_id?.explorer_url}/address/${data.token.address}" target="_blank"
 											   style="background: linear-gradient(-30deg, #17cdd8, #8b5cf6, #17cdd8); color: #fff!important; font-size: 16px; font-weight: 600; line-height: 20px; border-radius: 50px; padding: 15px 40px; text-decoration: none; display: inline-block; margin: 20px 0;">
 												🔍 Xem trên explorer
 											</a>
@@ -560,7 +560,7 @@ export const DeployTokenEmail = ({
 									</tr>
 									<tr>
 										<td style="color: #9f9fa7; font-size: 14px; line-height: 20px; padding: 8px 0; text-align: center;">
-											<a href="https://a-scan.nobody.network/address/${data.token.address}" target="_blank"
+											<a href="${data?.chain?.chain_id?.explorer_url}/address/${data.token.address}" target="_blank"
 											   style="background: linear-gradient(-30deg, #17cdd8, #8b5cf6, #17cdd8); color: #fff!important; font-size: 16px; font-weight: 600; line-height: 20px; border-radius: 50px; padding: 15px 40px; text-decoration: none; display: inline-block; margin: 20px 0;">
 												🔍 View on Explorer
 											</a>
@@ -693,8 +693,28 @@ export const DeployTokenEmail = ({
 					<tr>
 						<td style="border-top: 1px solid #4e4e52; padding: 10px 20px; text-align: center; margin: 0 20px;">
 							<a href="https://www.nobody.network" target="_blank"
-								style="color: #91919a; font-size: 14px; text-decoration: none; margin: 0 10px;">Visit nobody.network</a>
-							<span style="color
+								style="color: #91919a; font-size: 14px; text-decoration: none; margin: 0 10px;">Visit
+								Nobody Network</a>
+							<span style="color: #91919a; ">|</span>
+							<a href="/unsubscribe" style="color: #91919a; font-size: 14px; text-decoration: none; margin: 0 10px;">Unsubscribe</a>
+						</td>
+					</tr>
+				</table>
+
+				<!-- Final Footer Text -->
+				<table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+						<td style="color: #fff; text-align: center; font-size: 14px;">
+							Email sent by Nobody Network.
+						</td>
+					</tr>
+				</table>
+
+			</td>
+		</tr>
+	</table>
+</body>
+</html>
 `;
 };
 
