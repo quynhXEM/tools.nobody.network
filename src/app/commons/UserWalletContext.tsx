@@ -374,7 +374,7 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
       await switchChain(swapData.chainId as string)
       const provider = new ethers.BrowserProvider((window as any).ethereum);
       const signer = await provider.getSigner();
-      const address = await signer.getAddress();
+      await signer.getAddress();
 
       const { primaryType, types } = permitData;
 
@@ -382,7 +382,7 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
         [primaryType]: types[primaryType],
         TokenPermissions: types.TokenPermissions,
       };
-      const signature = await signer.signTypedData(
+      await signer.signTypedData(
         permitData.domain,
         cleanTypes,
         permitData.message
