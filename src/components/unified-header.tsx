@@ -38,6 +38,13 @@ const navigationItems = [
     active: true
   },
   {
+    id: "swap-crypto",
+    nameKey: "Swap Crypto",
+    icon: DeployChainIcon,
+    path: "/tools/swap-crypto",
+    active: true
+  },
+  {
     id: "transaction-decoder",
     nameKey: "Transaction Decoder",
     icon: FileText,
@@ -89,7 +96,6 @@ const navigationItems = [
 ]
 
 export function UnifiedHeader() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
   const t = useTranslations()
@@ -108,7 +114,6 @@ export function UnifiedHeader() {
         variant: "default",
       })
     }
-    setIsMobileMenuOpen(false)
   }
 
   return (

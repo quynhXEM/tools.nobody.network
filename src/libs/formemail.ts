@@ -723,7 +723,6 @@ export const ChainBuilderEmail = ({
 }: {
   data: any;
 }) => {
-	console.log(data);
   return `<!DOCTYPE html>
 <html lang="vi">
 <head>

@@ -66,6 +66,13 @@
     },
     "info": "Thông tin Token"
   },
+  "swap": {
+    "desc": "Hoán đổi nhanh chóng giữa các loại tiền mã hoá với tỉ giá tối ưu và giao dịch trên nhiều mạng.",
+    "noti": {
+      "error": "Lỗi",
+      "pool_not_found": "Pool không tồn tại"
+    }
+  },
   "tx": {
     "decoder": "Bộ giải mã giao dịch",
     "desc": "Giải mã dữ liệu giao dịch hex sang định dạng JSON dễ đọc",

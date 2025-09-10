@@ -66,6 +66,13 @@
     },
     "info": "Token information"
   },
+  "swap": {
+    "desc": "Quickly swap between cryptocurrencies with optimal rates and cross-chain transactions.",
+    "noti": {
+      "error": "Error",
+      "pool_not_found": "Pool not found"
+    }
+  },
   "tx": {
     "decoder": "Transaction decoder",
     "desc": "Decode transaction hex data into a readable JSON format",

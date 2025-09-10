@@ -26,6 +26,14 @@ const tools = [
     active: true
   },
   {
+    id: "swap-crypto",
+    titleKey: "Swap Crypto",
+    descKey: "swap.desc",
+    icon: DeployChainIcon,
+    color: "from-cyan-500 to-emerald-500",
+    active: true
+  },
+  {
     id: "transaction-decoder",
     titleKey: "Transaction Decoder",
     descKey: "tx.desc",
