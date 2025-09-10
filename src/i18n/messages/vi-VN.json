@@ -68,6 +68,17 @@
   },
   "swap": {
     "desc": "Hoán đổi nhanh chóng giữa các loại tiền mã hoá với tỉ giá tối ưu và giao dịch trên nhiều mạng.",
+    "title": "Hoán đổi Token",
+    "labels": {
+      "from": "Từ",
+      "to": "Đến",
+      "balance": "Số dư:",
+      "exchange_rate": "Tỉ giá"
+    },
+    "actions": {
+      "swap": "Hoán đổi Token",
+      "swapping": "Đang hoán đổi..."
+    },
     "noti": {
       "error": "Lỗi",
       "pool_not_found": "Pool không tồn tại"

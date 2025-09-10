@@ -1,7 +1,7 @@
 "use client"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Coins, Send, Droplets, Gift, TrendingUp, Shield, Zap, Users, FileText } from 'lucide-react'
+import { Coins, Send, Droplets, Gift, TrendingUp, Shield, Zap, Users, FileText, ArrowLeftRight } from 'lucide-react'
 import { useTranslations } from "next-intl"
 import { cn } from "@/lib/utils"
 import { useRouter } from "@/i18n/navigation"
@@ -29,7 +29,7 @@ const tools = [
     id: "swap-crypto",
     titleKey: "Swap Crypto",
     descKey: "swap.desc",
-    icon: DeployChainIcon,
+    icon: ArrowLeftRight,
     color: "from-cyan-500 to-emerald-500",
     active: true
   },

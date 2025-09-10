@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState } from "react"
-import { ArrowUpDown, Loader2, Settings, Zap } from "lucide-react"
+import { ArrowLeftRight, ArrowUpDown, Loader2, Settings, Zap } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -33,24 +33,25 @@ export const SwapToolsPage = () => {
     const [toAmount, setToAmount] = useState("")
     const [isLoading, setIsLoading] = useState(false)
     const [tokenList, setTokenList] = useState<any[]>([])
-    const [checkPool, setCheckPool] = useState(false)
+    const [checkPool, setCheckPool] = useState<any>(null)
     const t = useTranslations("swap")
     const { swapToken, wallet } = useUserWallet();
     const { notify } = useNotification()
 
     const handleSwap = async () => {
         if(!wallet) return;
+        if (!fromToken || !toToken || !debouncedFromAmount) return;
         setIsLoading(true)
         const swapData = {
-            chainId: fromToken?.chainId,
-            sellToken: fromToken?.address,
-            buyToken: toToken?.address,
-            sellAmount: BigInt(Number(debouncedFromAmount) * 10 ** Number(fromToken?.decimals)).toString(),
-            taker: wallet?.address
+            chainId: String(fromToken.chainId),
+            sellToken: fromToken.address,
+            buyToken: toToken.address,
+            sellAmount: BigInt(Number(debouncedFromAmount) * 10 ** Number(fromToken.decimals)).toString(),
+            taker: wallet.address
         }
         await swapToken({
             swapData: swapData,
-            permitData: checkPool.permit2.eip712,
+            permitData: checkPool?.permit2?.eip712,
             tx: checkPool?.transaction
         })
 
@@ -78,6 +79,7 @@ export const SwapToolsPage = () => {
                 type: false,
                 message: t("noti.pool_not_found")
             })
+            setCheckPool(null)
         }
     }
 
@@ -99,13 +101,13 @@ export const SwapToolsPage = () => {
 
     useEffect(() => {
         setToAmount("")
-        setCheckPool(false)
+        setCheckPool(null)
         if (!fromToken || !toToken || !fromAmount) return;
         hanldeCheckPool()
     }, [fromToken, toToken])
 
     useEffect(() => {
-        setCheckPool(false)
+        setCheckPool(null)
         if (!debouncedFromAmount || !fromToken || !toToken || !fromAmount) return;
         hanldeCheckPool()
     }, [debouncedFromAmount])
@@ -118,7 +120,7 @@ export const SwapToolsPage = () => {
                 <CardHeader className="">
                     <div className="flex items-center justify-between">
                         <CardTitle className="text-xl font-semibold text-white flex items-center gap-2">
-                            <Zap className="h-5 w-5 text-cyan-400" />
+                            <ArrowLeftRight className="h-5 w-5 text-cyan-400" />
                             Swap Tokens
                         </CardTitle>
 
@@ -129,9 +131,9 @@ export const SwapToolsPage = () => {
                     <NotConnectLayout>
                         <div className="space-y-2">
                             <div className="flex justify-between text-sm">
-                                <span className="text-slate-400">From</span>
+                                <span className="text-slate-400">{t("labels.from")}</span>
                                 <span className="text-slate-400">
-                                    Balance:
+                                    {t("labels.balance")}
                                 </span>
                             </div>
                             <div className="relative">
@@ -153,9 +155,9 @@ export const SwapToolsPage = () => {
 
                         <div className="space-y-2">
                             <div className="flex justify-between text-sm">
-                                <span className="text-slate-400">To</span>
+                                <span className="text-slate-400">{t("labels.to")}</span>
                                 <span className="text-slate-400">
-                                    Balance:
+                                    {t("labels.balance")}
                                 </span>
                             </div>
                             <div className="relative">
@@ -180,7 +182,7 @@ export const SwapToolsPage = () => {
                         {fromAmount && toAmount && (
                             <div className="bg-slate-900/30 rounded-lg p-3 space-y-2">
                                 <div className="flex justify-between text-sm">
-                                    <span className="text-slate-400">Exchange Rate</span>
+                                    <span className="text-slate-400">{t("labels.exchange_rate")}</span>
                                     <span className="text-white font-mono">
                                         {formatNumber(Number(formatUnits(checkPool?.minBuyAmount, toToken?.decimals)) / Number(formatUnits(checkPool.sellAmount, fromToken?.decimals)))}
                                     </span>
@@ -196,10 +198,10 @@ export const SwapToolsPage = () => {
                             {isLoading ? (
                                 <div className="flex items-center gap-2">
                                     <Loader2 className="w-4 h-4 animate-spin" />
-                                    Swapping...
+                                    {t("actions.swapping")}
                                 </div>
                             ) : (
-                                "Swap Tokens"
+                                t("actions.swap")
                             )}
                         </Button>
 
