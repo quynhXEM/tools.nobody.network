@@ -11,6 +11,7 @@ import { fetchTokenList, formatNumber } from "@/libs/utils"
 import { ethers, formatUnits } from "ethers"
 import { useUserWallet } from "@/app/commons/UserWalletContext"
 import { useNotification } from "@/app/commons/NotificationContext"
+import { useAppMetadata } from "@/app/commons/AppMetadataContext"
 
 interface Token {
     chainId: number
@@ -37,6 +38,7 @@ export const SwapToolsPage = () => {
     const t = useTranslations("swap")
     const { swapToken, wallet } = useUserWallet();
     const { notify } = useNotification()
+    const { custom_fields : { masterWallet, swap_fee_Bps }, } = useAppMetadata()
 
     const handleSwap = async () => {
         if(!wallet) return;
@@ -66,7 +68,9 @@ export const SwapToolsPage = () => {
                 sellToken: fromToken?.address,
                 buyToken: toToken?.address,
                 sellAmount: BigInt(Number(debouncedFromAmount) * 10 ** Number(fromToken?.decimals)).toString(),
-                taker: wallet?.address
+                taker: wallet?.address,
+                swapFeeRecipient: masterWallet?.address,
+                swapFeeBps: swap_fee_Bps,
             })
         }).then(data => data.json())
         if (respone.ok && respone?.result?.allowanceTarget) {
