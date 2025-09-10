@@ -59,7 +59,7 @@ export default function ChainBuilderTool() {
     }), [t])
 
     const checkChainId = (id: any) => {
-        return public_chain?.[id] ?? false;
+        return public_chain?.[id] ? true : false;
     }
 
     const checkDomain = async (domain: null | string) => {

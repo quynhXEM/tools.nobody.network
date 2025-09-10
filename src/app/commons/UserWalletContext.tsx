@@ -13,6 +13,7 @@ import React, {
 import { useTranslations } from "next-intl";
 import { useAppMetadata } from "./AppMetadataContext";
 import { useNotification } from "./NotificationContext";
+import { ethers } from "ethers";
 export type SendTxParams = {
   chainId?: number;
   to: string;
@@ -27,6 +28,18 @@ export type WalletInfo = {
   [key: string]: any;
 } | null;
 
+export type SwapParams = {
+  swapData: {
+    chainId: string,
+    sellToken: string,
+    buyToken: string,
+    sellAmount: string,
+    taker: string
+  },
+  permitData: { primaryType: any, types: any },
+  tx: any
+}
+
 export type WalletContextType = {
   wallet: WalletInfo;
   isConnected: boolean;
@@ -34,7 +47,8 @@ export type WalletContextType = {
   disconnect: () => void;
   connectWallet: () => void;
   sendTransaction: (params: SendTxParams) => Promise<any>;
-  balance: { ids: string; usdt: string };
+  swapToken: (params: SwapParams) => Promise<any>;
+  // balance: { ids: string; usdt: string };
   // account: {
   //   id: string;
   //   status: string;
@@ -53,7 +67,8 @@ export type WalletContextType = {
   // setAccount: (account: any) => void;
   // addNewMember: (wallet: WalletInfo) => Promise<void>;
   setLoading: (loading: boolean) => void;
-  getChainInfo: (chainId: string| number) => any;
+  getChainInfo: (chainId: string | number) => any;
+  switchChain: (chainId: string) => Promise<void>;
 };
 
 const UserWalletContext = createContext<WalletContextType | undefined>(
@@ -64,11 +79,12 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
   const [wallet, setWallet] = useState<WalletInfo>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const { chain } = useAppMetadata();
+
   const t = useTranslations("");
-  const [balance, setBalanceState] = useState<{ ids: string; usdt: string }>({
-    ids: "0",
-    usdt: "0",
-  });
+  // const [balance, setBalanceState] = useState<{ ids: string; usdt: string }>({
+  //   ids: "0",
+  //   usdt: "0",
+  // });
   // const [account, setAccount] = useState<{
   //   id: string;
   //   status: string;
@@ -85,9 +101,7 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
   //   stake_history: any[];
   // } | null>(null);
   const isConnected = !!wallet;
-  const path = usePathname();
   const { notify } = useNotification();
-  const isCreatingMemberRef = useRef(false);
 
   useEffect(() => {
     if (!wallet) {
@@ -108,7 +122,7 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
     setWallet(null);
   };
 
-  const getChainInfo = (chainId: string| number) => {
+  const getChainInfo = (chainId: string | number) => {
     const chainData = chain.find((item: any) => item.chain_id.id == chainId);
     return chainData;
   }
@@ -293,8 +307,6 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
       }
       if (type === "coin") {
         // Gửi native coin
-        console.log(amount);
-        
         const tx = {
           from: wallet.address,
           to,
@@ -355,6 +367,42 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const swapToken = async (params: SwapParams) => {
+    if (!wallet) return;
+    try {
+      const { swapData, permitData, tx } = params
+      await switchChain(swapData.chainId as string)
+      const provider = new ethers.BrowserProvider((window as any).ethereum);
+      const signer = await provider.getSigner();
+      const address = await signer.getAddress();
+
+      const { primaryType, types } = permitData;
+
+      const cleanTypes = {
+        [primaryType]: types[primaryType],
+        TokenPermissions: types.TokenPermissions,
+      };
+      const signature = await signer.signTypedData(
+        permitData.domain,
+        cleanTypes,
+        permitData.message
+      );
+
+      // Gửi transaction swap
+      const receipt = await signer.sendTransaction({
+        to: tx.to,
+        data: tx.data,
+        value: tx.value ?? 0,
+        gasLimit: tx.gas,
+        gasPrice: tx.gasPrice
+      });
+
+      await receipt.wait();
+    } catch (error) {
+
+    }
+  }
+
   const checkChainExists = async (chainId: string): Promise<boolean> => {
     if (typeof window === "undefined" || !(window as any).ethereum)
       return false;
@@ -373,6 +421,15 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const switchChain = async (chainId: string) => {
+    if (!wallet) return;
+    const provider = (window as any).ethereum;
+    await provider.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: "0x" + Number(chainId).toString(16) }],
+    });
+  }
+
   return (
     <UserWalletContext.Provider
       value={{
@@ -382,14 +439,16 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
         disconnect,
         connectWallet,
         sendTransaction,
-        balance,
+        swapToken,
+        // balance,
         // account,
         checkChainExists,
         loading,
         // setAccount,
         // addNewMember,
         setLoading,
-        getChainInfo
+        getChainInfo,
+        switchChain
       }}
     >
       {children}

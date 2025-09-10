@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { BrowserProvider, ethers } from "ethers";
 import { roundDownDecimal } from "./utils";
 
 // Hàm chuyển coin (ETH, BNB, MATIC, ...)
@@ -55,12 +55,16 @@ export async function sendToken({
 }
 
 // Hàm chờ xác nhận giao dịch thành công
-export async function waitForTransactionSuccess(txPromise: Promise<any>, provider?: any) {
+export async function waitForTransactionSuccess(
+  txPromise: Promise<any>,
+  provider?: any
+) {
   try {
     const tx = await txPromise;
     // Nếu đã có provider thì dùng provider đó, nếu không thì lấy từ tx
     const usedProvider = provider || tx?.provider;
-    if (!usedProvider) throw new Error("Không tìm thấy provider để xác nhận giao dịch");
+    if (!usedProvider)
+      throw new Error("Không tìm thấy provider để xác nhận giao dịch");
     const receipt = await usedProvider.waitForTransaction(tx.hash, 1, 60000); // timeout 60s
     if (receipt && receipt.status === 1) {
       return receipt.hash;
@@ -74,18 +78,20 @@ export async function waitForTransactionSuccess(txPromise: Promise<any>, provide
 }
 
 export const getBalance = async ({
-  address, chainId, tokenAddress, rpc
-} : {
-  address: string,
-  chainId?: number,
-  tokenAddress?: string,
-  rpc?: string
+  address,
+  chainId,
+  tokenAddress,
+  rpc,
+}: {
+  address: string;
+  chainId?: number;
+  tokenAddress?: string;
+  rpc?: string;
 }): Promise<string> => {
   try {
     // Ưu tiên lấy rpc từ tham số, nếu không có thì lấy từ metadata
     const rpcUrl = rpc;
-    if (!rpcUrl) throw new Error("Thiếu RPC endpoint");
-    const provider = new ethers.JsonRpcProvider(rpcUrl, chainId);
+    const provider = new BrowserProvider((window as any).ethereum);
 
     if (!tokenAddress) {
       // Lấy số dư coin
@@ -102,7 +108,9 @@ export const getBalance = async ({
         token.balanceOf(address),
         token.decimals(),
       ]);
-      return roundDownDecimal(Number(balance) / Math.pow(10, Number(decimals))).toString();
+      return roundDownDecimal(
+        Number(balance) / Math.pow(10, Number(decimals))
+      ).toString();
     }
   } catch (error) {
     if (process.env.NODE_ENV === "development") {
@@ -112,16 +120,22 @@ export const getBalance = async ({
   }
 };
 
-export const getDecimals = async ({ tokenAddress, rpc, chainId }: { tokenAddress: string, rpc: string, chainId?: number }) => {
+export const getDecimals = async ({
+  tokenAddress,
+  rpc,
+  chainId,
+}: {
+  tokenAddress: string;
+  rpc: string;
+  chainId?: number;
+}) => {
   try {
     const provider = new ethers.JsonRpcProvider(rpc, chainId);
-    const erc20Abi = [
-      "function decimals() view returns (uint8)"
-    ];
+    const erc20Abi = ["function decimals() view returns (uint8)"];
     const token = new ethers.Contract(tokenAddress, erc20Abi, provider);
     const decimals = await token.decimals();
     return Number(decimals);
   } catch (e) {
     return 18;
   }
-}
+};

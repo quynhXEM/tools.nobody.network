@@ -12,6 +12,7 @@ import { Metadata } from "next";
 import { WalletProvider } from "@/views/WalletProvider";
 import DeployChainIcon from "@/res/DeployChainIcon";
 import ChainBuilderTool from "@/components/tools/chain-builder";
+import { SwapToolsPage } from "@/components/tools/swap-tool";
 
 const tools = {
   "token-deploy": {
@@ -32,6 +33,13 @@ const tools = {
     title: "Chain Builder",
     description: "chainbuilder",
     component: ChainBuilderTool,
+    icon: DeployChainIcon,
+    color: "from-cyan-500 to-emerald-500",
+  },
+  "swap-crypto": {
+    title: "Swap Crypto",
+    description: "swap.desc",
+    component: SwapToolsPage,
     icon: DeployChainIcon,
     color: "from-cyan-500 to-emerald-500",
   },

@@ -11,15 +11,6 @@ export const POST = async (req: Request) => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", `Bearer ${process.env.APP_TOKEN}`);
-    console.log({
-      name: name,
-      symbol: symbol,
-      totalSupply: totalSupply,
-      decimals: decimals,
-      chainId: chainId,
-      currency: "CREDIT",
-      privateKey: masterWallet.private_key,
-    });
     
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/crypto/token/deploy-with-new-wallet`,

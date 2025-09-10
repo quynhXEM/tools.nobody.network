@@ -4,7 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Menu, X, Home, Coins, FileText, Send, Droplets, Gift, TrendingUp, Shield, Zap, Users, ChevronDown } from 'lucide-react'
+import { Menu, X, Home, Coins, FileText, Send, Droplets, Gift, TrendingUp, Shield, Zap, Users, ChevronDown, ArrowLeftRight } from 'lucide-react'
 import { Logo } from "@/components/logo"
 import { useTranslations } from "next-intl"
 import { usePathname, useRouter } from "@/i18n/navigation"
@@ -35,6 +35,13 @@ const navigationItems = [
     nameKey: "Chain Builder",
     icon: DeployChainIcon,
     path: "/tools/chain-builder",
+    active: true
+  },
+  {
+    id: "swap-crypto",
+    nameKey: "Swap Crypto",
+    icon: ArrowLeftRight,
+    path: "/tools/swap-crypto",
     active: true
   },
   {
@@ -89,7 +96,6 @@ const navigationItems = [
 ]
 
 export function UnifiedHeader() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
   const t = useTranslations()
@@ -108,7 +114,6 @@ export function UnifiedHeader() {
         variant: "default",
       })
     }
-    setIsMobileMenuOpen(false)
   }
 
   return (

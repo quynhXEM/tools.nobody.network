@@ -73,7 +73,7 @@ export async function publicChain() {
   const chains = await res.json();
 
   const list_id = chains.map((item: any) => item.chainId)
-  const result = Object.fromEntries(list_id.map((v: number) => [v, true]));
+  const result = Object.fromEntries(list_id.map((v: number, i: number) => [v, chains[i]]));
   return result;
 }
 
@@ -105,6 +105,28 @@ export async function fetchTokenQuote(chain_list: string) {
   } catch (error) {
     console.log(error);
     return null;
+  }
+}
+
+export async function fetchTokenList() {
+  try {
+    const data = await fetch("https://tokens.uniswap.org/", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((data) => data.json())
+    .then(data => data?.tokens?.filter((item: any) => {
+      const filts = [1, 10, 56, 137, 8453, 42161, 43114, 59144, 534352, 5000, 81457, 34443, 480, 10143, 130, 80094, 57073]
+      const isFilter = filts.includes(item.chainId)
+      if (isFilter) {
+        return item
+      }
+    }))
+
+    return data
+  } catch (error) {
+    return null
   }
 }
 
