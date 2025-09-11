@@ -22,7 +22,7 @@ export const BuySellCryptoTool = () => {
                     <div className="flex items-center justify-between">
                         <CardTitle className="text-xl font-semibold text-white flex items-center gap-2">
                             <BuySellCryptoIcon color='cyan' className={''} />
-                            Buy/Sell Crypto
+                            Buy & Sell Crypto
                         </CardTitle>
                     </div>
                 </CardHeader>

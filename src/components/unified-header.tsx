@@ -40,7 +40,7 @@ const navigationItems = [
   },
   {
     id: "buy-sell-crypto",
-    nameKey: "Buy/Sell Crypto",
+    nameKey: "Buy & Sell Crypto",
     icon: BuySellCryptoIcon,
     path: "/tools/buy-sell-crypto",
     active: true
