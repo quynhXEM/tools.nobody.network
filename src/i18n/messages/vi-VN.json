@@ -84,6 +84,9 @@
       "pool_not_found": "Pool không tồn tại"
     }
   },
+  "buysell": {
+    "desc": "Mua & Bán token nhanh chóng với tỉ giá tối ưu và hỗ trợ giao dịch nhiều loại tiên tiền pháp định."
+  },
   "tx": {
     "decoder": "Bộ giải mã giao dịch",
     "desc": "Giải mã dữ liệu giao dịch hex sang định dạng JSON dễ đọc",

@@ -3,10 +3,11 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Coins, Send, Droplets, Gift, TrendingUp, Shield, Zap, Users, FileText, ArrowLeftRight } from 'lucide-react'
 import { useTranslations } from "next-intl"
-import { cn } from "@/lib/utils"
+import { cn } from "@/libs/utils"
 import { useRouter } from "@/i18n/navigation"
 import { toast } from "@/hooks/use-toast"
 import DeployChainIcon from "@/res/DeployChainIcon"
+import BuySellCryptoIcon from "@/res/BuySellCryptoIcon"
 
 const tools = [
   {
@@ -22,6 +23,14 @@ const tools = [
     titleKey: "Chain Builder",
     descKey: "chainbuilder",
     icon: DeployChainIcon,
+    color: "from-cyan-500 to-emerald-500",
+    active: true
+  },
+  {
+    id: "buy-sell-crypto",
+    titleKey: "Buy/Sell Crypto",
+    descKey: "buysell.desc",
+    icon: BuySellCryptoIcon,
     color: "from-cyan-500 to-emerald-500",
     active: true
   },

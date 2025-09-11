@@ -108,13 +108,43 @@ export async function fetchTokenQuote(chain_list: string) {
   }
 }
 
-export async function fetchTokenList() {
+// Cache cho token list để tránh fetch lại nhiều lần
+let tokenListCache: any[] | null = null;
+let tokenListCacheTime: number = 0;
+const TOKEN_LIST_CACHE_DURATION = 10 * 60 * 1000; // 5 phút
+
+// Cache cho các API calls khác
+const apiCache = new Map<string, { data: any; timestamp: number }>();
+const API_CACHE_DURATION = 2 * 60 * 1000; // 2 phút
+
+export function getCachedApiResponse(key: string) {
+  const cached = apiCache.get(key);
+  if (cached && (Date.now() - cached.timestamp) < API_CACHE_DURATION) {
+    return cached.data;
+  }
+  return null;
+}
+
+export function setCachedApiResponse(key: string, data: any) {
+  apiCache.set(key, { data, timestamp: Date.now() });
+}
+
+export async function fetchTokenList(forceRefresh: boolean = false) {
   try {
+    const now = Date.now();
+    
+    // Kiểm tra cache nếu không force refresh
+    if (!forceRefresh && tokenListCache && (now - tokenListCacheTime) < TOKEN_LIST_CACHE_DURATION) {
+      return tokenListCache;
+    }
+
     const data = await fetch("https://tokens.uniswap.org/", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
+      // Thêm cache control để browser cache
+      cache: 'force-cache'
     }).then((data) => data.json())
     .then(data => data?.tokens?.filter((item: any) => {
       const filts = [1, 10, 56, 137, 8453, 42161, 43114, 59144, 534352, 5000, 81457, 34443, 480, 10143, 130, 80094, 57073]
@@ -124,9 +154,14 @@ export async function fetchTokenList() {
       }
     }))
 
+    // Lưu vào cache
+    tokenListCache = data;
+    tokenListCacheTime = now;
+
     return data
   } catch (error) {
-    return null
+    console.error('Error fetching token list:', error);
+    return tokenListCache || null; // Trả về cache cũ nếu có lỗi
   }
 }
 
