@@ -14,7 +14,7 @@ const MoonPayBuyWidget = dynamic(
 );
 
 export const BuySellCryptoTool = () => {
-    return <MoonPayProvider apiKey="pk_test_LXkN6SvXYJ3FocS6PiE5lZAfdFMYNq" debug>
+    return <MoonPayProvider apiKey={process.env.NEXT_PUBLIC_MOONPAY_API_KEY} debug>
 
         <div className="w-full max-w-md mx-auto space-y-4">
             <Card className="bg-slate-800/50 backdrop-blur-xl border-slate-700/50 shadow-2xl">
