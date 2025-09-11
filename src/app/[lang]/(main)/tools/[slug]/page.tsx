@@ -39,7 +39,7 @@ const tools = {
     color: "from-cyan-500 to-emerald-500",
   },
   "buy-sell-crypto": {
-    title: "Buy/Sell Crypto",
+    title: "Buy & Sell Crypto",
     description: "buysell.desc",
     component: BuySellCryptoTool,
     icon: BuySellCryptoIcon,

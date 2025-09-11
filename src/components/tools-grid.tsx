@@ -28,7 +28,7 @@ const tools = [
   },
   {
     id: "buy-sell-crypto",
-    titleKey: "Buy/Sell Crypto",
+    titleKey: "Buy & Sell Crypto",
     descKey: "buysell.desc",
     icon: BuySellCryptoIcon,
     color: "from-cyan-500 to-emerald-500",
