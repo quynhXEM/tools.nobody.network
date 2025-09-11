@@ -13,6 +13,7 @@ import { cn } from "@/libs/utils"
 import { toast } from "@/hooks/use-toast"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu"
 import DeployChainIcon from "@/res/DeployChainIcon"
+import BuySellCryptoIcon from "@/res/BuySellCryptoIcon"
 
 const navigationItems = [
   {
@@ -35,6 +36,13 @@ const navigationItems = [
     nameKey: "Chain Builder",
     icon: DeployChainIcon,
     path: "/tools/chain-builder",
+    active: true
+  },
+  {
+    id: "buy-sell-crypto",
+    nameKey: "Buy/Sell Crypto",
+    icon: BuySellCryptoIcon,
+    path: "/tools/buy-sell-crypto",
     active: true
   },
   {

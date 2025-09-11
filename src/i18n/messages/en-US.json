@@ -84,6 +84,9 @@
       "pool_not_found": "Pool not found"
     }
   },
+  "buysell": {
+    "desc": "Buy & Sell Crypto with optimal rates and support for multiple fiat currencies."
+  },
   "tx": {
     "decoder": "Transaction decoder",
     "desc": "Decode transaction hex data into a readable JSON format",

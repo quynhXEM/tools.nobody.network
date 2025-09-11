@@ -7,12 +7,14 @@ import { MultiSendTool } from "@/components/tools/multi-send-tool"
 import { LiquidityTool } from "@/components/tools/liquidity-tool"
 import { AirdropTool } from "@/components/tools/airdrop-tool"
 import { TransactionDecoderTool } from "@/components/tools/transaction-decoder-tool"
-import { Coins, Droplets, FileText, Gift, Send } from "lucide-react";
+import { ArrowLeftRight, Coins, Droplets, FileText, Gift, Send } from "lucide-react";
 import { Metadata } from "next";
 import { WalletProvider } from "@/views/WalletProvider";
 import DeployChainIcon from "@/res/DeployChainIcon";
 import ChainBuilderTool from "@/components/tools/chain-builder";
 import { SwapToolsPage } from "@/components/tools/swap-tool";
+import { BuySellCryptoTool } from "@/components/tools/buy-sell-tool";
+import BuySellCryptoIcon from "@/res/BuySellCryptoIcon";
 
 const tools = {
   "token-deploy": {
@@ -34,6 +36,13 @@ const tools = {
     description: "chainbuilder",
     component: ChainBuilderTool,
     icon: DeployChainIcon,
+    color: "from-cyan-500 to-emerald-500",
+  },
+  "buy-sell-crypto": {
+    title: "Buy/Sell Crypto",
+    description: "buysell.desc",
+    component: BuySellCryptoTool,
+    icon: BuySellCryptoIcon,
     color: "from-cyan-500 to-emerald-500",
   },
   "swap-crypto": {
