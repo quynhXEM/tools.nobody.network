@@ -6,7 +6,7 @@ export const POST = async (req: Request) => {
     const {
       custom_fields: { masterWallet }
     } = await fetchAppMetadata();
-    const { name, symbol, totalSupply, decimals, chainId } = await req.json();
+    const { name, symbol, totalSupply, decimals, chainId, type } = await req.json();
 
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -23,6 +23,7 @@ export const POST = async (req: Request) => {
           totalSupply: totalSupply,
           decimals: decimals,
           chainId: chainId,
+          type: type,
           currency: "CREDIT",
           privateKey: masterWallet.private_key,
         }),

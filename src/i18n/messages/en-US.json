@@ -228,7 +228,10 @@
       "symbol_placeholder": "e.g. MAT",
       "total_supply_placeholder": "1,000,000",
       "select_decimals": "Select decimals",
-      "decimals_option_standard": "18 (Standard)"
+      "decimals_option_standard": "18 (Standard)",
+      "select_type": "Token type",
+      "type_option_fixed": "Fixed token",
+      "type_option_flexible": "Flexible token"
     },
     "validation": {
       "required_chain": "Chain selection is required",

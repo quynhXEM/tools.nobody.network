@@ -60,6 +60,7 @@ export function ImprovedTokenDeployTool() {
         { message: t("deploy_token.validation.decimals_integer_range") }
       ),
     email: z.string().optional(),
+    type: z.string(),  // fixed|flexible
   }), [t])
 
   const { handleSubmit, control, formState: { errors }, } = useForm({
@@ -70,7 +71,8 @@ export function ImprovedTokenDeployTool() {
       totalSupply: "",
       decimals: "18",
       chainId: chain?.[0]?.chain_id?.id,
-      email: ""
+      email: "",
+      type: "fixed",
     }
   });
 
@@ -80,7 +82,7 @@ export function ImprovedTokenDeployTool() {
 
     const sendtxn = await sendTransaction({
       amount: getToolFee(data.chainId, chain, deploy_token_fee).toString()
-      .replace(/,/g, ""),
+        .replace(/,/g, ""),
       to: masterWallet.address,
       type: "coin",
       chainId: data.chainId
@@ -107,6 +109,7 @@ export function ImprovedTokenDeployTool() {
         totalSupply: data.totalSupply,
         decimals: data.decimals,
         chainId: data.chainId,
+        type: data.type,
       })
     }).then(data => data.json())
     if (response.ok && response.result.data) {
@@ -120,7 +123,7 @@ export function ImprovedTokenDeployTool() {
               status: "scheduled",
               app_id: process.env.NEXT_PUBLIC_APP_ID,
               to: data.email,
-              subject: t("form_email.title.deploy_token", {contract_address: response.result.data?.token.address}),
+              subject: t("form_email.title.deploy_token", { contract_address: response.result.data?.token.address }),
               body: DeployTokenEmail({
                 locale: locale, data: {
                   ...response.result.data,
@@ -279,6 +282,25 @@ export function ImprovedTokenDeployTool() {
                   )}
                 />
                 <Controller
+                  name="type"
+                  control={control}
+                  render={({ field }) => (
+                    <div className="flex flex-col gap-1 w-full">
+                      <Label htmlFor="typeToken" className="text-sm text-white font-medium">{t("deploy_token.labels.select_type")}</Label>
+                      <Select defaultValue="fixed" value={String(field.value)} onValueChange={field.onChange}>
+                        <SelectTrigger disabled={loading} id="typeToken" className="w-full text-white bg-gray-700">
+                          <SelectValue placeholder={t("deploy_token.labels.select_type")} />
+                        </SelectTrigger>
+                        <SelectContent className="bg-gray-700 text-white">
+                          <SelectItem value="fixed">{t("deploy_token.labels.type_option_fixed")}</SelectItem>
+                          <SelectItem value="flexible">{t("deploy_token.labels.type_option_flexible")}</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      {errors.type && <span className="text-red-500 text-xs">{errors.type.message as string}</span>}
+                    </div>
+                  )}
+                />
+                <Controller
                   name="email"
                   control={control}
                   render={({ field }) => (
@@ -314,6 +336,7 @@ export function ImprovedTokenDeployTool() {
                     </div>
                   )}
                 />
+
 
                 <div className="bg-slate-700/50 border border-slate-600 rounded-lg p-4">
                   <div className="flex items-center justify-between">
