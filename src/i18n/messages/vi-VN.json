@@ -228,7 +228,10 @@
       "symbol_placeholder": "VD: MAT",
       "total_supply_placeholder": "1,000,000",
       "select_decimals": "Chọn số thập phân",
-      "decimals_option_standard": "18 (Chuẩn)"
+      "decimals_option_standard": "18 (Chuẩn)",
+      "select_type": "Loại Token",
+      "type_option_fixed": "Token cố định",
+      "type_option_flexible": "Token linh hoạt"
     },
     "validation": {
       "required_chain": "Bắt buộc chọn chain",
