@@ -351,7 +351,7 @@ export function ImprovedTokenDeployTool() {
                   </div>
                 </div>
 
-                <Button type="submit" disabled={loading || !isConnected || loading} className="w-full crypto-gradient">
+                <Button type="submit" disabled={loading || !isConnected || loading || getToolFee(chainId, chain, deploy_token_fee) == '∞'} className="w-full crypto-gradient">
                   {loading ? (
                     <>
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
