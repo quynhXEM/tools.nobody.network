@@ -85,7 +85,8 @@
     }
   },
   "buysell": {
-    "desc": "Buy & Sell Crypto with optimal rates and support for multiple fiat currencies."
+    "desc": "Buy & Sell Crypto with optimal rates and support for multiple fiat currencies.",
+    "channel": "Channel"
   },
   "tx": {
     "decoder": "Transaction decoder",

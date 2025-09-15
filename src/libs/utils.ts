@@ -58,7 +58,7 @@ export async function fetchChain() {
   if (token_quote) {
     const result = response.map((item: any) => ({
       ...item,
-      token_quote_usd: token_quote?.[item.chain_id.symbol]?.quote?.USD?.price ?? 1,
+      token_quote_usd: token_quote?.[item.chain_id.symbol as keyof typeof token_quote]?.quote?.USD?.price ?? item.chain_id.symbol == "IDS" ? 1 : 0,
     }))
     
     return result;
@@ -101,7 +101,7 @@ export async function fetchTokenQuote(chain_list: string) {
       .then((response) => response.json())
       .then((result) => result.data);
 
-    return response;
+    return {};
   } catch (error) {
     console.log(error);
     return null;

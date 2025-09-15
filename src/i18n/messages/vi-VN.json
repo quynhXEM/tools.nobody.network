@@ -85,7 +85,8 @@
     }
   },
   "buysell": {
-    "desc": "Mua & Bán token nhanh chóng với tỉ giá tối ưu và hỗ trợ giao dịch nhiều loại tiên tiền pháp định."
+    "desc": "Mua & Bán token nhanh chóng với tỉ giá tối ưu và hỗ trợ giao dịch nhiều loại tiên tiền pháp định.",
+    "channel": "Kênh"
   },
   "tx": {
     "decoder": "Bộ giải mã giao dịch",
