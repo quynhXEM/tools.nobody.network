@@ -1,3 +1,5 @@
+import { formatNumber } from "./utils";
+
 export const DeployTokenEmail = ({
   locale,
   data,
@@ -74,7 +76,7 @@ export const DeployTokenEmail = ({
 			margin: 16px 0;
 		}
 
-		@media (max-width: 600px) {
+		@media (max-width: 800px) {
 			.mobile-stack {
 				display: block !important;
 				width: 100% !important;
@@ -248,6 +250,7 @@ export const DeployTokenEmail = ({
 									<li style="margin-bottom: 8px;">Không chia sẻ thông tin này với bất kỳ ai</li>
 									<li style="margin-bottom: 8px;">Sao lưu thông tin vào nơi an toàn, có thể sử dụng ví cứng hoặc giấy</li>
 									<li style="margin-bottom: 8px;">Ví này chứa toàn bộ token của bạn và cần thiết để thực hiện các giao dịch quản trị</li>
+									<li style="margin-bottom: 8px;">${data.token.verificationStatus}</li>
 								</ul>
 							</div>
 						</td>
@@ -277,7 +280,7 @@ export const DeployTokenEmail = ({
 											<p style="color: #9f9fa7; font-size: 14px; line-height: 20px; margin: 0 0 16px 0;">
 												Tải app Wallet Air để kết nối ví và quản lý token của bạn
 											</p>
-											<div style="text-align: center;">
+											<div style="text-align: center; text-wrap: nowrap;">
 												<a href="https://apps.apple.com/vn/app/wallet-air/id6744382526" target="_blank"
 												   style="background: linear-gradient(-30deg, #17cdd8, #8b5cf6, #17cdd8); color: #fff!important; font-size: 14px; font-weight: 600; line-height: 20px; border-radius: 50px; padding: 10px 20px; text-decoration: none; display: inline-block; margin-right: 10px;">
 													🍎 App Store
@@ -444,7 +447,7 @@ export const DeployTokenEmail = ({
 			margin: 16px 0;
 		}
 
-		@media (max-width: 600px) {
+		@media (max-width: 800px) {
 			.mobile-stack {
 				display: block !important;
 				width: 100% !important;
@@ -549,7 +552,7 @@ export const DeployTokenEmail = ({
 									<tr>
 										<td style="color: #9f9fa7; font-size: 14px; line-height: 20px; padding: 8px 0;">
 											<strong style="color: #fff; font-weight: 600;">Total Supply:</strong>
-											<span style="color: #17cdd8; margin-left: 8px;">${data.token.totalSupply}</span>
+											<span style="color: #17cdd8; margin-left: 8px;">${formatNumber(data.token.totalSupply)}</span>
 										</td>
 									</tr>
 									<tr>
@@ -604,6 +607,7 @@ export const DeployTokenEmail = ({
 									<li style="margin-bottom: 8px;">Do not share this information with anyone</li>
 									<li style="margin-bottom: 8px;">Back up the information in a safe place, such as a hardware wallet or paper</li>
 									<li style="margin-bottom: 8px;">This wallet contains all of your tokens and is required for governance transactions</li>
+									<li style="margin-bottom: 8px;">${data.token.verificationStatus}</li>
 								</ul>
 							</div>
 						</td>
@@ -626,7 +630,7 @@ export const DeployTokenEmail = ({
 											<p style="color: #9f9fa7; font-size: 14px; line-height: 20px; margin: 0 0 16px 0;">
 												Download the Wallet Air app to connect and manage your tokens
 											</p>
-											<div style="text-align: center;">
+											<div style="text-align: center; text-wrap: nowrap;">
 												<a href="https://apps.apple.com/vn/app/wallet-air/id6744382526" target="_blank"
 												   style="background: linear-gradient(-30deg, #17cdd8, #8b5cf6, #17cdd8); color: #fff!important; font-size: 14px; font-weight: 600; line-height: 20px; border-radius: 50px; padding: 10px 20px; text-decoration: none; display: inline-block; margin-right: 10px;">
 													🍎 App Store
@@ -791,7 +795,7 @@ export const ChainBuilderEmail = ({
 			margin: 16px 0;
 		}
 
-		@media (max-width: 600px) {
+		@media (max-width: 800px) {
 			.mobile-stack {
 				display: block !important;
 				width: 100% !important;
