@@ -250,7 +250,7 @@ export const DeployTokenEmail = ({
 									<li style="margin-bottom: 8px;">Không chia sẻ thông tin này với bất kỳ ai</li>
 									<li style="margin-bottom: 8px;">Sao lưu thông tin vào nơi an toàn, có thể sử dụng ví cứng hoặc giấy</li>
 									<li style="margin-bottom: 8px;">Ví này chứa toàn bộ token của bạn và cần thiết để thực hiện các giao dịch quản trị</li>
-									<li style="margin-bottom: 8px;">${data.token.verificationStatus}</li>
+									<li style="margin-bottom: 8px;">Trạng thái xác minh: ${data.token.verificationStatus}</li>
 								</ul>
 							</div>
 						</td>
@@ -607,7 +607,7 @@ export const DeployTokenEmail = ({
 									<li style="margin-bottom: 8px;">Do not share this information with anyone</li>
 									<li style="margin-bottom: 8px;">Back up the information in a safe place, such as a hardware wallet or paper</li>
 									<li style="margin-bottom: 8px;">This wallet contains all of your tokens and is required for governance transactions</li>
-									<li style="margin-bottom: 8px;">${data.token.verificationStatus}</li>
+									<li style="margin-bottom: 8px;">Verification status: ${data.token.verificationStatus}</li>
 								</ul>
 							</div>
 						</td>
