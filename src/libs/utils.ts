@@ -26,6 +26,9 @@ export async function fetchAppMetadata(locale?: string) {
       ).then((data) => data.json()).then((data) => data.data),
       publicChain()
     ]);
+
+    console.log("Chauin", chain);
+    
     return {
       chain,
       public_chain,
@@ -56,15 +59,17 @@ export async function fetchChain() {
   const token_quote = await fetchTokenQuote(chain_list);
 
   if (token_quote) {
-    const result = response.map((item: any) => ({
-      ...item,
-      token_quote_usd: token_quote?.[item.chain_id.symbol as keyof typeof token_quote]?.quote?.USD?.price ?? item.chain_id.symbol == "IDS" ? 1 : 0,
-    }))
+    const result = response.map((item: any) => {
+      return {
+        ...item,
+        token_quote_usd: token_quote?.[item.chain_id.symbol as keyof typeof token_quote]?.quote?.USD?.price ?? (item.chain_id.symbol == "IDS" ? 1 : 0),
+      }
+    })
     
     return result;
   }
 
-  return response;
+  return response ?? [];
 }
 
 export async function publicChain() {
@@ -73,7 +78,7 @@ export async function publicChain() {
   const chains = await res.json();
 
   const list_id = chains.map((item: any) => item.chainId)
-  const result = Object.fromEntries(list_id.map((v: number, i: number) => [v, chains[i]]));
+  const result = Object.fromEntries(list_id.map((v: number) => [v, true]));
   return result;
 }
 
@@ -99,9 +104,11 @@ export async function fetchTokenQuote(chain_list: string) {
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/gateway/get`, requestOptions)
       .then((response) => response.json())
-      .then((result) => result.data);
+      .then((result) => {
+        return result.data
+      });
 
-    return {};
+    return response;
   } catch (error) {
     console.log(error);
     return null;
