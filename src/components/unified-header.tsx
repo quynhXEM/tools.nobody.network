@@ -64,6 +64,7 @@ const navigationItems = [
     nameKey: "Multi Send",
     icon: Send,
     path: "/tools/multi-send",
+    active: true
   },
   {
     id: "liquidity-manager",

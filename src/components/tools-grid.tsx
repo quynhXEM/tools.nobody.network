@@ -56,6 +56,7 @@ const tools = [
     descKey: "multi.desc",
     icon: Send,
     color: "from-green-500 to-emerald-500",
+    active: true
   },
   {
     id: "liquidity-manager",

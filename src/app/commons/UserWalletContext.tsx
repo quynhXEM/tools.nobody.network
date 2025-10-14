@@ -123,8 +123,15 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
   };
 
   const getChainInfo = (chainId: string | number) => {
-    const chainData = chain.find((item: any) => item.chain_id.id == chainId);
-    return chainData;
+    try {
+      const chainData = chain?.find((item: any) => item?.chain_id?.id == chainId);
+      return chainData;
+    } catch (error) {
+      console.log(error);
+      
+      return null;
+    }
+
   }
 
   // Lỗi thêm 2 ví cùng lúc ( khôgn có ví, co người giới thiệu)

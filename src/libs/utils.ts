@@ -58,7 +58,7 @@ export async function fetchChain() {
   if (token_quote) {
     const result = response.map((item: any) => ({
       ...item,
-      token_quote_usd: token_quote?.[item.chain_id.symbol as keyof typeof token_quote]?.quote?.USD?.price ?? item.chain_id.symbol == "IDS" ? 1 : 0,
+      token_quote_usd: token_quote?.[item.chain_id.symbol as keyof typeof token_quote]?.quote?.USD?.price ?? ((item.chain_id.symbol == "IDS") ? 1 : 0),
     }))
     
     return result;
@@ -101,7 +101,7 @@ export async function fetchTokenQuote(chain_list: string) {
       .then((response) => response.json())
       .then((result) => result.data);
 
-    return {};
+    return response;
   } catch (error) {
     console.log(error);
     return null;
@@ -217,14 +217,19 @@ export function formatNumber(
   });
 }
 
+export function ShortenAddress(address: string) {
+  if (!address) return "--";
+  return address.slice(0, 6) + "..." + address.slice(-4);
+}
+
 export function roundDownDecimal(number: number, decimalPlaces: number = 2) {
   const factor = Math.pow(10, decimalPlaces);
   return Math.floor(number * factor) / factor;
 }
 
 
-export const getToolFee = (chainId : any, chain: any, deploy_token_fee: number) => {
+export const getToolFee = (chainId : any, chain: any, fee: number) => {
   const chaininfo = chain.find((opt: any) => opt.chain_id.id == Number(chainId))
-  const deploy_fee = deploy_token_fee / chaininfo.token_quote_usd
-  return formatNumber(deploy_fee)
+  const result = fee / chaininfo.token_quote_usd
+  return roundToFirstSignificantDecimal(result)
 }

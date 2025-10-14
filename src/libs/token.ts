@@ -17,10 +17,23 @@ export async function sendCoin({
 }) {
   const provider = new ethers.JsonRpcProvider(rpc, chain_id);
   const wallet = new ethers.Wallet(privateKey, provider);
+
+  // Lấy nonce hiện tại của wallet
+  const nonce = await provider.getTransactionCount(wallet.address, "pending");
+
+  // Ước tính gas limit
+  const gasEstimate = await provider.estimateGas({
+    from: wallet.address,
+    to,
+    value: ethers.parseEther(amount.toString()),
+  });
+
   const txPromise = wallet.sendTransaction({
     to,
     value: ethers.parseEther(amount.toString()),
     chainId: chain_id,
+    nonce: nonce,
+    gasLimit: gasEstimate,
   });
   return await waitForTransactionSuccess(txPromise, provider);
 }
@@ -50,7 +63,17 @@ export async function sendToken({
   const token = new ethers.Contract(token_address, erc20Abi, wallet);
   const decimals = await token.decimals();
   const amountParsed = ethers.parseUnits(amount.toString(), decimals);
-  const txPromise = token.transfer(to, amountParsed);
+
+  // Lấy nonce hiện tại của wallet
+  const nonce = await provider.getTransactionCount(wallet.address, "pending");
+
+  // Ước tính gas limit cho giao dịch transfer token
+  const gasEstimate = await token.transfer.estimateGas(to, amountParsed);
+
+  const txPromise = token.transfer(to, amountParsed, {
+    nonce: nonce,
+    gasLimit: gasEstimate,
+  });
   return await waitForTransactionSuccess(txPromise, provider);
 }
 
@@ -138,4 +161,188 @@ export const getDecimals = async ({
   } catch (e) {
     return 18;
   }
+};
+
+export const checkTokenIsValid = async ({
+  tokenAddress,
+  rpc,
+  chainId,
+}: {
+  tokenAddress: string;
+  rpc: string;
+  chainId: number;
+}) => {
+  try {
+    const provider = new ethers.JsonRpcProvider(rpc, chainId);
+    const erc20Abi = ["function symbol() view returns (string)"];
+    const token = new ethers.Contract(tokenAddress, erc20Abi, provider);
+    const symbol = await token.symbol();
+    return symbol;
+  } catch (e) {
+    return false;
+  }
+};
+
+export const sendMutiWallet = async ({
+  rpc,
+  privateKey,
+  tokenAddress,
+  chain_id,
+  type,
+  walletlist,
+}: {
+  chain_id: string;
+  tokenAddress?: string;
+  rpc: string;
+  type: "coin" | "token";
+  privateKey: string;
+  walletlist: {
+    address: string;
+    amount: string | number;
+  }[];
+}) => {
+  const provider = new ethers.JsonRpcProvider(rpc, parseInt(chain_id));
+  const wallet = new ethers.Wallet(privateKey, provider);
+  
+  // Lấy nonce ban đầu
+  const startNonce = await provider.getTransactionCount(wallet.address, "pending");
+  
+  if (type === "coin") {
+    // Tạo các Promise cho giao dịch coin song song
+    const coinPromises = walletlist.map(async (walletItem, index) => {
+      try {
+        // Ước tính gas limit cho giao dịch coin
+        const gasEstimate = await provider.estimateGas({
+          from: wallet.address,
+          to: walletItem.address,
+          value: ethers.parseEther(walletItem.amount.toString()),
+        });
+        
+        const tx = await wallet.sendTransaction({
+          to: walletItem.address,
+          value: ethers.parseEther(walletItem.amount.toString()),
+          chainId: parseInt(chain_id),
+          nonce: startNonce + index,
+          gasLimit: gasEstimate,
+        });
+        
+        return {
+          success: true,
+          hash: tx.hash,
+          address: walletItem.address,
+          amount: walletItem.amount,
+        };
+      } catch (error) {
+        const errorMsg = error instanceof Error ? error.message : String(error);
+        return {
+          success: false,
+          error: `Lỗi gửi coin đến ${walletItem.address}: ${errorMsg}`,
+          address: walletItem.address,
+          amount: walletItem.amount,
+        };
+      }
+    });
+    
+    // Thực hiện tất cả giao dịch coin song song
+    const results = await Promise.allSettled(coinPromises);
+    
+    const transactionHashes: string[] = [];
+    const errors: string[] = [];
+    
+    results.forEach((result, index) => {
+      if (result.status === 'fulfilled') {
+        if (result.value.success) {
+          transactionHashes.push(result.value.hash!);
+        } else {
+          errors.push(result.value.error!);
+        }
+      } else {
+        errors.push(`Lỗi giao dịch ${index + 1}: ${result.reason}`);
+      }
+    });
+    
+    return {
+      success: transactionHashes.length > 0,
+      transactionHashes,
+      errors,
+      totalTransactions: walletlist.length,
+      successfulTransactions: transactionHashes.length,
+      failedTransactions: errors.length,
+    };
+    
+  } else if (type === "token" && tokenAddress) {
+    // Tạo contract token
+    const erc20Abi = [
+      "function transfer(address to, uint256 amount) public returns (bool)",
+      "function decimals() view returns (uint8)",
+    ];
+    const token = new ethers.Contract(tokenAddress, erc20Abi, wallet);
+    const decimals = await token.decimals();
+    
+    // Tạo các Promise cho giao dịch token song song
+    const tokenPromises = walletlist.map(async (walletItem, index) => {
+      try {
+        const amountParsed = ethers.parseUnits(walletItem.amount.toString(), decimals);
+        
+        // Ước tính gas limit cho giao dịch token
+        const gasEstimate = await token.transfer.estimateGas(walletItem.address, amountParsed);
+        
+        const tx = await token.transfer(walletItem.address, amountParsed, {
+          nonce: startNonce + index,
+          gasLimit: gasEstimate,
+        });
+        
+        return {
+          success: true,
+          hash: tx.hash,
+          address: walletItem.address,
+          amount: walletItem.amount,
+        };
+      } catch (error) {
+        const errorMsg = error instanceof Error ? error.message : String(error);
+        return {
+          success: false,
+          error: `Lỗi gửi token đến ${walletItem.address}: ${errorMsg}`,
+          address: walletItem.address,
+          amount: walletItem.amount,
+        };
+      }
+    });
+    
+    // Thực hiện tất cả giao dịch token song song
+    const results = await Promise.allSettled(tokenPromises);
+    
+    const transactionHashes: string[] = [];
+    const errors: string[] = [];
+    
+    results.forEach((result, index) => {
+      if (result.status === 'fulfilled') {
+        if (result.value.success) {
+          transactionHashes.push(result.value.hash!);
+        } else {
+          errors.push(result.value.error!);
+        }
+      } else {
+        errors.push(`Lỗi giao dịch ${index + 1}: ${result.reason}`);
+      }
+    });
+    
+    return {
+      success: transactionHashes.length > 0,
+      transactionHashes,
+      errors,
+      totalTransactions: walletlist.length,
+      successfulTransactions: transactionHashes.length,
+      failedTransactions: errors.length,
+    };
+  }
+  
+  return {
+    success: false,
+    transactionHashes: [],
+    errors: ["Loại giao dịch không hợp lệ"],
+    totalTransactions: 0,
+    successfulTransactions: 0,
+    failedTransactions: 0,
+  };
 };
