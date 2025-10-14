@@ -86,18 +86,18 @@ export function MultiSendTool() {
     <div className="space-y-6 grid">
       <div className="space-y-6">
         {!isConfigured ? (
-          <ChainConfigCard onConfirm={handleConfigConfirm} initialConfig={chainConfig} isEditing={isConfigured} />
+          <ChainConfigCard onConfirm={handleConfigConfirm} initialConfig={chainConfig || undefined} isEditing={isConfigured} />
         ) : (
           <div className="flex items-center justify-between border-1 border-slate-400 p-2 rounded-lg">
             <div className="flex items-center gap-4">
               <div className="space-y-1">
-                <p className="text-sm font-medium text-white">Current Configuration</p>
+                <p className="text-sm font-medium text-white">{t("multi_send.titles.current_configuration")}</p>
                 <div className="flex items-center gap-2">
                   <Badge variant="secondary" className="text-sm">
                     {getChainDisplayName(chainConfig!.chainId)}
                   </Badge>
                   <Badge variant="secondary" className="text-sm">
-                    {chainConfig!.coinType === "coin" ? "Native Coin" : "Token"}
+                    {chainConfig!.coinType === "coin" ? t("multi_send.labels.native_coin") : t("multi_send.labels.token_simple")}
                   </Badge>
                   {chainConfig!.contractAddress && (
                     <Badge variant="secondary" className="text-sm font-mono">
@@ -109,7 +109,7 @@ export function MultiSendTool() {
             </div>
             <Button variant="outline" className="crypto-gradient" size="sm" onClick={handleEditConfig}>
               <Edit className="mr-2 h-4 w-4" />
-              Edit Configuration
+              {t("multi_send.buttons.edit_configuration")}
             </Button>
           </div>
         )}
@@ -119,26 +119,16 @@ export function MultiSendTool() {
             <div>
               <Card className="p-6 text-white bg-slate-800/50 border-slate-700">
                 <Tabs defaultValue="manual" className="w-full">
-                  <TabsList className="grid w-full grid-cols-2 mb-6" >
-                    <TabsTrigger value="manual" className="data-[state=active]:bg-blue-500">Manual Entry</TabsTrigger>
-                    <TabsTrigger value="auto" className="data-[state=active]:bg-blue-500">Auto Generate</TabsTrigger>
+                <TabsList className="grid w-full grid-cols-2 mb-6" >
+                  <TabsTrigger value="manual" className="data-[state=active]:bg-blue-500">{t("multi_send.tabs.manual_entry")}</TabsTrigger>
+                  <TabsTrigger value="auto" className="data-[state=active]:bg-blue-500">{t("multi_send.tabs.auto_generate")}</TabsTrigger>
                   </TabsList>
 
                   <TabsContent value="manual" className="space-y-4">
-                    <div className="space-y-2">
-                      <h2 className="text-lg font-semibold">Manual Wallet Entry</h2>
-                      <p className="text-sm text-gray-300">Add wallet addresses and amounts individually</p>
-                    </div>
                     <ManualTransferForm onAddWallet={addWallet} />
                   </TabsContent>
 
                   <TabsContent value="auto" className="space-y-4">
-                    <div className="space-y-2">
-                      <h2 className="text-lg font-semibold">Auto Generate Wallets</h2>
-                      <p className="text-sm text-gray-400">
-                        Generate multiple wallets with random distribution
-                      </p>
-                    </div>
                     <AutoGenerateForm onGenerateWallets={addMultipleWallets} />
                   </TabsContent>
                 </Tabs>
@@ -146,7 +136,9 @@ export function MultiSendTool() {
             </div>
 
             <div>
-              <WalletList wallets={wallets} onRemoveWallet={removeWallet} onClearAll={clearWallets} chainConfig={chainConfig}/>
+              {chainConfig && (
+                <WalletList wallets={wallets} onRemoveWallet={removeWallet} onClearAll={clearWallets} chainConfig={chainConfig} />
+              )}
             </div>
           </div>
         )}

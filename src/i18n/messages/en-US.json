@@ -421,7 +421,14 @@
       "blockchain_config": "Blockchain Configuration",
       "confirm_transfer": "Confirm Transfer",
       "blockchain_config_sub_update": "Update your blockchain settings",
-      "blockchain_config_sub_begin": "Select chain and token type to begin"
+      "blockchain_config_sub_begin": "Select chain and token type to begin",
+      "manual_entry_title": "Manual Wallet Entry",
+      "auto_generate_title": "Auto Generate Wallets",
+      "current_configuration": "Current Configuration"
+    },
+    "tabs": {
+      "manual_entry": "Manual Entry",
+      "auto_generate": "Auto Generate"
     },
     "labels": {
       "wallets_count_singular": "wallet",
@@ -432,6 +439,7 @@
       "select_chain": "Select Chain",
       "coin_type": "Coin/Token Type",
       "native_coin": "Native Coin",
+      "token_simple": "Token",
       "token_standard": "Token (ERC-20/BEP-20)",
       "token_contract": "Token Contract Address",
       "wallet_address": "Wallet Address",
@@ -441,6 +449,10 @@
       "number_of_wallets": "Number of Wallets",
       "total": "Total Amount",
       "seed_phrase": "Seed Phrase (Optional)"
+    },
+    "descriptions": {
+      "manual_entry": "Add wallet addresses and amounts individually",
+      "auto_generate": "Generate multiple wallets with random distribution"
     },
     "placeholders": {
       "email": "your@email.com",
@@ -459,6 +471,7 @@
       "confirm_transfer": "Confirm Transfer",
       "cancel": "Cancel",
       "update_configuration": "Update Configuration",
+      "edit_configuration": "Edit Configuration",
       "confirm_continue": "Confirm & Continue",
       "add_wallet": "Add Wallet",
       "generate_wallets": "Generate Wallets"
