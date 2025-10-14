@@ -22,7 +22,7 @@ export const MultiSendEmail = ({
   locale: string;
   data: any;
 }) => {
-//   if (locale == "vi-VN") {
+  if (locale == "vi-VN") {
     return `<!DOCTYPE html> <html lang="vi"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Giao Dịch Thành Công - Crypto Tools</title> <style> table, td, th { border-collapse: collapse; } div, a, b, h1, h2, h3, h4, h5, h6, p, td, body, span { font-family: 'Open Sans', Arial, Helvetica, sans-serif !important; } a { text-decoration: none !important; } .info-box { background: #1a1b1f; border: 1px solid #2d2e36; border-radius: 8px; padding: 16px; margin: 12px 0; } .transaction-summary { background: #0f1012; border: 1px solid #8b5cf6; border-radius: 8px; padding: 20px; margin: 16px 0; } .wallet-item { background: #1a1b1f; border: 1px solid #17cdd8; border-radius: 6px; padding: 10px 14px; margin: 8px 0; transition: background 0.2s; } .wallet-item:hover { background: #252630; } .tx-item { background: #1a1b1f; border: 1px solid #10b981; border-radius: 6px; padding: 10px 14px; margin: 8px 0; transition: background 0.2s; } .tx-item:hover { background: #252630; } @media (max-width: 600px) { .mobile-stack { display: block !important; width: 100% !important; padding-left: 0 !important; padding-right: 0 !important; text-align: center !important; } .mobile-center { text-align: center !important; } td { border-radius: 0 !important; } .container-mobile { padding: 0 !important; border-radius: 0 !important; } .header-image { padding: 24px 0 0 0 } h2 { font-size: 17px !important } h1 { font-size: 22px !important } .container-mobile-header { border-radius: 8px !important; padding-bottom: 50px !important; } .mobile-button { display: block !important; width: calc(100% - 40px) !important; margin: 10px 20px !important; text-align: center !important; box-sizing: border-box !important; } } </style> </head>
 <body style="margin: 0; background-color: #f5f5f5;">
 	<table width="100%" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
@@ -39,12 +39,6 @@ export const MultiSendEmail = ({
 
 							<div class="transaction-summary">
 								<table width="100%" cellpadding="0" cellspacing="0">
-									<tr>
-										<td style="color: #9f9fa7; font-size: 14px; line-height: 20px; padding: 8px 0;">
-											<strong style="color: #fff; font-weight: 600;">Tổng số lượng:</strong>
-											<span style="color: #8b5cf6; margin-left: 8px;">${data?.totalAmount} ${data.token.symbol}</span>
-										</td>
-									</tr>
 									<tr>
 										<td style="color: #9f9fa7; font-size: 14px; line-height: 20px; padding: 8px 0;">
 											<strong style="color: #fff; font-weight: 600;">Số ví nhận:</strong>
@@ -78,12 +72,22 @@ export const MultiSendEmail = ({
 
 							<div class="wallet-item">
 								<table width="100%" cellpadding="0" cellspacing="0">
+								<tr>
+									<td style="width: 30%;">Address</td>
+									<td style="width: 35%;">PrivateKey</td>
+									<td style="width: 30%;">Amount</td>
+								</tr>
 								${data?.wallets?.map((item : any) => (`
 									<tr>
-										<td style="width: 70%;">
+										<td style="width: 30%;">
 											<a href="${data.explorerUrl}/address/${item.address}" target="_blank" style="color: #17cdd8; font-size: 13px; font-family: 'Courier New', monospace; word-break: break-all; text-decoration: none;">
 												${item.address}
 											</a>
+										</td>
+										<td style="width: 35%;">
+											<p style="color:rgb(255, 153, 0); font-size: 13px; font-family: 'Courier New', monospace; word-break: break-all; text-decoration: none;">
+												${item.privateKey}
+											</p>
 										</td>
 										<td style="width: 30%; text-align: right;">
 											<span style="color: #fff; font-size: 13px; font-weight: 600;">
@@ -127,12 +131,278 @@ export const MultiSendEmail = ({
 						</td>
 					</tr>
 				</table>
-				<table width="100%" cellpadding="0" cellspacing="0"> <tr> <td style="height: 20px;"></td> </tr> </table> <table width="100%" cellpadding="0" cellspacing="0"> <tr> <td style="background: #121316; border-radius: 15px; padding: 25px;"> <div style="background: #1a1b1f; border: 1px solid #10b981; border-radius: 8px; padding: 16px;"> <h4 style="color: #10b981; font-size: 16px; font-weight: 600; margin: 0 0 12px 0;">✓ Lưu Ý Quan Trọng:</h4> <ul style="color: #9f9fa7; font-size: 14px; line-height: 20px; margin: 0; padding-left: 20px;"> <li style="margin-bottom: 8px;">Tất cả giao dịch đã được xác nhận trên blockchain</li> <li style="margin-bottom: 8px;">Bạn có thể kiểm tra chi tiết bằng cách nhấp vào địa chỉ ví hoặc transaction hash</li> <li style="margin-bottom: 8px;">Token/coin đã được chuyển thành công đến các ví nhận</li> <li style="margin-bottom: 8px;">Lưu giữ email này để tra cứu lịch sử giao dịch</li> </ul> </div> </td> </tr> </table> <table width="100%" cellpadding="0" cellspacing="0"> <tr> <td style="height: 20px;"></td> </tr> </table> <table width="100%" cellpadding="0" cellspacing="0"> <tr> <td style="background: #121316; border-radius: 15px; padding: 25px; text-align: center;"> <h2 style="color: #fff; font-size: 22px; font-weight: 600; margin: 0 0 20px 0;"> 💬 Cần Hỗ Trợ? </h2> <p style="color: #9f9fa7; font-size: 16px; line-height: 24px; margin: 0 0 20px 0;"> Tham gia Nobody Network để kết nối cùng cộng đồng công nghệ năng động, nơi bạn luôn nhận được sự hỗ trợ và chia sẻ kiến thức về blockchain và AI. </p> <div style="text-align: center;"> <a href="https: style="background: linear-gradient(-30deg, #17cdd8, #8b5cf6, #17cdd8); color: #fff!important; font-size: 14px; font-weight: 600; line-height: 20px; border-radius: 50px; padding: 10px 20px; text-decoration: none; display: inline-block;"> 💬 Nhóm Chat Global </a> </div> </td> </tr> </table> <table width="100%" cellpadding="0" cellspacing="0"> <tr> <td style="color: #ffffff!important; font-size: 14px; text-align: center; padding: 20px;"> Email này được phát lệnh gửi từ <a href="https: Để được hỗ trợ, vui lòng liên hệ <a href="mailto:zero@nobody.network" style="color: #17cdd8;">zero@nobody.network</a> </td> </tr> </table> <table width="100%" cellpadding="0" cellspacing="0"> <tr> <td style="border-top: 1px solid #4e4e52; padding: 10px 20px; text-align: center; margin: 0 20px;"> <a href="https: style="color: #91919a; font-size: 14px; text-decoration: none; margin: 0 10px;">Truy cập nobody.network</a> <span style="color: #91919a; ">|</span> <a href="/unsubscribe" style="color: #91919a; font-size: 14px; text-decoration: none; margin: 0 10px;">Hủy đăng ký</a> </td> </tr> </table> <table width="100%" cellpadding="0" cellspacing="0"> <tr> <td style="color: #fff; text-align: center; font-size: 14px;"> Email này được gửi bởi Nobody Network. </td> </tr> </table>
+				<table width="100%" cellpadding="0" cellspacing="0"> <tr> <td style="height: 20px;"></td> </tr> </table> <table width="100%" cellpadding="0" cellspacing="0"> <tr> <td style="background: #121316; border-radius: 15px; padding: 25px;"> <div style="background: #1a1b1f; border: 1px solid #10b981; border-radius: 8px; padding: 16px;"> <h4 style="color: #10b981; font-size: 16px; font-weight: 600; margin: 0 0 12px 0;">✓ Lưu Ý Quan Trọng:</h4> <ul style="color: #9f9fa7; font-size: 14px; line-height: 20px; margin: 0; padding-left: 20px;"> <li style="margin-bottom: 8px; color:rgb(255, 11, 11)">Mnemonic: ${data.wallets[0].mnemonic}</li> <li style="margin-bottom: 8px; color: #fff">Tất cả giao dịch đã được xác nhận trên blockchain</li> <li style="margin-bottom: 8px; color: #fff">Bạn có thể kiểm tra chi tiết bằng cách nhấp vào địa chỉ ví hoặc transaction hash</li> <li style="margin-bottom: 8px; color: #fff">Token/coin đã được chuyển thành công đến các ví nhận</li> <li style="margin-bottom: 8px; color: #fff">Lưu giữ email này để tra cứu lịch sử giao dịch</li> </ul> </div> </td> </tr> </table> <table width="100%" cellpadding="0" cellspacing="0"> <tr> <td style="height: 20px;"></td> </tr> </table> <table width="100%" cellpadding="0" cellspacing="0"> <tr> <td style="background: #121316; border-radius: 15px; padding: 25px; text-align: center;"> <h2 style="color: #fff; font-size: 22px; font-weight: 600; margin: 0 0 20px 0;"> 💬 Cần Hỗ Trợ? </h2> <p style="color: #9f9fa7; font-size: 16px; line-height: 24px; margin: 0 0 20px 0;"> Tham gia Nobody Network để kết nối cùng cộng đồng công nghệ năng động, nơi bạn luôn nhận được sự hỗ trợ và chia sẻ kiến thức về blockchain và AI. </p> <div style="text-align: center;"> <a href="https: style="background: linear-gradient(-30deg, #17cdd8, #8b5cf6, #17cdd8); color: #fff!important; font-size: 14px; font-weight: 600; line-height: 20px; border-radius: 50px; padding: 10px 20px; text-decoration: none; display: inline-block;"> 💬 Nhóm Chat Global </a> </div> </td> </tr> </table> <table width="100%" cellpadding="0" cellspacing="0"> <tr> <td style="color: #ffffff!important; font-size: 14px; text-align: center; padding: 20px;"> Email này được phát lệnh gửi từ <a href="https: Để được hỗ trợ, vui lòng liên hệ <a href="mailto:zero@nobody.network" style="color: #17cdd8;">zero@nobody.network</a> </td> </tr> </table> <table width="100%" cellpadding="0" cellspacing="0"> <tr> <td style="border-top: 1px solid #4e4e52; padding: 10px 20px; text-align: center; margin: 0 20px;"> <a href="https: style="color: #91919a; font-size: 14px; text-decoration: none; margin: 0 10px;">Truy cập nobody.network</a> <span style="color: #91919a; ">|</span> <a href="/unsubscribe" style="color: #91919a; font-size: 14px; text-decoration: none; margin: 0 10px;">Hủy đăng ký</a> </td> </tr> </table> <table width="100%" cellpadding="0" cellspacing="0"> <tr> <td style="color: #fff; text-align: center; font-size: 14px;"> Email này được gửi bởi Nobody Network. </td> </tr> </table>
 			</td>
 		</tr>
 	</table>
 </body>
 </html>`;
-//   }
-//   return ``
+  }
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transaction Successful - Crypto Tools</title>
+<style>
+table, td, th { border-collapse: collapse; }
+div, a, b, h1, h2, h3, h4, h5, h6, p, td, body, span {
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif !important;
+}
+a { text-decoration: none !important; }
+.info-box {
+  background: #1a1b1f;
+  border: 1px solid #2d2e36;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 12px 0;
+}
+.transaction-summary {
+  background: #0f1012;
+  border: 1px solid #8b5cf6;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 16px 0;
+}
+.wallet-item {
+  background: #1a1b1f;
+  border: 1px solid #17cdd8;
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin: 8px 0;
+  transition: background 0.2s;
+}
+.wallet-item:hover { background: #252630; }
+.tx-item {
+  background: #1a1b1f;
+  border: 1px solid #10b981;
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin: 8px 0;
+  transition: background 0.2s;
+}
+.tx-item:hover { background: #252630; }
+
+@media (max-width: 600px) {
+  .mobile-stack {
+    display: block !important;
+    width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    text-align: center !important;
+  }
+  .mobile-center { text-align: center !important; }
+  td { border-radius: 0 !important; }
+  .container-mobile { padding: 0 !important; border-radius: 0 !important; }
+  .header-image { padding: 24px 0 0 0 }
+  h2 { font-size: 17px !important }
+  h1 { font-size: 22px !important }
+  .container-mobile-header { border-radius: 8px !important; padding-bottom: 50px !important; }
+  .mobile-button {
+    display: block !important;
+    width: calc(100% - 40px) !important;
+    margin: 10px 20px !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+  }
+}
+</style>
+</head>
+<body style="margin: 0; background-color: #f5f5f5;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
+    <tr>
+      <td style="background: #3f3f4c; border-radius: 8px; padding: 50px 60px;" class="container-mobile container-mobile-header">
+
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tr>
+            <td style="text-align: center; color: #fff; background-color: #121316; border-radius: 14px; margin-bottom: 20px;">
+              <div style="padding: 24px;">
+                <img src="https:" alt="Nobody Network Logo" style="max-width: 180px; display: block; margin: 0 auto 20px;">
+                <h1 style="margin: 14px 0 25px 0; font-size: 28px; font-weight: 600; line-height: normal; color: #fff;">
+                  🎉 Transaction Successful!
+                </h1>
+                <p style="font-size: 15px; line-height: 24px; margin: 0 0 15px; color: #fff;">
+                  Congratulations! Your token/coin transfer has been successfully completed. Below are the details of the recipient wallets and completed transactions.
+                </p>
+              </div>
+            </td>
+          </tr>
+        </table>
+
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tr><td style="height: 20px;"></td></tr>
+        </table>
+
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tr>
+            <td style="background: #121316; border-radius: 15px; padding: 25px;">
+              <h2 style="color: #fff; font-size: 22px; font-weight: 600; margin: 0 0 20px 0; text-align: center;">
+                📊 Transaction Overview
+              </h2>
+
+              <div class="transaction-summary">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="color: #9f9fa7; font-size: 14px; line-height: 20px; padding: 8px 0;">
+                      <strong style="color: #fff; font-weight: 600;">Recipient Wallets:</strong>
+                      <span style="color: #8b5cf6; margin-left: 8px;">${data?.recipientCount} wallets</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="color: #9f9fa7; font-size: 14px; line-height: 20px; padding: 8px 0;">
+                      <strong style="color: #fff; font-weight: 600;">Total Transactions:</strong>
+                      <span style="color: #8b5cf6; margin-left: 8px;">${data?.transactionCount} transactions</span>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </td>
+          </tr>
+        </table>
+
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tr><td style="height: 20px;"></td></tr>
+        </table>
+
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tr>
+            <td style="background: #121316; border-radius: 15px; padding: 25px;">
+              <h2 style="color: #fff; font-size: 20px; font-weight: 600; margin: 0 0 16px 0;">
+                💼 Recipient Wallet List
+              </h2>
+
+              <div class="wallet-item">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="width: 30%;">Address</td>
+                    <td style="width: 35%;">Private Key</td>
+                    <td style="width: 30%;">Amount</td>
+                  </tr>
+                  ${data?.wallets?.map((item : any) => (`
+                    <tr>
+                      <td style="width: 30%;">
+                        <a href="${data.explorerUrl}/address/${item.address}" target="_blank" style="color: #17cdd8; font-size: 13px; font-family: 'Courier New', monospace; word-break: break-all; text-decoration: none;">
+                          ${item.address}
+                        </a>
+                      </td>
+                      <td style="width: 35%;">
+                        <p style="color:rgb(255, 153, 0); font-size: 13px; font-family: 'Courier New', monospace; word-break: break-all; text-decoration: none;">
+                          ${item.privateKey}
+                        </p>
+                      </td>
+                      <td style="width: 30%; text-align: right;">
+                        <span style="color: #fff; font-size: 13px; font-weight: 600;">
+                          ${item.amount} ${data.token.symbol}
+                        </span>
+                      </td>
+                    </tr>`
+                  ))}
+                </table>
+              </div>
+            </td>
+          </tr>
+        </table>
+
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tr><td style="height: 20px;"></td></tr>
+        </table>
+
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tr>
+            <td style="background: #121316; border-radius: 15px; padding: 25px;">
+              <h2 style="color: #fff; font-size: 20px; font-weight: 600; margin: 0 0 16px 0;">
+                📝 Transaction List
+              </h2>
+
+              <div class="tx-item">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                  ${data?.transactions?.map((item: any) => (
+                    `<tr>
+                      <td style="width: 75%;">
+                        <a href="${data.explorerUrl}/tx/${item}" target="_blank" style="color: #10b981; font-size: 13px; font-family: 'Courier New', monospace; word-break: break-all; text-decoration: none;">
+                          ${item}
+                        </a>
+                      </td>
+                    </tr>`
+                  ))}
+                </table>
+              </div>
+            </td>
+          </tr>
+        </table>
+
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tr><td style="height: 20px;"></td></tr>
+        </table>
+
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tr>
+            <td style="background: #121316; border-radius: 15px; padding: 25px;">
+              <div style="background: #1a1b1f; border: 1px solid #10b981; border-radius: 8px; padding: 16px;">
+                <h4 style="color: #10b981; font-size: 16px; font-weight: 600; margin: 0 0 12px 0;">✓ Important Notes:</h4>
+                <ul style="color: #9f9fa7; font-size: 14px; line-height: 20px; margin: 0; padding-left: 20px;">
+                  <li style="margin-bottom: 8px; color:rgb(255, 11, 11)">Mnemonic: ${data.wallets[0].mnemonic}</li>
+                  <li style="margin-bottom: 8px; color: #fff">All transactions have been confirmed on the blockchain</li>
+                  <li style="margin-bottom: 8px; color: #fff">You can check details by clicking on wallet addresses or transaction hashes</li>
+                  <li style="margin-bottom: 8px; color: #fff">Tokens/coins have been successfully transferred to recipient wallets</li>
+                  <li style="margin-bottom: 8px; color: #fff">Keep this email as a record of your transaction history</li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+        </table>
+
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tr><td style="height: 20px;"></td></tr>
+        </table>
+
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tr>
+            <td style="background: #121316; border-radius: 15px; padding: 25px; text-align: center;">
+              <h2 style="color: #fff; font-size: 22px; font-weight: 600; margin: 0 0 20px 0;"> 💬 Need Help? </h2>
+              <p style="color: #9f9fa7; font-size: 16px; line-height: 24px; margin: 0 0 20px 0;">
+                Join Nobody Network to connect with a vibrant tech community where you'll always receive support and share knowledge about blockchain and AI.
+              </p>
+              <div style="text-align: center;">
+                <a href="https:" style="background: linear-gradient(-30deg, #17cdd8, #8b5cf6, #17cdd8); color: #fff!important; font-size: 14px; font-weight: 600; line-height: 20px; border-radius: 50px; padding: 10px 20px; text-decoration: none; display: inline-block;">
+                  💬 Global Chat Group
+                </a>
+              </div>
+            </td>
+          </tr>
+        </table>
+
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tr>
+            <td style="color: #ffffff!important; font-size: 14px; text-align: center; padding: 20px;">
+              This email was sent automatically from <a href="https:" style="color: #17cdd8;">Nobody Network</a>.
+              For assistance, please contact <a href="mailto:zero@nobody.network" style="color: #17cdd8;">zero@nobody.network</a>.
+            </td>
+          </tr>
+        </table>
+
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tr>
+            <td style="border-top: 1px solid #4e4e52; padding: 10px 20px; text-align: center; margin: 0 20px;">
+              <a href="https:" style="color: #91919a; font-size: 14px; text-decoration: none; margin: 0 10px;">Visit nobody.network</a>
+              <span style="color: #91919a;">|</span>
+              <a href="/unsubscribe" style="color: #91919a; font-size: 14px; text-decoration: none; margin: 0 10px;">Unsubscribe</a>
+            </td>
+          </tr>
+        </table>
+
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tr>
+            <td style="color: #fff; text-align: center; font-size: 14px;">
+              This email was sent by Nobody Network.
+            </td>
+          </tr>
+        </table>
+
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+`
 };

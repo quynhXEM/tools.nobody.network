@@ -203,10 +203,13 @@ export const sendMutiWallet = async ({
 }) => {
   const provider = new ethers.JsonRpcProvider(rpc, parseInt(chain_id));
   const wallet = new ethers.Wallet(privateKey, provider);
-  
+
   // Lấy nonce ban đầu
-  const startNonce = await provider.getTransactionCount(wallet.address, "pending");
-  
+  const startNonce = await provider.getTransactionCount(
+    wallet.address,
+    "pending"
+  );
+
   if (type === "coin") {
     // Tạo các Promise cho giao dịch coin song song
     const coinPromises = walletlist.map(async (walletItem, index) => {
@@ -217,7 +220,7 @@ export const sendMutiWallet = async ({
           to: walletItem.address,
           value: ethers.parseEther(walletItem.amount.toString()),
         });
-        
+
         const tx = await wallet.sendTransaction({
           to: walletItem.address,
           value: ethers.parseEther(walletItem.amount.toString()),
@@ -225,7 +228,7 @@ export const sendMutiWallet = async ({
           nonce: startNonce + index,
           gasLimit: gasEstimate,
         });
-        
+
         return {
           success: true,
           hash: tx.hash,
@@ -242,15 +245,15 @@ export const sendMutiWallet = async ({
         };
       }
     });
-    
+
     // Thực hiện tất cả giao dịch coin song song
     const results = await Promise.allSettled(coinPromises);
-    
+
     const transactionHashes: string[] = [];
     const errors: string[] = [];
-    
+
     results.forEach((result, index) => {
-      if (result.status === 'fulfilled') {
+      if (result.status === "fulfilled") {
         if (result.value.success) {
           transactionHashes.push(result.value.hash!);
         } else {
@@ -260,7 +263,7 @@ export const sendMutiWallet = async ({
         errors.push(`Lỗi giao dịch ${index + 1}: ${result.reason}`);
       }
     });
-    
+
     return {
       success: transactionHashes.length > 0,
       transactionHashes,
@@ -269,7 +272,6 @@ export const sendMutiWallet = async ({
       successfulTransactions: transactionHashes.length,
       failedTransactions: errors.length,
     };
-    
   } else if (type === "token" && tokenAddress) {
     // Tạo contract token
     const erc20Abi = [
@@ -278,20 +280,26 @@ export const sendMutiWallet = async ({
     ];
     const token = new ethers.Contract(tokenAddress, erc20Abi, wallet);
     const decimals = await token.decimals();
-    
+
     // Tạo các Promise cho giao dịch token song song
     const tokenPromises = walletlist.map(async (walletItem, index) => {
       try {
-        const amountParsed = ethers.parseUnits(walletItem.amount.toString(), decimals);
-        
+        const amountParsed = ethers.parseUnits(
+          walletItem.amount.toString(),
+          decimals
+        );
+
         // Ước tính gas limit cho giao dịch token
-        const gasEstimate = await token.transfer.estimateGas(walletItem.address, amountParsed);
-        
+        const gasEstimate = await token.transfer.estimateGas(
+          walletItem.address,
+          amountParsed
+        );
+
         const tx = await token.transfer(walletItem.address, amountParsed, {
           nonce: startNonce + index,
           gasLimit: gasEstimate,
         });
-        
+
         return {
           success: true,
           hash: tx.hash,
@@ -308,15 +316,15 @@ export const sendMutiWallet = async ({
         };
       }
     });
-    
+
     // Thực hiện tất cả giao dịch token song song
     const results = await Promise.allSettled(tokenPromises);
-    
+
     const transactionHashes: string[] = [];
     const errors: string[] = [];
-    
+
     results.forEach((result, index) => {
-      if (result.status === 'fulfilled') {
+      if (result.status === "fulfilled") {
         if (result.value.success) {
           transactionHashes.push(result.value.hash!);
         } else {
@@ -326,7 +334,7 @@ export const sendMutiWallet = async ({
         errors.push(`Lỗi giao dịch ${index + 1}: ${result.reason}`);
       }
     });
-    
+
     return {
       success: transactionHashes.length > 0,
       transactionHashes,
@@ -336,7 +344,7 @@ export const sendMutiWallet = async ({
       failedTransactions: errors.length,
     };
   }
-  
+
   return {
     success: false,
     transactionHashes: [],
@@ -345,4 +353,44 @@ export const sendMutiWallet = async ({
     successfulTransactions: 0,
     failedTransactions: 0,
   };
+};
+
+export const genarateWallet = async ({
+  number,
+  seed,
+}: {
+  number: number;
+  seed?: string;
+}) => {
+  try {
+    if (!number || number <= 0) throw new Error("Số lượng ví phải > 0");
+
+    // Lấy mnemonic: nếu có seed hợp lệ thì dùng, không thì tạo mới
+    const phrase =
+      seed && seed.trim().split(" ").length >= 12
+        ? seed.trim()
+        : (ethers.Wallet.createRandom().mnemonic?.phrase as string);
+
+    if (!phrase) throw new Error("Không thể khởi tạo mnemonic");
+
+    const basePath = "m/44'/60'/0'/0"; // BIP44 chuẩn EVM
+
+    const wallets = Array.from({ length: number }).map((_, index) => {
+      const path = `${basePath}/${index}`;
+      const child = ethers.HDNodeWallet.fromPhrase(phrase, undefined, path);
+      return {
+        index,
+        path,
+        address: child.address,
+        privateKey: child.privateKey,
+      };
+    });
+
+    return {
+      mnemonic: phrase,
+      wallets,
+    };
+  } catch (error) {
+    return false;
+  }
 };

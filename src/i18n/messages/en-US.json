@@ -414,5 +414,89 @@
     "drag_drop_here": "Kéo thả ảnh vào đây",
     "or_click_to_select": "hoặc click để chọn file",
     "supported_formats": "Hỗ trợ: JPG, PNG (tối đa 10MB)"
+  },
+  "multi_send": {
+    "titles": {
+      "transfer_list": "Transfer List",
+      "blockchain_config": "Blockchain Configuration",
+      "confirm_transfer": "Confirm Transfer",
+      "blockchain_config_sub_update": "Update your blockchain settings",
+      "blockchain_config_sub_begin": "Select chain and token type to begin"
+    },
+    "labels": {
+      "wallets_count_singular": "wallet",
+      "wallets_count_plural": "wallets",
+      "total_amount": "Total Amount",
+      "fee": "Fee",
+      "email": "Email Address",
+      "select_chain": "Select Chain",
+      "coin_type": "Coin/Token Type",
+      "native_coin": "Native Coin",
+      "token_standard": "Token (ERC-20/BEP-20)",
+      "token_contract": "Token Contract Address",
+      "wallet_address": "Wallet Address",
+      "amount": "Amount",
+      "min_per_wallet": "Min per Wallet",
+      "max_per_wallet": "Max per Wallet",
+      "number_of_wallets": "Number of Wallets",
+      "total": "Total Amount",
+      "seed_phrase": "Seed Phrase (Optional)"
+    },
+    "placeholders": {
+      "email": "your@email.com",
+      "address": "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb",
+      "amount": "0.00",
+      "wallets": "10",
+      "total": "100.00",
+      "min": "1.00",
+      "max": "10.00",
+      "contract": "0x...",
+      "seed_phrase": "Enter seed phrase or generate one..."
+    },
+    "buttons": {
+      "clear_all": "Clear All",
+      "execute_transfer": "Execute Transfer",
+      "confirm_transfer": "Confirm Transfer",
+      "cancel": "Cancel",
+      "update_configuration": "Update Configuration",
+      "confirm_continue": "Confirm & Continue",
+      "add_wallet": "Add Wallet",
+      "generate_wallets": "Generate Wallets"
+    },
+    "empty": {
+      "title": "No wallets added yet",
+      "description": "Add wallets using the form to get started"
+    },
+    "dialog": {
+      "email_desc": "Enter your email to receive transfer confirmation and proceed with the transaction.",
+      "email_hint": "The recipients' coin/token information will be sent to this email address.",
+      "payment_note_coin": "You will receive a transaction request of {total} {symbol}.",
+      "payment_note_token": "You will receive a transaction request of {token_amount} {token_symbol} and {fee_amount} {fee_symbol}.",
+      "payment_note_tail": "Accept the request to pay the fee and wait for the transactions to complete."
+    },
+    "toast": {
+      "error": "Error",
+      "success": "Success",
+      "invalid_email": "Please enter a valid email address",
+      "no_wallets": "No wallets to transfer",
+      "generated": "Generated {count} wallets with total amount {total}",
+      "invalid_wallet_count": "Please enter a valid wallet count",
+      "invalid_total": "Please enter a valid total amount",
+      "invalid_min_max": "Please enter valid min/max amounts (min must be less than max)",
+      "total_too_small": "Total amount is too small for the minimum distribution",
+      "gen_failed": "Failed to generate wallets",
+      "invalid_address": "Please enter a wallet address",
+      "invalid_amount": "Please enter a valid amount",
+      "transfer_success": "Transfer successful, Check transaction on chain and detail in your email.",
+      "tx_failed": "Transaction failed",
+      "invalid_token_contract": "Invalid token contract address"
+    },
+    "loading": {
+      "processing": "Processing..."
+    },
+    "email": {
+      "subject": "Transfer Confirmation",
+      "text": "Transfer Confirmation"
+    }
   }
 }

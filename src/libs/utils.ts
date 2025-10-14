@@ -26,6 +26,7 @@ export async function fetchAppMetadata(locale?: string) {
       ).then((data) => data.json()).then((data) => data.data),
       publicChain()
     ]);
+
     return {
       chain,
       public_chain,
@@ -64,7 +65,7 @@ export async function fetchChain() {
     return result;
   }
 
-  return response;
+  return response ?? [];
 }
 
 export async function publicChain() {
@@ -73,7 +74,7 @@ export async function publicChain() {
   const chains = await res.json();
 
   const list_id = chains.map((item: any) => item.chainId)
-  const result = Object.fromEntries(list_id.map((v: number, i: number) => [v, chains[i]]));
+  const result = Object.fromEntries(list_id.map((v: number) => [v, true]));
   return result;
 }
 
@@ -99,8 +100,11 @@ export async function fetchTokenQuote(chain_list: string) {
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/gateway/get`, requestOptions)
       .then((response) => response.json())
-      .then((result) => result.data);
+      .then((result) => {
+        return result.data
+      });
 
+    return response;
     return response;
   } catch (error) {
     console.log(error);

@@ -414,5 +414,89 @@
     "drag_drop_here": "Drag and drop image here",
     "or_click_to_select": "or click to select file",
     "supported_formats": "Supported: JPG, PNG (max 10MB)"
+  },
+  "multi_send": {
+    "titles": {
+      "transfer_list": "Danh sách chuyển",
+      "blockchain_config": "Cấu hình Blockchain",
+      "confirm_transfer": "Xác nhận chuyển",
+      "blockchain_config_sub_update": "Cập nhật cài đặt blockchain",
+      "blockchain_config_sub_begin": "Chọn chain và loại token để bắt đầu"
+    },
+    "labels": {
+      "wallets_count_singular": "ví",
+      "wallets_count_plural": "ví",
+      "total_amount": "Tổng số lượng",
+      "fee": "Phí",
+      "email": "Địa chỉ Email",
+      "select_chain": "Chọn Chain",
+      "coin_type": "Loại Coin/Token",
+      "native_coin": "Coin gốc",
+      "token_standard": "Token (ERC-20/BEP-20)",
+      "token_contract": "Địa chỉ hợp đồng Token",
+      "wallet_address": "Địa chỉ ví",
+      "amount": "Số lượng",
+      "min_per_wallet": "Tối thiểu mỗi ví",
+      "max_per_wallet": "Tối đa mỗi ví",
+      "number_of_wallets": "Số lượng ví",
+      "total": "Tổng số lượng",
+      "seed_phrase": "Seed Phrase (Tuỳ chọn)"
+    },
+    "placeholders": {
+      "email": "ban@email.com",
+      "address": "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb",
+      "amount": "0.00",
+      "wallets": "10",
+      "total": "100.00",
+      "min": "1.00",
+      "max": "10.00",
+      "contract": "0x...",
+      "seed_phrase": "Nhập seed phrase hoặc tạo mới..."
+    },
+    "buttons": {
+      "clear_all": "Xoá tất cả",
+      "execute_transfer": "Thực hiện chuyển",
+      "confirm_transfer": "Xác nhận chuyển",
+      "cancel": "Hủy",
+      "update_configuration": "Cập nhật cấu hình",
+      "confirm_continue": "Xác nhận & Tiếp tục",
+      "add_wallet": "Thêm ví",
+      "generate_wallets": "Tạo ví"
+    },
+    "empty": {
+      "title": "Chưa có ví nào",
+      "description": "Thêm ví bằng biểu mẫu để bắt đầu"
+    },
+    "dialog": {
+      "email_desc": "Nhập email để nhận xác nhận chuyển và tiếp tục giao dịch.",
+      "email_hint": "Thông tin các ví nhận coin/token sẽ được gửi đến địa chỉ email này.",
+      "payment_note_coin": "Bạn sẽ nhận được yêu cầu giao dịch {total} {symbol}.",
+      "payment_note_token": "Bạn sẽ nhận được yêu cầu giao dịch {token_amount} {token_symbol} và {fee_amount} {fee_symbol}.",
+      "payment_note_tail": "Chấp nhận yêu cầu để thanh toán phí và chờ giao dịch hoàn tất."
+    },
+    "toast": {
+      "error": "Lỗi",
+      "success": "Thành công",
+      "invalid_email": "Vui lòng nhập email hợp lệ",
+      "no_wallets": "Không có ví để chuyển",
+      "generated": "Đã tạo {count} ví với tổng số {total}",
+      "invalid_wallet_count": "Vui lòng nhập số lượng ví hợp lệ",
+      "invalid_total": "Vui lòng nhập tổng số lượng hợp lệ",
+      "invalid_min_max": "Vui lòng nhập khoảng min/max hợp lệ (min phải nhỏ hơn max)",
+      "total_too_small": "Tổng số lượng quá nhỏ so với mức tối thiểu",
+      "gen_failed": "Tạo ví thất bại",
+      "invalid_address": "Vui lòng nhập địa chỉ ví",
+      "invalid_amount": "Vui lòng nhập số lượng hợp lệ",
+      "transfer_success": "Chuyển thành công, kiểm tra giao dịch on-chain và chi tiết trong email.",
+      "tx_failed": "Giao dịch thất bại",
+      "invalid_token_contract": "Địa chỉ hợp đồng token không hợp lệ"
+    },
+    "loading": {
+      "processing": "Đang xử lý..."
+    },
+    "email": {
+      "subject": "Xác nhận chuyển",
+      "text": "Xác nhận chuyển"
+    }
   }
 }

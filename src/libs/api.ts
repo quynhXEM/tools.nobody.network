@@ -10,13 +10,22 @@ export const SendEmail = async ({
   html: string;
 }) => {
   try {
-    const respone = await fetch("/api/send/email", {
+    const respone = await fetch("/api/directus/request", {
       method: "POST",
-      body: JSON.stringify({ to, subject, text, html }),
+      body: JSON.stringify({
+        collection: "email_outbox",
+        type: "createItem",
+        items: {
+          to,
+          subject,
+          body: html,
+          status: "scheduled",
+          app_id: process.env.NEXT_PUBLIC_APP_ID,
+        },
+      }),
     });
     return respone.json();
   } catch (error: any) {
     return { error: error.message };
   }
 };
-

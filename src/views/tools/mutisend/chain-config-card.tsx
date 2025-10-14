@@ -70,16 +70,16 @@ export function ChainConfigCard({ onConfirm, initialConfig, isEditing }: ChainCo
             <Settings className="h-6 w-6" />
           </div>
           <div>
-            <h2 className="text-xl font-semibold">Blockchain Configuration</h2>
+            <h2 className="text-xl font-semibold">{t("multi_send.titles.blockchain_config")}</h2>
             <p className="text-sm ">
-              {isEditing ? "Update your blockchain settings" : "Select chain and token type to begin"}
+              {isEditing ? t("multi_send.titles.blockchain_config_sub_update") : t("multi_send.titles.blockchain_config_sub_begin")}
             </p>
           </div>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="chainId">Select Chain</Label>
+            <Label htmlFor="chainId">{t("multi_send.labels.select_chain")}</Label>
             <Select value={String(chainId)} onValueChange={setChainId}>
               <SelectTrigger id="chainId" className="w-full text-white bg-gray-700">
                 <SelectValue placeholder={t("deploy_token.labels.select_chain")} />
@@ -95,14 +95,14 @@ export function ChainConfigCard({ onConfirm, initialConfig, isEditing }: ChainCo
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="coinType">Coin/Token Type</Label>
+            <Label htmlFor="coinType">{t("multi_send.labels.coin_type")}</Label>
             <Select value={coinType} onValueChange={(value) => setCoinType(value as "coin" | "token")} >
               <SelectTrigger id="coinType" className="w-full text-white bg-gray-700">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="bg-gray-700 text-white">
-                <SelectItem value="coin">Native Coin</SelectItem>
-                <SelectItem value="token">Token (ERC-20/BEP-20)</SelectItem>
+                <SelectItem value="coin">{t("multi_send.labels.native_coin")}</SelectItem>
+                <SelectItem value="token">{t("multi_send.labels.token_standard")}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -110,7 +110,7 @@ export function ChainConfigCard({ onConfirm, initialConfig, isEditing }: ChainCo
 
         {coinType === "token" && (
           <div className="space-y-2">
-            <Label htmlFor="contract">Token Contract Address</Label>
+            <Label htmlFor="contract">{t("multi_send.labels.token_contract")}</Label>
             <Input
               id="contract"
               placeholder="0x..."
@@ -123,7 +123,7 @@ export function ChainConfigCard({ onConfirm, initialConfig, isEditing }: ChainCo
 
         <Button onClick={handleConfirm} disabled={!isValid} className="w-full crypto-gradient" size="lg">
           <CheckCircle className="mr-2 h-5 w-5" />
-          {isEditing ? "Update Configuration" : "Confirm & Continue"}
+          {isEditing ? t("multi_send.buttons.update_configuration") : t("multi_send.buttons.confirm_continue")}
         </Button>
       </div>
     </Card>
