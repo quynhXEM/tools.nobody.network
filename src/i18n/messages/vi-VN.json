@@ -505,6 +505,7 @@
       "transfer_success": "Chuyển thành công, kiểm tra giao dịch on-chain và chi tiết trong email.",
       "tx_failed": "Giao dịch thất bại",
       "invalid_token_contract": "Địa chỉ hợp đồng token không hợp lệ",
+      "csv_invalid_type": "Vui lòng chọn file CSV hợp lệ",
       "csv_empty": "File CSV trống",
       "csv_imported": "Đã nhập {count} dòng từ CSV",
       "csv_import_failed": "Không thể nhập dữ liệu từ CSV",

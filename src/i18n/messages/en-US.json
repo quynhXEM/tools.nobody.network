@@ -447,7 +447,7 @@
       "min_per_wallet": "Min per Wallet",
       "max_per_wallet": "Max per Wallet",
       "number_of_wallets": "Number of Wallets",
-      "total": "Total Amount",
+      "total": "Total supply",
       "seed_phrase": "Seed Phrase (Optional)"
     },
     "descriptions": {
@@ -474,7 +474,9 @@
       "edit_configuration": "Edit Configuration",
       "confirm_continue": "Confirm & Continue",
       "add_wallet": "Add Wallet",
-      "generate_wallets": "Generate Wallets"
+      "generate_wallets": "Generate Wallets",
+      "download_csv_sample": "Download CSV Sample",
+      "upload_csv": "Upload CSV"
     },
     "empty": {
       "title": "No wallets added yet",
@@ -502,7 +504,14 @@
       "invalid_amount": "Please enter a valid amount",
       "transfer_success": "Transfer successful, Check transaction on chain and detail in your email.",
       "tx_failed": "Transaction failed",
-      "invalid_token_contract": "Invalid token contract address"
+      "invalid_token_contract": "Invalid token contract address",
+      "csv_invalid_type": "Please select a valid CSV file",
+      "csv_empty": "File CSV trống",
+      "csv_imported": "Đã nhập {count} dòng từ CSV",
+      "csv_import_failed": "Không thể nhập dữ liệu từ CSV",
+      "csv_import_partial": "Một số dòng CSV không hợp lệ: {count}",
+      "csv_read_error": "Không thể đọc file CSV",
+      "warning": "Cảnh báo"
     },
     "loading": {
       "processing": "Processing..."

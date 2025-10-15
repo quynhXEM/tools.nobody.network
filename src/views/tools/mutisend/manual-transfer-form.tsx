@@ -49,11 +49,6 @@ export function ManualTransferForm({ onAddWallet }: ManualTransferFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      {/* 
-      Groupbutton gồm 2 nút Lấy form CSV và Upload CSV.
-      -Lấy mẫu sẽ yêu cầu người dùng tải xuống CSV có sẵn
-      -Cho upload lên 1 file CSV gồm 2 cột (địa chỉ ví và số lượng chuyển).
-      */}
       <div className="flex items-center gap-2 w-full">
         <Button
           type="button"
@@ -82,6 +77,20 @@ export function ManualTransferForm({ onAddWallet }: ManualTransferFormProps) {
             onChange={async (e) => {
               const file = e.target.files?.[0]
               if (!file) return
+
+              // Kiểm tra định dạng file CSV theo MIME hoặc phần mở rộng
+              const nameLower = file.name.toLowerCase()
+              const isCsvByExt = nameLower.endsWith(".csv")
+              const isCsvByMime = (file.type || "").toLowerCase().includes("csv") || file.type === "text/plain"
+              if (!isCsvByExt && !isCsvByMime) {
+                toast({
+                  title: t("multi_send.toast.error"),
+                  description: t("multi_send.toast.csv_invalid_type"),
+                  variant: "destructive",
+                })
+                e.currentTarget.value = ""
+                return
+              }
 
               try {
                 const text = await file.text()
