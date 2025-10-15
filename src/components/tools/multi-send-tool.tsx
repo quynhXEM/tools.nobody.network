@@ -118,18 +118,16 @@ export function MultiSendTool() {
           <div className="grid gap-6 lg:grid-cols-2">
             <div>
               <Card className="p-6 text-white bg-slate-800/50 border-slate-700">
-                <Tabs defaultValue="manual" className="w-full">
-                <TabsList className="grid w-full grid-cols-2 mb-6" >
-                  <TabsTrigger value="manual" className="data-[state=active]:bg-blue-500">{t("multi_send.tabs.manual_entry")}</TabsTrigger>
-                  <TabsTrigger value="auto" className="data-[state=active]:bg-blue-500">{t("multi_send.tabs.auto_generate")}</TabsTrigger>
+                <Tabs defaultValue="auto" className="w-full">
+                  <TabsList className="grid w-full grid-cols-2 mb-6" >
+                    <TabsTrigger value="auto" className="data-[state=active]:bg-blue-500 data-[state=active]:text-white">{t("multi_send.tabs.auto_generate")}</TabsTrigger>
+                    <TabsTrigger value="manual" className="data-[state=active]:bg-blue-500 data-[state=active]:text-white">{t("multi_send.tabs.manual_entry")}</TabsTrigger>
                   </TabsList>
-
-                  <TabsContent value="manual" className="space-y-4">
-                    <ManualTransferForm onAddWallet={addWallet} />
-                  </TabsContent>
-
                   <TabsContent value="auto" className="space-y-4">
                     <AutoGenerateForm onGenerateWallets={addMultipleWallets} />
+                  </TabsContent>
+                  <TabsContent value="manual" className="space-y-4">
+                    <ManualTransferForm onAddWallet={addWallet} />
                   </TabsContent>
                 </Tabs>
               </Card>

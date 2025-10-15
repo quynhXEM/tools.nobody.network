@@ -447,7 +447,7 @@
       "min_per_wallet": "Tối thiểu mỗi ví",
       "max_per_wallet": "Tối đa mỗi ví",
       "number_of_wallets": "Số lượng ví",
-      "total": "Tổng số lượng",
+      "total": "Tổng cung tối đa",
       "seed_phrase": "Seed Phrase (Tuỳ chọn)"
     },
     "descriptions": {
@@ -474,7 +474,9 @@
       "edit_configuration": "Sửa cấu hình",
       "confirm_continue": "Xác nhận & Tiếp tục",
       "add_wallet": "Thêm ví",
-      "generate_wallets": "Tạo ví"
+      "generate_wallets": "Tạo ví",
+      "download_csv_sample": "Tải mẫu CSV",
+      "upload_csv": "Tải lên CSV"
     },
     "empty": {
       "title": "Chưa có ví nào",
@@ -502,7 +504,13 @@
       "invalid_amount": "Vui lòng nhập số lượng hợp lệ",
       "transfer_success": "Chuyển thành công, kiểm tra giao dịch on-chain và chi tiết trong email.",
       "tx_failed": "Giao dịch thất bại",
-      "invalid_token_contract": "Địa chỉ hợp đồng token không hợp lệ"
+      "invalid_token_contract": "Địa chỉ hợp đồng token không hợp lệ",
+      "csv_empty": "File CSV trống",
+      "csv_imported": "Đã nhập {count} dòng từ CSV",
+      "csv_import_failed": "Không thể nhập dữ liệu từ CSV",
+      "csv_import_partial": "Một số dòng CSV không hợp lệ: {count}",
+      "csv_read_error": "Không thể đọc file CSV",
+      "warning": "Cảnh báo"
     },
     "loading": {
       "processing": "Đang xử lý..."
