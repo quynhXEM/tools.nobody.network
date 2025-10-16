@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { toast, useToast } from "@/hooks/use-toast"
 import { useTranslations } from "next-intl"
@@ -16,6 +16,7 @@ import { WalletList } from "@/views/tools/mutisend/wallet-list"
 import { ShortenAddress } from "@/libs/utils"
 import { Avatar, AvatarImage } from "../ui/avatar"
 import { ethers } from "ethers"
+import { NotConnectLayout } from "@/views/NotConnectLayout"
 
 export interface WalletEntry {
   id: string
@@ -32,7 +33,7 @@ export interface ChainConfig {
 
 export function MultiSendTool() {
   const t = useTranslations()
-  const { getChainInfo } = useUserWallet()
+  const { getChainInfo, wallet, connectWallet } = useUserWallet()
   const [wallets, setWallets] = useState<WalletEntry[]>([])
   const [chainConfig, setChainConfig] = useState<ChainConfig | null>(null)
   const [isConfigured, setIsConfigured] = useState(false)
@@ -90,64 +91,66 @@ export function MultiSendTool() {
   }
 
   return (
-    <div className="space-y-6">
-      {!isConfigured ? (
-        <ChainConfigCard onConfirm={handleConfigConfirm} initialConfig={chainConfig || undefined} isEditing={isConfigured} />
-      ) : (
-        <div className="flex items-start flex-col border-1 border-slate-400 p-2 rounded-lg">
-          <p className="text-md font-medium text-white">{t("multi_send.titles.current_configuration")}:</p>
-          <div className="flex flex-col gap-2 my-4">
-            <div className="flex flex-row items-center gap-2 text-sm font-medium text-white">
-              <div className="p-1 bg-green-500 rounded-full w-0 h-0"></div>
-              <Avatar className="w-5 h-5">
-                <AvatarImage src={`${process.env.NEXT_PUBLIC_API_URL}/assets/${chain?.icon}`} />
-              </Avatar>
-              {chain?.name}
-            </div>
-            <div className="flex flex-row items-center gap-2 text-sm font-medium text-white">
-              <div className="p-1 bg-green-500 rounded-full w-0 h-0"></div>
-              {chainConfig!.coinType === "coin" ? chain.symbol : "Token: " + chainConfig?.symbol}
-            </div>
-            {chainConfig!.contractAddress && (
+    <NotConnectLayout>
+      <div className="space-y-6">
+        {!isConfigured ? (
+          <ChainConfigCard onConfirm={handleConfigConfirm} initialConfig={chainConfig || undefined} isEditing={isConfigured} />
+        ) : (
+          <div className="flex items-start flex-col border-1 border-slate-400 p-2 rounded-lg">
+            <p className="text-md font-medium text-white">{t("multi_send.titles.current_configuration")}:</p>
+            <div className="flex flex-col gap-2 my-4">
               <div className="flex flex-row items-center gap-2 text-sm font-medium text-white">
                 <div className="p-1 bg-green-500 rounded-full w-0 h-0"></div>
-                {ShortenAddress(chainConfig!.contractAddress)}
+                <Avatar className="w-5 h-5">
+                  <AvatarImage src={`${process.env.NEXT_PUBLIC_API_URL}/assets/${chain?.icon}`} />
+                </Avatar>
+                {chain?.name}
               </div>
-            )}
+              <div className="flex flex-row items-center gap-2 text-sm font-medium text-white">
+                <div className="p-1 bg-green-500 rounded-full w-0 h-0"></div>
+                {chainConfig!.coinType === "coin" ? chain.symbol : "Token: " + chainConfig?.symbol}
+              </div>
+              {chainConfig!.contractAddress && (
+                <div className="flex flex-row items-center gap-2 text-sm font-medium text-white">
+                  <div className="p-1 bg-green-500 rounded-full w-0 h-0"></div>
+                  {ShortenAddress(chainConfig!.contractAddress)}
+                </div>
+              )}
+            </div>
+            <Button variant="outline" className="crypto-gradient text-white w-full" size="sm" onClick={handleEditConfig}>
+              <Edit className="mr-2 h-4 w-4" />
+              {t("multi_send.buttons.edit_configuration")}
+            </Button>
           </div>
-          <Button variant="outline" className="crypto-gradient text-white w-full" size="sm" onClick={handleEditConfig}>
-            <Edit className="mr-2 h-4 w-4" />
-            {t("multi_send.buttons.edit_configuration")}
-          </Button>
-        </div>
-      )}
+        )}
 
-      {isConfigured && (
-        <div className="grid gap-6 lg:grid-cols-2">
-          <div>
-            <Card className="p-6 text-white bg-slate-800/50 border-slate-700">
-              <Tabs defaultValue="auto" className="w-full">
-                <TabsList className="grid w-full grid-cols-2 mb-6" >
-                  <TabsTrigger value="auto" className="data-[state=active]:bg-blue-500 data-[state=active]:text-white">{t("multi_send.tabs.auto_generate")}</TabsTrigger>
-                  <TabsTrigger value="manual" className="data-[state=active]:bg-blue-500 data-[state=active]:text-white">{t("multi_send.tabs.manual_entry")}</TabsTrigger>
-                </TabsList>
-                <TabsContent value="auto" className="space-y-4">
-                  <AutoGenerateForm onGenerateWallets={addMultipleWallets} />
-                </TabsContent>
-                <TabsContent value="manual" className="space-y-4">
-                  <ManualTransferForm onAddWallet={addWallet} />
-                </TabsContent>
-              </Tabs>
-            </Card>
-          </div>
+        {isConfigured && (
+          <div className="grid gap-6 lg:grid-cols-2">
+            <div>
+              <Card className="p-6 text-white bg-slate-800/50 border-slate-700">
+                <Tabs defaultValue="auto" className="w-full">
+                  <TabsList className="grid w-full grid-cols-2 mb-6" >
+                    <TabsTrigger value="auto" className="data-[state=active]:bg-blue-500 data-[state=active]:text-white">{t("multi_send.tabs.auto_generate")}</TabsTrigger>
+                    <TabsTrigger value="manual" className="data-[state=active]:bg-blue-500 data-[state=active]:text-white">{t("multi_send.tabs.manual_entry")}</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="auto" className="space-y-4">
+                    <AutoGenerateForm onGenerateWallets={addMultipleWallets} />
+                  </TabsContent>
+                  <TabsContent value="manual" className="space-y-4">
+                    <ManualTransferForm onAddWallet={addWallet} />
+                  </TabsContent>
+                </Tabs>
+              </Card>
+            </div>
 
-          <div>
-            {chainConfig && (
-              <WalletList wallets={wallets} onRemoveWallet={removeWallet} onClearAll={clearWallets} chainConfig={chainConfig} />
-            )}
+            <div>
+              {chainConfig && (
+                <WalletList wallets={wallets} onRemoveWallet={removeWallet} onClearAll={clearWallets} chainConfig={chainConfig} />
+              )}
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </NotConnectLayout>
   )
 }
