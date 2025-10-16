@@ -420,34 +420,55 @@ export const estimateGasFee = async ({
     const provider = new ethers.JsonRpcProvider(rpc);
     const wallet = new ethers.Wallet(privateKey, provider);
 
-    let gasLimit;
+    // Fallback gas limit mặc định nếu ước lượng thất bại hoặc ví không có đủ coin/token
+    const defaultGasLimitCoin = ethers.toBigInt(21000);
+    const defaultGasLimitToken = ethers.toBigInt(65000); // thường 50k-80k cho ERC20 transfer
+
+    let gasLimit: bigint = type === "coin" ? defaultGasLimitCoin : defaultGasLimitToken;
 
     if (type === "coin") {
-      gasLimit = await provider.estimateGas({
-        from: wallet.address,
-        to: walletlist[0].address,
-        value: ethers.parseEther(walletlist[0].amount.toString()),
-        chainId: numericChainId,
-      });
+      try {
+        const estimated = await provider.estimateGas({
+          from: wallet.address,
+          to: walletlist[0].address,
+          value: ethers.parseEther(walletlist[0].amount.toString()),
+          chainId: numericChainId,
+        });
+        gasLimit = estimated ?? defaultGasLimitCoin;
+      } catch {
+        // giữ fallback defaultGasLimitCoin
+      }
     } else if (type === "token" && tokenAddress) {
       const abi = [
         "function transfer(address to, uint256 amount) public returns (bool)",
         "function decimals() view returns (uint8)",
       ];
       const token = new ethers.Contract(tokenAddress, abi, wallet);
-      const decimals = await token.decimals();
+      let decimals = 18;
+      try {
+        const tokenDecimals = await token.decimals();
+        decimals = Number(tokenDecimals) || 18;
+      } catch {
+        // fallback 18 nếu không đọc được decimals
+      }
       const amountParsed = ethers.parseUnits(
         walletlist[0].amount.toString(),
         decimals
       );
 
-      gasLimit = await token.transfer.estimateGas(
-        walletlist[0].address,
-        amountParsed,
-        { chainId: numericChainId }
-      );
+      try {
+        const estimated = await token.transfer.estimateGas(
+          walletlist[0].address,
+          amountParsed,
+          { chainId: numericChainId }
+        );
+        gasLimit = estimated ?? defaultGasLimitToken;
+      } catch {
+        // giữ fallback defaultGasLimitToken khi ví không có token hoặc ước lượng thất bại
+      }
     } else {
-      return 0;
+      // Trường hợp type không hợp lệ, trả về thông tin mặc định
+      gasLimit = defaultGasLimitCoin;
     }
 
     // 🔹 Lấy giá gas hiện tại (gasPrice hoặc EIP-1559 data)
@@ -469,7 +490,7 @@ export const estimateGasFee = async ({
       totalFeeWei: totalFeeWei.toString(),
       totalFeeNative, // Ví dụ: 0.00063 BNB
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
     return error?.message;
   }
