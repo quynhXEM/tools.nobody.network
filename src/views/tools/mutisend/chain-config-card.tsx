@@ -67,9 +67,6 @@ export function ChainConfigCard({ onConfirm, initialConfig, isEditing }: ChainCo
     <Card className="p-6 border-2 bg-slate-800/50 border-slate-700 text-white">
       <div className="space-y-6">
         <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-lg ">
-            <Settings className="h-6 w-6" />
-          </div>
           <div>
             <h2 className="text-xl font-semibold">{t("multi_send.titles.blockchain_config")}</h2>
             <p className="text-sm ">
