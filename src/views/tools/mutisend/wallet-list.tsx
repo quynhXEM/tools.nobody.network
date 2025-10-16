@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -25,6 +25,7 @@ import { useNotification } from "@/app/commons/NotificationContext"
 import { useLocale, useTranslations } from "next-intl"
 import { SendEmail } from "@/libs/api"
 import { MultiSendEmail } from "@/libs/formemail"
+import { ethers } from "ethers"
 
 interface WalletEntry {
   id: string
@@ -43,16 +44,19 @@ export function WalletList({ wallets, onRemoveWallet, onClearAll, chainConfig }:
   const [email, setEmail] = useState("")
   const locale = useLocale()
   const [loading, setLoading] = useState(false)
+  const [loadinggas, setLoadingGas] = useState(false)
   const t = useTranslations()
   const { custom_fields: { muti_send_fee, masterWallet }, chain } = useAppMetadata()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const { getChainInfo, sendTransaction } = useUserWallet()
+  const [gasFee, setGasFee] = useState<BigInt>(BigInt(0))
   const { toast } = useToast()
   const { notify } = useNotification()
   const totalAmount = wallets.reduce((sum, wallet) => sum + wallet.amount, 0);
-  const totalFee = getToolFee(chainConfig.chainId, chain, muti_send_fee * wallets.length);
+  const totalFeeFlat = getToolFee(chainConfig.chainId, chain, muti_send_fee * wallets.length);
   const chain_info = getChainInfo(chainConfig.chainId)?.chain_id
-
+  const totalGasFee = ethers.formatEther(gasFee * BigInt(wallets.length))
+  const totalFee = chainConfig.contractAddress ? (totalFeeFlat + parseFloat(totalGasFee)) : (totalAmount + totalFeeFlat + parseFloat(totalGasFee))
   const transferToken = async () => {
     try {
       if (chainConfig.contractAddress) {
@@ -186,6 +190,34 @@ export function WalletList({ wallets, onRemoveWallet, onClearAll, chainConfig }:
     }
   }
 
+  const getGasFee = async () => {
+    setLoadingGas(true)
+    const gasFee = await fetch("/api/transaction/estimategas", {
+      method: "POST",
+      body: JSON.stringify({
+        walletlist: wallets,
+        type: chainConfig.coinType,
+        tokenAddress: chainConfig.contractAddress,
+        chain_id: chainConfig.chainId,
+        rpc: chain_info.rpc_url
+      })
+    }).then(data => data.json())
+    if (!gasFee?.result?.totalFeeWei) {
+      notify({
+        title: t("multi_send.toast.error"),
+        type: false,
+        message: gasFee?.result?.toString()
+      })
+    } else {
+      setGasFee(BigInt(gasFee.result.totalFeeWei))
+      setLoadingGas(false)
+    }
+  }
+  useEffect(() => {
+    if (wallets.length == 0) return;
+    getGasFee()
+  }, [wallets])
+
   return (
     <>
       <Card className="p-6  bg-slate-800/50 border-slate-700 text-white">
@@ -247,15 +279,22 @@ export function WalletList({ wallets, onRemoveWallet, onClearAll, chainConfig }:
                   <span className="text-lg font-bold text-white">{formatNumber(totalAmount)} {chainConfig.coinType == "coin" ? chain_info.symbol : chainConfig.symbol}</span>
                 </div>
                 <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-white">{t("multi_send.labels.feegas")}</span>
+                  <span className="text-lg font-bold text-white">{totalGasFee} {chain_info.symbol}</span>
+                </div>
+                <div className="flex items-center justify-between border-b border-border">
                   <span className="text-sm font-medium text-white">{t("multi_send.labels.fee")}</span>
+                  <span className="text-lg font-bold text-white">{totalFeeFlat} {chain_info.symbol}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-white">{t("multi_send.labels.total_fee")}</span>
                   <span className="text-lg font-bold text-white">{totalFee} {chain_info.symbol}</span>
                 </div>
-
                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                   <DialogTrigger asChild>
-                    <Button disabled={loading} className="w-full crypto-gradient" size="lg">
-                      <Send className="mr-2 h-4 w-4" />
-                      {t("multi_send.buttons.execute_transfer")}
+                    <Button disabled={loading || loadinggas} className="w-full crypto-gradient" size="lg">
+                      <>{loadinggas ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2 h-4 w-4" />}
+                        {t("multi_send.buttons.execute_transfer")}</>
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="bg-slate-800 border-slate-700 text-white">
@@ -280,9 +319,9 @@ export function WalletList({ wallets, onRemoveWallet, onClearAll, chainConfig }:
                       <div className="rounded-lg p-4 space-y-2 border-1 border-gray-500 rounded-lg">
                         <div className=" text-sm">
                           {!chainConfig.contractAddress ? (
-                            <span className="text-white">{t("multi_send.dialog.payment_note_coin", { total: totalAmount + totalFee, symbol: chain_info.symbol })}</span>
+                            <span className="text-white">{t("multi_send.dialog.payment_note_coin", { total: totalAmount + totalFeeFlat, symbol: chain_info.symbol })}</span>
                           ) : (
-                            <span className="text-white">{t("multi_send.dialog.payment_note_token", { token_amount: totalAmount, token_symbol: chainConfig.symbol || chain_info.symbol, fee_amount: totalFee, fee_symbol: chain_info.symbol })}</span>
+                            <span className="text-white">{t("multi_send.dialog.payment_note_token", { token_amount: totalAmount, token_symbol: chainConfig.symbol || chain_info.symbol, fee_amount: totalFeeFlat, fee_symbol: chain_info.symbol })}</span>
                           )}{" "}
                           <span className="text-white">{t("multi_send.dialog.payment_note_tail")}</span>
                         </div>

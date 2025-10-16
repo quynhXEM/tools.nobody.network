@@ -394,3 +394,104 @@ export const genarateWallet = async ({
     return false;
   }
 };
+
+export const estimateGasFee = async ({
+  rpc,
+  chain_id,
+  type,
+  walletlist,
+  privateKey,
+  tokenAddress,
+}: {
+  rpc: string;
+  chain_id: number | string;
+  type: "coin" | "token";
+  walletlist: {
+    address: string;
+    amount: string | number;
+  }[];
+  privateKey: string;
+  tokenAddress?: string;
+}) => {
+  try {
+    // Chuyển chain_id thành number nếu là string
+    const numericChainId =
+      typeof chain_id === "string" ? parseInt(chain_id) : chain_id;
+    const provider = new ethers.JsonRpcProvider(rpc);
+    const wallet = new ethers.Wallet(privateKey, provider);
+
+    let gasLimit;
+
+    if (type === "coin") {
+      gasLimit = await provider.estimateGas({
+        from: wallet.address,
+        to: walletlist[0].address,
+        value: ethers.parseEther(walletlist[0].amount.toString()),
+        chainId: numericChainId,
+      });
+    } else if (type === "token" && tokenAddress) {
+      const abi = [
+        "function transfer(address to, uint256 amount) public returns (bool)",
+        "function decimals() view returns (uint8)",
+      ];
+      const token = new ethers.Contract(tokenAddress, abi, wallet);
+      const decimals = await token.decimals();
+      const amountParsed = ethers.parseUnits(
+        walletlist[0].amount.toString(),
+        decimals
+      );
+
+      gasLimit = await token.transfer.estimateGas(
+        walletlist[0].address,
+        amountParsed,
+        { chainId: numericChainId }
+      );
+    } else {
+      return 0;
+    }
+
+    // 🔹 Lấy giá gas hiện tại (gasPrice hoặc EIP-1559 data)
+    const feeData = await provider.getFeeData();
+
+    // Ưu tiên dùng maxFeePerGas nếu có, fallback về gasPrice
+    const gasPrice = feeData.maxFeePerGas ?? feeData.gasPrice;
+    if (!gasPrice) throw new Error("Cannot fetch gas price");
+
+    // 🔹 Tính tổng phí (wei)
+    const totalFeeWei = gasLimit * gasPrice;
+
+    // 🔹 Quy đổi ra native coin (ETH, BNB, MATIC,...)
+    const totalFeeNative = ethers.formatEther(totalFeeWei);
+
+    return {
+      gasLimit: gasLimit.toString(),
+      gasPrice: ethers.formatUnits(gasPrice, "gwei") + " gwei",
+      totalFeeWei: totalFeeWei.toString(),
+      totalFeeNative, // Ví dụ: 0.00063 BNB
+    };
+  } catch (error) {
+    console.error(error);
+    return error?.message;
+  }
+};
+
+export const removeBigInt: any = (value: any) => {
+  if (typeof value === "bigint") {
+    // Chuyển BigInt sang string để an toàn (vì có thể quá lớn với Number)
+    return value.toString() + "n";
+    // Nếu chắc chắn nhỏ, có thể dùng Number(value)
+    // return Number(value);
+  } else if (Array.isArray(value)) {
+    return value.map(removeBigInt);
+  } else if (value !== null && typeof value === "object") {
+    const res: any = {};
+    for (const key in value) {
+      if (Object.hasOwnProperty.call(value, key)) {
+        res[key] = removeBigInt(value[key]);
+      }
+    }
+    return res;
+  } else {
+    return value; // string, number, boolean, null, undefined
+  }
+};

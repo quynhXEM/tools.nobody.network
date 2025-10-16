@@ -427,14 +427,14 @@
       "current_configuration": "Current Configuration"
     },
     "tabs": {
-      "manual_entry": "Manual Entry",
-      "auto_generate": "Auto Generate"
+      "manual_entry": "Manual",
+      "auto_generate": "Auto"
     },
     "labels": {
       "wallets_count_singular": "wallet",
       "wallets_count_plural": "wallets",
       "total_amount": "Total Amount",
-      "fee": "Fee",
+      "fee": "Fee Platform",
       "email": "Email Address",
       "select_chain": "Select Chain",
       "coin_type": "Coin/Token Type",
@@ -448,7 +448,9 @@
       "max_per_wallet": "Max per Wallet",
       "number_of_wallets": "Number of Wallets",
       "total": "Total supply",
-      "seed_phrase": "Seed Phrase (Optional)"
+      "seed_phrase": "Seed Phrase (Optional)",
+      "feegas": "Fee Gas",
+      "total_fee": "Total Fee"
     },
     "descriptions": {
       "manual_entry": "Add wallet addresses and amounts individually",
@@ -493,6 +495,7 @@
       "error": "Error",
       "success": "Success",
       "invalid_email": "Please enter a valid email address",
+      "address_invalid": "Invalid wallet address",
       "no_wallets": "No wallets to transfer",
       "generated": "Generated {count} wallets with total amount {total}",
       "invalid_wallet_count": "Please enter a valid wallet count",
@@ -506,12 +509,12 @@
       "tx_failed": "Transaction failed",
       "invalid_token_contract": "Invalid token contract address",
       "csv_invalid_type": "Please select a valid CSV file",
-      "csv_empty": "File CSV trống",
-      "csv_imported": "Đã nhập {count} dòng từ CSV",
-      "csv_import_failed": "Không thể nhập dữ liệu từ CSV",
-      "csv_import_partial": "Một số dòng CSV không hợp lệ: {count}",
-      "csv_read_error": "Không thể đọc file CSV",
-      "warning": "Cảnh báo"
+      "csv_empty": "File CSV is empty",
+      "csv_imported": "Imported {count} lines from CSV",
+      "csv_import_failed": "Failed to import data from CSV",
+      "csv_import_partial": "Some CSV lines are invalid: {count}",
+      "csv_read_error": "Failed to read CSV file",
+      "warning": "Warning"
     },
     "loading": {
       "processing": "Processing..."

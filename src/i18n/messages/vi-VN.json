@@ -427,14 +427,14 @@
       "current_configuration": "Cấu hình hiện tại"
     },
     "tabs": {
-      "manual_entry": "Nhập thủ công",
-      "auto_generate": "Tạo tự động"
+      "manual_entry": "Thủ công",
+      "auto_generate": "Tự động"
     },
     "labels": {
       "wallets_count_singular": "ví",
       "wallets_count_plural": "ví",
       "total_amount": "Tổng số lượng",
-      "fee": "Phí",
+      "fee": "Phí nền tảng",
       "email": "Địa chỉ Email",
       "select_chain": "Chọn Chain",
       "coin_type": "Loại Coin/Token",
@@ -444,11 +444,13 @@
       "token_contract": "Địa chỉ hợp đồng Token",
       "wallet_address": "Địa chỉ ví",
       "amount": "Số lượng",
-      "min_per_wallet": "Tối thiểu mỗi ví",
-      "max_per_wallet": "Tối đa mỗi ví",
-      "number_of_wallets": "Số lượng ví",
-      "total": "Tổng cung tối đa",
-      "seed_phrase": "Seed Phrase (Tuỳ chọn)"
+      "min_per_wallet": "Số lượng tối thiểu mỗi ví",
+      "max_per_wallet": "Số lượng tối đa mỗi ví",
+      "number_of_wallets": "Số ví cần tạo",
+      "total": "Tổng số lượng muốn phân bổ",
+      "seed_phrase": "Seed Phrase (Tuỳ chọn)",
+      "feegas": "Phí Gas",
+      "total_fee": "Tổng phí"
     },
     "descriptions": {
       "manual_entry": "Thêm từng địa chỉ ví và số lượng",
@@ -466,7 +468,7 @@
       "seed_phrase": "Nhập seed phrase hoặc tạo mới..."
     },
     "buttons": {
-      "clear_all": "Xoá tất cả",
+      "clear_all": "Xóa tất cả",
       "execute_transfer": "Thực hiện chuyển",
       "confirm_transfer": "Xác nhận chuyển",
       "cancel": "Hủy",
@@ -474,7 +476,7 @@
       "edit_configuration": "Sửa cấu hình",
       "confirm_continue": "Xác nhận & Tiếp tục",
       "add_wallet": "Thêm ví",
-      "generate_wallets": "Tạo ví",
+      "generate_wallets": "Lập danh sách ví chuyển",
       "download_csv_sample": "Tải mẫu CSV",
       "upload_csv": "Tải lên CSV"
     },
@@ -493,6 +495,7 @@
       "error": "Lỗi",
       "success": "Thành công",
       "invalid_email": "Vui lòng nhập email hợp lệ",
+      "address_invalid": "Địa chỉ ví không hợp lệ",
       "no_wallets": "Không có ví để chuyển",
       "generated": "Đã tạo {count} ví với tổng số {total}",
       "invalid_wallet_count": "Vui lòng nhập số lượng ví hợp lệ",

@@ -17,10 +17,10 @@ interface AutoGenerateFormProps {
 }
 
 export function AutoGenerateForm({ onGenerateWallets }: AutoGenerateFormProps) {
-  const [walletCount, setWalletCount] = useState("")
-  const [totalAmount, setTotalAmount] = useState("")
-  const [minAmount, setMinAmount] = useState("")
-  const [maxAmount, setMaxAmount] = useState("")
+  const [walletCount, setWalletCount] = useState("2")
+  const [totalAmount, setTotalAmount] = useState("100")
+  const [minAmount, setMinAmount] = useState("20")
+  const [maxAmount, setMaxAmount] = useState("40")
   const [seedPhrase, setSeedPhrase] = useState("")
   const { toast } = useToast()
   const t = useTranslations()

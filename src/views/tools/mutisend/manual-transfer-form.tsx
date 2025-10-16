@@ -88,7 +88,6 @@ export function ManualTransferForm({ onAddWallet }: ManualTransferFormProps) {
                   description: t("multi_send.toast.csv_invalid_type"),
                   variant: "destructive",
                 })
-                e.currentTarget.value = ""
                 return
               }
 
@@ -123,7 +122,7 @@ export function ManualTransferForm({ onAddWallet }: ManualTransferFormProps) {
                     errorCount++
                     continue
                   }
-                  onAddWallet(addr, Number.parseFloat(amt.toFixed(6)))
+                  onAddWallet(addr, amt)
                   successCount++
                 }
 

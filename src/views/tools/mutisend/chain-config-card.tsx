@@ -34,6 +34,7 @@ export function ChainConfigCard({ onConfirm, initialConfig, isEditing }: ChainCo
   const [coinType, setCoinType] = useState<"coin" | "token">(initialConfig?.coinType || "coin")
   const [contractAddress, setContractAddress] = useState(initialConfig?.contractAddress || "")
 
+  const tokenSymbol = getChainInfo(chainId)?.chain_id.symbol
   const handleConfirm = async () => {
     if (!chainId) return
 
@@ -47,8 +48,8 @@ export function ChainConfigCard({ onConfirm, initialConfig, isEditing }: ChainCo
       const checkToken = await checkTokenIsValid({ tokenAddress: contractAddress, rpc: getChainInfo(chainId).chain_id.rpc_url, chainId: Number(chainId) })
       if (!checkToken) {
         toast({
-          title: "Error",
-          description: "Invalid token contract address",
+          title: t("multi_send.toast.error"),
+          description: t("multi_send.toast.invalid_token_contract"),
           variant: "destructive",
         })
         return;
@@ -94,18 +95,18 @@ export function ChainConfigCard({ onConfirm, initialConfig, isEditing }: ChainCo
             </Select>
           </div>
 
-          <div className="space-y-2">
+          {chainId && <div className="space-y-2">
             <Label htmlFor="coinType">{t("multi_send.labels.coin_type")}</Label>
             <Select value={coinType} onValueChange={(value) => setCoinType(value as "coin" | "token")} >
               <SelectTrigger id="coinType" className="w-full text-white bg-gray-700">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="bg-gray-700 text-white">
-                <SelectItem value="coin">{t("multi_send.labels.native_coin")}</SelectItem>
+                <SelectItem value="coin">{tokenSymbol}</SelectItem>
                 <SelectItem value="token">{t("multi_send.labels.token_standard")}</SelectItem>
               </SelectContent>
             </Select>
-          </div>
+          </div>}
         </div>
 
         {coinType === "token" && (
