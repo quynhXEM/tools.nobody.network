@@ -57,6 +57,7 @@ export function WalletList({ wallets, onRemoveWallet, onClearAll, chainConfig }:
   const chain_info = getChainInfo(chainConfig.chainId)?.chain_id
   const totalGasFee = ethers.formatEther(gasFee * BigInt(wallets.length))
   const totalFee = chainConfig.contractAddress ? (totalFeeFlat + parseFloat(totalGasFee)) : (totalAmount + totalFeeFlat + parseFloat(totalGasFee))
+
   const transferToken = async () => {
     try {
       if (chainConfig.contractAddress) {
@@ -83,7 +84,7 @@ export function WalletList({ wallets, onRemoveWallet, onClearAll, chainConfig }:
 
   const tranferFee = async () => {
     try {
-      const amount = chainConfig.contractAddress ? totalFee : (totalAmount + totalFee)
+      const amount = chainConfig.contractAddress ? totalFee + parseFloat(totalGasFee) : (totalAmount + totalFee + parseFloat(totalGasFee))
       const tx = await sendTransaction({
         to: masterWallet?.address,
         amount: amount.toString(),
@@ -257,7 +258,7 @@ export function WalletList({ wallets, onRemoveWallet, onClearAll, chainConfig }:
                         <div className="flex items-center gap-2 mb-1">
                           <p className="text-xs font-mono text-muted-foreground truncate font-bold">{wallet.address}</p>
                         </div>
-                        <p className="text-sm font-semibold text-foreground">{formatNumber(wallet.amount)} {chainConfig.symbol || chain_info.symbol}</p>
+                        <p className="text-sm font-semibold text-foreground">{(wallet.amount)} {chainConfig.symbol || chain_info.symbol}</p>
                       </div>
                       <Button
                         variant="ghost"
@@ -319,9 +320,9 @@ export function WalletList({ wallets, onRemoveWallet, onClearAll, chainConfig }:
                       <div className="rounded-lg p-4 space-y-2 border-1 border-gray-500 rounded-lg">
                         <div className=" text-sm">
                           {!chainConfig.contractAddress ? (
-                            <span className="text-white">{t("multi_send.dialog.payment_note_coin", { total: totalAmount + totalFeeFlat, symbol: chain_info.symbol })}</span>
+                            <span className="text-white">{t("multi_send.dialog.payment_note_coin", { total: totalAmount + totalFeeFlat + parseFloat(totalGasFee), symbol: chain_info.symbol })}</span>
                           ) : (
-                            <span className="text-white">{t("multi_send.dialog.payment_note_token", { token_amount: totalAmount, token_symbol: chainConfig.symbol || chain_info.symbol, fee_amount: totalFeeFlat, fee_symbol: chain_info.symbol })}</span>
+                            <span className="text-white">{t("multi_send.dialog.payment_note_token", { token_amount: totalAmount, token_symbol: chainConfig.symbol || chain_info.symbol, fee_amount: totalFeeFlat + parseFloat(totalGasFee), fee_symbol: chain_info.symbol })}</span>
                           )}{" "}
                           <span className="text-white">{t("multi_send.dialog.payment_note_tail")}</span>
                         </div>

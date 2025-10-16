@@ -259,7 +259,7 @@
       "tx_failed": "Giao dịch không thành công",
       "success_title": "Thành công",
       "warning_title": "Cảnh báo",
-      "warning_progress_desc": "Quá trình triển khai đang tiến hành. Vui lòng đợi và không tắt trang web!",
+      "warning_progress_desc": "Quá trình đang tiến hành. Vui lòng đợi và không tắt trang web!",
       "deploy_success": "Token của bạn đã được tạo. Kiểm tra thông tin trên trang và email.",
       "deploy_error_prefix": "Có lỗi xảy ra trong quá trình tạo token: "
     }

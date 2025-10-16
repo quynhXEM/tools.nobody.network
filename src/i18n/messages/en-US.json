@@ -258,7 +258,7 @@
       "tx_failed": "Transaction failed",
       "success_title": "Success",
       "warning_title": "Warning",
-      "warning_progress_desc": "The deployment process is in progress. Please wait and do not close the page!",
+      "warning_progress_desc": "The action is in progress. Please wait and do not close the page!",
       "deploy_success": "Your token has been created. Check the on-page info and your email.",
       "deploy_error_prefix": "An error occurred while creating the token: "
     }
@@ -404,7 +404,7 @@
       "tx_failed": "Transaction failed",
       "success_title": "Success",
       "warning_title": "Warning",
-      "warning_progress_desc": "The request deployment process is in progress. Please wait and do not close the page!",
+      "warning_progress_desc": "The action is in progress. Please wait and do not close the page!",
       "deploy_success": "The request deployment has been sent. The result will be sent via email.",
       "deploy_error_prefix": "An error occurred while sending the request: "
     }
