@@ -47,7 +47,7 @@ export function MultiSendTool() {
       })
       return
     }
-    if (amount <= 0 ) {
+    if (amount <= 0) {
       toast({
         title: t("multi_send.toast.error"),
         description: t("multi_send.toast.amount_less_than_0"),
@@ -95,27 +95,30 @@ export function MultiSendTool() {
         <ChainConfigCard onConfirm={handleConfigConfirm} initialConfig={chainConfig || undefined} isEditing={isConfigured} />
       ) : (
         <div className="flex items-start flex-col border-1 border-slate-400 p-2 rounded-lg">
-          <p className="text-sm font-medium text-white">{t("multi_send.titles.current_configuration")}:</p>
-          <div className="flex flex-wrap space-x-2 space-y-2">
-            <Badge variant="secondary" className="text-sm">
+          <p className="text-md font-medium text-white">{t("multi_send.titles.current_configuration")}:</p>
+          <div className="flex flex-col gap-2 my-4">
+            <div className="flex flex-row items-center gap-2 text-sm font-medium text-white">
+              <div className="p-1 bg-green-500 rounded-full w-0 h-0"></div>
               <Avatar className="w-5 h-5">
                 <AvatarImage src={`${process.env.NEXT_PUBLIC_API_URL}/assets/${chain?.icon}`} />
               </Avatar>
               {chain?.name}
-            </Badge>
-            <Badge variant="secondary" className="text-sm">
-              {chainConfig!.coinType === "coin" ? chain.symbol : "Token:" + chainConfig?.symbol}
-            </Badge>
+            </div>
+            <div className="flex flex-row items-center gap-2 text-sm font-medium text-white">
+              <div className="p-1 bg-green-500 rounded-full w-0 h-0"></div>
+              {chainConfig!.coinType === "coin" ? chain.symbol : "Token: " + chainConfig?.symbol}
+            </div>
             {chainConfig!.contractAddress && (
-              <Badge variant="secondary" className="text-sm font-mono">
+              <div className="flex flex-row items-center gap-2 text-sm font-medium text-white">
+                <div className="p-1 bg-green-500 rounded-full w-0 h-0"></div>
                 {ShortenAddress(chainConfig!.contractAddress)}
-              </Badge>
+              </div>
             )}
-            <Button variant="outline" className="crypto-gradient text-white" size="sm" onClick={handleEditConfig}>
-              <Edit className="mr-2 h-4 w-4" />
-              {t("multi_send.buttons.edit_configuration")}
-            </Button>
           </div>
+          <Button variant="outline" className="crypto-gradient text-white w-full" size="sm" onClick={handleEditConfig}>
+            <Edit className="mr-2 h-4 w-4" />
+            {t("multi_send.buttons.edit_configuration")}
+          </Button>
         </div>
       )}
 
