@@ -514,7 +514,8 @@
       "csv_import_failed": "Không thể nhập dữ liệu từ CSV",
       "csv_import_partial": "Một số dòng CSV không hợp lệ: {count}",
       "csv_read_error": "Không thể đọc file CSV",
-      "warning": "Cảnh báo"
+      "warning": "Cảnh báo",
+      "amount_less_than_0": "Số lượng phải lớn hơn 0"
     },
     "loading": {
       "processing": "Đang xử lý..."

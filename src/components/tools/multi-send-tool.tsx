@@ -47,6 +47,14 @@ export function MultiSendTool() {
       })
       return
     }
+    if (amount <= 0 ) {
+      toast({
+        title: t("multi_send.toast.error"),
+        description: t("multi_send.toast.amount_less_than_0"),
+        variant: "destructive",
+      })
+      return;
+    }
     const newWallet: WalletEntry = {
       id: Math.random().toString(36).substr(2, 9),
       address,
