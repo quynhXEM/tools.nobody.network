@@ -275,6 +275,7 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
       // Chuyển mạng nếu cần
       if (chainId) {
         const currentChain = await provider.request({ method: "eth_chainId" });
+        const chainInfo = getChainInfo(chainId);
         if (parseInt(currentChain, 16) != chainId) {
           try {
             await provider.request({
@@ -288,13 +289,23 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
           } catch (switchError: any) {
             if (
               switchError.code === 4902 &&
-              getChainInfo(chainId)
+              chainInfo
             ) {
               // Nếu chưa có mạng, thêm mạng vào MetaMask
               await provider.request({
                 method: "wallet_addEthereumChain",
                 params: [
-                  getChainInfo(chainId)
+                  {
+                    chainId: "0x" + Number(chainId).toString(16),
+                    chainName: chainInfo?.chain_id?.name,
+                    rpcUrls: [chainInfo?.chain_id?.rpc_url],
+                    nativeCurrency: {
+                      name: chainInfo?.chain_id?.native_currency,
+                      symbol: chainInfo?.chain_id?.symbol,
+                      decimals: 18
+                    },
+                    blockExplorerUrls: [chainInfo?.chain_id?.explorer_url]
+                  }
                 ],
               });
               // Sau khi thêm, thử lại chuyển mạng
@@ -302,7 +313,7 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
                 method: "wallet_switchEthereumChain",
                 params: [
                   {
-                    chainId: chainId,
+                    chainId: "0x" + Number(chainId).toString(16),
                   },
                 ],
               });
@@ -366,8 +377,6 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
         // Chờ xác nhận giao dịch
         const receipt = await waitForTransactionReceipt(provider, txHash);
         return receipt;
-      } else {
-        // throw new Error("Thiếu thông tin gửi token hoặc type không hợp lệ");
       }
     } catch (err) {
       throw err;
