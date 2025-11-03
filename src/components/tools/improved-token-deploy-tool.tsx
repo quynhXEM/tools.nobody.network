@@ -42,7 +42,7 @@ export function ImprovedTokenDeployTool() {
     symbol: z
       .string()
       .min(1, { message: t("deploy_token.validation.required_symbol") })
-      .regex(/^[a-zA-Z0-9]+$/, { message: t("deploy_token.validation.symbol_alnum") }),
+      .regex(/^[a-zA-Z]+$/, { message: t("deploy_token.validation.symbol_alnum") }),
     totalSupply: z
       .string()
       .min(1, { message: t("deploy_token.validation.required_total_supply") })

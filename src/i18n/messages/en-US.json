@@ -238,7 +238,7 @@
       "required_chain": "Chain selection is required",
       "required_name": "Token name is required",
       "required_symbol": "Symbol is required",
-      "symbol_alnum": "Only letters and numbers are allowed, no special characters",
+      "symbol_alnum": "Only letters are allowed, no special characters or number",
       "required_total_supply": "Total supply is required",
       "total_supply_integer_positive": "Total supply must be a positive integer",
       "required_decimals": "Decimals selection is required",

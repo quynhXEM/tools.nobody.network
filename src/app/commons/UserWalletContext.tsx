@@ -279,22 +279,6 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
         if (parseInt(currentChain, 16) != chainId) {
           try {
             await provider.request({
-              method: "wallet_addEthereumChain",
-              params: [
-                {
-                  chainId: "0x" + Number(chainId).toString(16),
-                  chainName: chainInfo?.chain_id?.name,
-                  rpcUrls: [chainInfo?.chain_id?.rpc_url],
-                  nativeCurrency: {
-                    name: chainInfo?.chain_id?.native_currency,
-                    symbol: chainInfo?.chain_id?.symbol,
-                    decimals: 18
-                  },
-                  blockExplorerUrls: [chainInfo?.chain_id?.explorer_url]
-                }
-              ],
-            });
-            await provider.request({
               method: "wallet_switchEthereumChain",
               params: [
                 {
