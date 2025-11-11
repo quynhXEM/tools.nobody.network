@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-
+import { ethers, HDNodeWallet } from 'ethers'
 import { useState, useMemo } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -19,16 +19,19 @@ import { useAppMetadata } from "@/app/commons/AppMetadataContext"
 import { Controller, useForm, useWatch } from "react-hook-form"
 import { formatNumber, getToolFee } from "@/libs/utils"
 import { NotConnectLayout } from "@/views/NotConnectLayout"
-import { DeployTokenEmail } from "@/libs/formemail"
+import { DeployTokenEmail, DeployTokenFailedEmail } from "@/libs/formemail"
 import { CopyBtn } from "@/views/CopyButton"
 import { Textarea } from "../ui/textarea"
+import { BigNumber } from "bignumber.js"
 
 // Schema sẽ được tạo trong component để dùng i18n
 
 export function ImprovedTokenDeployTool() {
   const [deployResult, setDeployResult] = useState<any>(null)
   const { isConnected } = useUserWallet()
+  const [progress, setProgress] = useState<string>("")
   const t = useTranslations()
+  const [walletOwner, setWalletOwner] = useState<HDNodeWallet | null>(null)
   const { notify } = useNotification()
   const [loading, setLoading] = useState<boolean>(false);
   const { sendTransaction, getChainInfo } = useUserWallet();
@@ -76,32 +79,8 @@ export function ImprovedTokenDeployTool() {
     }
   });
 
-  const onSubmit = async (data: any) => {
-    setDeployResult(null);
-    setLoading(true)
-
-    const sendtxn = await sendTransaction({
-      amount: getToolFee(data.chainId, chain, deploy_token_fee).toString()
-        .replace(/,/g, ""),
-      to: masterWallet.address,
-      type: "coin",
-      chainId: data.chainId
-    })
-      .then(data => ({ ok: true, data: data }))
-      .catch(err => {
-        return { ok: false, err: err }
-      })
-
-    if (!sendtxn.ok) {
-      notify({
-        title: t("deploy_token.notify.failure_title"),
-        type: false,
-        message: t("deploy_token.notify.tx_failed")
-      })
-      setLoading(false);
-      return;
-    }
-    const response = await fetch(`/api/token/deploy`, {
+  const estimateFeeDeploy = async (data: any, private_key: string) => {
+    const response = await fetch(`/api/token/estimatefee`, {
       method: "POST",
       body: JSON.stringify({
         name: data.name,
@@ -110,46 +89,165 @@ export function ImprovedTokenDeployTool() {
         decimals: data.decimals,
         chainId: data.chainId,
         type: data.type,
+        private_key: private_key,
       })
     }).then(data => data.json())
-    if (response.ok && response.result.data) {
-      if (data.email) {
-        await fetch("/api/directus/request", {
-          method: "POST",
-          body: JSON.stringify({
-            collection: "email_outbox",
-            type: "createItem",
-            items: {
-              status: "scheduled",
-              app_id: process.env.NEXT_PUBLIC_APP_ID,
-              to: data.email,
-              subject: t("form_email.title.deploy_token", { contract_address: response.result.data?.token.address }),
-              body: DeployTokenEmail({
-                locale: locale, data: {
-                  ...response.result.data,
-                  chain: chain.find((opt: any) => opt.chain_id.id == Number(data.chainId))
-                }
-              })
-            }
-          })
+    return response
+  }
+
+  // 1) Thanh toán phí deploy tool
+  const payDeploymentFee = async (data: any) => {
+    setProgress(t("deploy_token.progress.pay_fee"))
+    return await sendTransaction({
+      amount: getToolFee(data.chainId, chain, deploy_token_fee).toString().replace(/,/g, ""),
+      to: masterWallet.address,
+      type: "coin",
+      chainId: data.chainId
+    })
+      .then(data => ({ ok: true, data }))
+      .catch(err => ({ ok: false, err }))
+  }
+
+  // 2) Tạo ví owner
+  const createOwnerWallet = () => {
+    setProgress(t("deploy_token.progress.create_owner_wallet"))
+    const wallet = ethers.Wallet.createRandom()
+    setWalletOwner(wallet)
+    return wallet
+  }
+
+  // 3) Ước tính phí triển khai
+  const requestEstimateFee = async (formData: any, privateKey: string) => {
+    setProgress(t("deploy_token.progress.estimate_fee"))
+    const res = await estimateFeeDeploy(formData, privateKey)
+    return res
+  }
+
+  // 4) Nạp native coin vào ví owner để trả gas
+  const fundOwnerWallet = async (estimateFee: any, ownerAddress: string, chainId: string) => {
+    setProgress(t("deploy_token.progress.fund_owner_wallet"))
+    const payload = {
+      amount: new BigNumber(estimateFee.result.data.fee.coin).multipliedBy(1.5).toFormat(18),
+      to: ownerAddress,
+      rpc: getChainInfo(chainId)?.chain_id.rpc_url,
+      chain_id: chainId,
+    }
+    const res = await fetch(`/api/send/coin`, {
+      method: "POST",
+      body: JSON.stringify(payload)
+    }).then(d => d.json())
+    return res
+  }
+
+  // 5) Triển khai token
+  const performDeploy = async (formData: any, ownerPrivateKey: string) => {
+    setProgress(t("deploy_token.progress.deploy_token"))
+    const res = await fetch(`/api/token/deploy`, {
+      method: "POST",
+      body: JSON.stringify({
+        name: formData.name,
+        symbol: formData.symbol,
+        totalSupply: formData.totalSupply,
+        decimals: formData.decimals,
+        chainId: formData.chainId,
+        type: formData.type,
+        private_key: ownerPrivateKey,
+      })
+    }).then(d => d.json())
+    return res
+  }
+
+  // 6) Gửi email/thông báo và cập nhật state kết quả
+  const handlePostDeployNotify = async ({ formData, deployResponse, walletOwner }: { formData: any, deployResponse: any, walletOwner: any }) => {
+    if (formData?.email) {
+      setProgress(t("deploy_token.progress.send_notification"))
+      await fetch("/api/directus/request", {
+        method: "POST",
+        body: JSON.stringify({
+          collection: "email_outbox",
+          type: "createItem",
+          items: {
+            status: "scheduled",
+            app_id: process.env.NEXT_PUBLIC_APP_ID,
+            to: formData.email,
+            subject: t("form_email.title.deploy_token", { contract_address: deployResponse.result?.data ? deployResponse?.result?.data?.token?.address : "--" }),
+            body: deployResponse.result?.data ? DeployTokenEmail({
+              locale: locale, data: {
+                ...deployResponse.result.data,
+                walletOwner: walletOwner,
+                chain: chain.find((opt: any) => opt.chain_id.id == Number(formData.chainId))
+              }
+            }) : DeployTokenFailedEmail({ ...walletOwner, locale: locale })
+          }
         })
-      }
+      }).then(d => d.json())
+    }
+    if (deployResponse.result?.data) {
       notify({
         title: t("deploy_token.notify.success_title"),
         type: true,
         message: t("deploy_token.notify.deploy_success")
       })
-      setDeployResult({
-        ...response.result.data,
-      })
-
+      setDeployResult(deployResponse?.result?.data)
     } else {
       notify({
         title: t("deploy_token.notify.failure_title"),
         type: false,
-        message: t("deploy_token.notify.deploy_error_prefix") + (response?.result?.errors[0]?.message ?? "")
+        message: t("deploy_token.notify.tx_failed")
       })
     }
+
+  }
+
+  const onSubmit = async (data: any) => {
+    setDeployResult(null);
+    setLoading(true)
+
+    // 1) Thanh toán phí
+    const feeTx = await payDeploymentFee(data)
+    if (!feeTx.ok) {
+      notify({
+        title: t("deploy_token.notify.failure_title"),
+        type: false,
+        message: t("deploy_token.notify.tx_failed")
+      })
+      setLoading(false);
+      return;
+    }
+
+    // 2) Tạo ví owner
+    const ownerWallet = createOwnerWallet()
+
+    // 3) Ước tính phí
+    const estimateFee = await requestEstimateFee(data, ownerWallet.privateKey)
+    if (!estimateFee.ok) {
+      notify({
+        title: t("deploy_token.notify.failure_title"),
+        type: false,
+        message: t("deploy_token.notify.tx_failed")
+      })
+      setLoading(false);
+      return;
+    }
+
+    // 4) Nạp coin cho ví owner
+    const fundRes = await fundOwnerWallet(estimateFee, ownerWallet.address, data.chainId)
+    if (!fundRes.success || !fundRes.txHash) {
+      notify({
+        title: t("deploy_token.notify.failure_title"),
+        type: false,
+        message: t("deploy_token.notify.tx_failed")
+      })
+      setLoading(false);
+      return;
+    }
+
+    // 5) Triển khai token
+    const deployRes = await performDeploy(data, ownerWallet.privateKey)
+
+    // 6) Gửi email/thông báo
+    await handlePostDeployNotify({ formData: data, deployResponse: deployRes, walletOwner: ownerWallet })
+
     setLoading(false)
   };
 
@@ -351,7 +449,7 @@ export function ImprovedTokenDeployTool() {
                   </div>
                 </div>
 
-                <Button type="submit" disabled={loading || !isConnected || loading || getToolFee(chainId, chain, deploy_token_fee) == '∞'} className="w-full crypto-gradient">
+                <Button type="submit" disabled={loading || !isConnected || loading || String(getToolFee(chainId, chain, deploy_token_fee)) === '∞'} className="w-full crypto-gradient">
                   {loading ? (
                     <>
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -382,16 +480,15 @@ export function ImprovedTokenDeployTool() {
 
               {loading && (
                 <div className="text-center py-12">
-                  <Loader2 className="w-12 h-12 mx-auto mb-4 animate-spin text-blue-500" />
-                  <p className="text-slate-300">{t("token.deploying")}</p>
                   <div className="text-yellow-500 font-bold flex flex-col gap-1 items-center justify-center mt-3">
-                    <TriangleAlert className="w-6" />
+                    <Loader2 className="w-12 h-12 mx-auto mb-4 animate-spin text-blue-500" />
+                    <p className="text-slate-300 font-semibold">{progress}</p>
                     {t("deploy_token.notify.warning_progress_desc")}
                   </div>
                 </div>
               )}
 
-              {deployResult && (
+              {deployResult?.token ? (
                 <div className="space-y-4">
                   {/* Important Backup Warning */}
                   <div className="bg-gradient-to-r from-orange-900/30 to-red-900/30 border border-orange-500/50 rounded-lg p-4 mb-4">
@@ -426,18 +523,19 @@ export function ImprovedTokenDeployTool() {
                       </div>
                     </div>
 
-                    <div>
-                      <Label className="text-slate-400 text-sm mb-1">{t("token.mnemonic")}</Label>
-                      <div className="bg-slate-700 pl-3 rounded-md text-sm text-slate-200 flex items-center justify-between">
-                        <span className="font-mono ">{shorten(deployResult?.wallet?.mnemonic)}</span>
-                        <CopyBtn data={deployResult?.wallet?.mnemonic} />
+                    <div className="mb-3">
+                      <Label className="text-slate-400 text-sm mb-1">{t("deploy_token.owner_wallet_info")}</Label>
+                      <div className="flex flex-col w-full relative">
+                        <p className="text-white absolute top-1 left-3 text-sm">{t("deploy_token.json_label")}</p>
+                        <div className="text-white absolute top-0 right-0"><CopyBtn data={JSON.stringify(walletOwner, null, 2)} /></div>
+                        <Textarea readOnly className="bg-gray-700/60 text-white font-mono h-60 text-sm pt-8 border-0" value={JSON.stringify(walletOwner, null, 2)} />
                       </div>
                     </div>
 
                     <div className="mb-3">
                       <Label className="text-slate-400 text-sm mb-1">{t("token.data_deployed")}</Label>
                       <div className="flex flex-col w-full relative">
-                        <p className="text-white absolute top-1 left-3 text-sm">json</p>
+                        <p className="text-white absolute top-1 left-3 text-sm">{t("deploy_token.json_label")}</p>
                         <div className="text-white absolute top-0 right-0"><CopyBtn data={JSON.stringify(deployResult, null, 2)} /></div>
                         <Textarea readOnly className="bg-gray-700/60 text-white font-mono h-60 text-sm pt-8 border-0" value={JSON.stringify(deployResult, null, 2)} />
                       </div>
@@ -472,7 +570,30 @@ export function ImprovedTokenDeployTool() {
                     {t("view.explorer")}
                   </Button>
                 </div>
-              )}
+              ) :
+                (walletOwner &&
+                  <div className="bg-gradient-to-r from-orange-900/30 to-red-900/30 border border-orange-500/50 rounded-lg p-4 mb-4">
+                    <div className="flex-1">
+                      <h4 className="text-orange-300 font-semibold text-sm mb-2">
+                        {t("deploy_token.backup_warning.title")}
+                      </h4>
+                      <p className="text-orange-100 text-xs leading-relaxed mb-3">
+                        {t("deploy_token.backup_warning.description")}
+                      </p>
+                      <div className="flex items-center gap-2 text-orange-200 text-xs">
+                        <div className="w-1.5 h-1.5 bg-orange-400 rounded-full animate-pulse"></div>
+                        <span className="font-medium">{t("deploy_token.backup_warning.action")}</span>
+                      </div>
+                    </div>
+                    <div className="mb-3">
+                      <Label className="text-slate-400 text-sm mb-1">{t("deploy_token.owner_wallet_info")}</Label>
+                      <div className="flex flex-col w-full relative">
+                        <p className="text-white absolute top-1 left-3 text-sm">{t("deploy_token.json_label")}</p>
+                        <div className="text-white absolute top-0 right-0"><CopyBtn data={JSON.stringify(walletOwner, null, 2)} /></div>
+                        <Textarea readOnly className="bg-gray-700/60 text-white font-mono h-60 text-sm pt-8 border-0" value={JSON.stringify(walletOwner, null, 2)} />
+                      </div>
+                    </div></div>)
+              }
             </CardContent>
           </NotConnectLayout>
         </Card>

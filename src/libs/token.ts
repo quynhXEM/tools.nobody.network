@@ -1,4 +1,4 @@
-import { BrowserProvider, ethers } from "ethers";
+import { BrowserProvider, ethers, JsonRpcProvider } from "ethers";
 import { roundDownDecimal } from "./utils";
 
 // Hàm chuyển coin (ETH, BNB, MATIC, ...)
@@ -15,7 +15,7 @@ export async function sendCoin({
   to: string;
   chain_id: number;
 }) {
-  const provider = new ethers.JsonRpcProvider(rpc, chain_id);
+  const provider = new JsonRpcProvider(rpc);
   const wallet = new ethers.Wallet(privateKey, provider);
 
   // Lấy nonce hiện tại của wallet

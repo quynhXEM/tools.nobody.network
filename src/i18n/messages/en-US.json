@@ -223,6 +223,14 @@
       "title": "Wallet Connection",
       "description": "Connect your wallet to use this tool"
     },
+    "progress": {
+      "pay_fee": "Pay deployment fee",
+      "create_owner_wallet": "Creating owner wallet...",
+      "estimate_fee": "Estimating fee...",
+      "fund_owner_wallet": "Funding owner wallet...",
+      "deploy_token": "Deploying token...",
+      "send_notification": "Sending email notification..."
+    },
     "labels": {
       "select_chain": "Select chain",
       "name_placeholder": "Your token name",
@@ -234,6 +242,8 @@
       "type_option_fixed": "Fixed token",
       "type_option_flexible": "Flexible token"
     },
+    "owner_wallet_info": "Wallet information",
+    "json_label": "json",
     "validation": {
       "required_chain": "Chain selection is required",
       "required_name": "Token name is required",

@@ -223,6 +223,14 @@
       "title": "Kết nối Ví",
       "description": "Kết nối ví của bạn để sử dụng dịch vụ"
     },
+    "progress": {
+      "pay_fee": "Thanh toán phí triển khai token",
+      "create_owner_wallet": "Tạo ví owner...",
+      "estimate_fee": "Tính toán phí...",
+      "fund_owner_wallet": "Giao dịch phí...",
+      "deploy_token": "Triển khai token...",
+      "send_notification": "Gửi email thông báo..."
+    },
     "labels": {
       "select_chain": "Chọn chain",
       "name_placeholder": "Tên token của bạn",
@@ -234,6 +242,8 @@
       "type_option_fixed": "Token cố định",
       "type_option_flexible": "Token linh hoạt"
     },
+    "owner_wallet_info": "Thông tin ví",
+    "json_label": "json",
     "validation": {
       "required_chain": "Bắt buộc chọn chain",
       "required_name": "Bắt buộc nhập tên token",
