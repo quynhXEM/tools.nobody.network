@@ -259,7 +259,14 @@ export function UserWalletProvider({ children }: { children: ReactNode }) {
         params: [txHash],
       });
       if (receipt && receipt.blockNumber) {
-        return receipt.transactionHash; // Đã xác nhận
+        const status = receipt.status;
+        if (status === "0x0" || status === 0 || status === false) {
+          throw new Error("Giao dịch thất bại. Giao dịch đã được xác nhận nhưng không thành công.");
+        }
+        if (status === "0x1" || status === 1 || status === true) {
+          return receipt.transactionHash;
+        }
+        return receipt.transactionHash;
       }
       await new Promise((resolve) => setTimeout(resolve, interval));
       tries++;
