@@ -9,7 +9,7 @@ export const POST = async (req: Request) => {
     myHeaders.append("Authorization", `Bearer ${process.env.API_TOKEN}`);
     
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/crypto/token/deploy`,
+      `${process.env.NEXT_PUBLIC_API_URL}/crypto/token/deploy`,
       {
         method: "POST",
         headers: myHeaders,
