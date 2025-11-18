@@ -7,6 +7,7 @@ export const POST = async (req: Request) => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", `Bearer ${process.env.API_TOKEN}`);
+    myHeaders.append("currency", `CREDIT`);
     
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/crypto/token/deploy`,
@@ -20,7 +21,6 @@ export const POST = async (req: Request) => {
           decimals: decimals,
           chainId: chainId,
           type: type,
-          currency: "CREDIT",
           privateKey: private_key,
         }),
       }
