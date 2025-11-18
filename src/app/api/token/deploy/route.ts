@@ -27,7 +27,7 @@ export const POST = async (req: Request) => {
     ).then((data) => {
       return data.json();
     });
-    return NextResponse.json({ ok: true, result: response });
+    return NextResponse.json({ ok: response?.errors ? false : true, result: response });
   } catch (error) {
     return NextResponse.json({ ok: false, error: error });
   }
